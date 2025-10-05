@@ -1,0 +1,8 @@
+# Django
+Django==5.2.6
+django-cors-headers==4.9.0
+# Django rest framework
+djangorestframework==3.16.1
+djangorestframework-simplejwt==5.5.1
+# DB
+psycopg2==2.9.10
