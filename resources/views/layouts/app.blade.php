@@ -19,7 +19,7 @@
         x-data="navigation"
         @keydown.escape.window="closeNavigation()"
         @resize.window="syncNavigation()"
-        class="min-h-screen bg-gray-50"
+        class="min-h-screen bg-gray-50 transition-colors dark:bg-gray-950"
     >
         @include('layouts.navigation')
 
@@ -27,7 +27,7 @@
             :class="navigationExpanded ? 'lg:pl-72' : 'lg:pl-0'"
             class="min-h-screen transition-[padding] duration-200 ease-out"
         >
-            <header class="sticky top-0 z-20 border-b border-gray-200 bg-white/95 backdrop-blur">
+            <header class="sticky top-0 z-20 border-b border-gray-200 bg-white/95 backdrop-blur transition-colors dark:border-gray-800 dark:bg-gray-950/95">
                 <div class="flex h-16 items-center gap-4 px-4 sm:px-6 lg:px-8">
                     <button
                         type="button"
@@ -62,9 +62,9 @@
                 </div>
             </header>
 
-            <main class="app-grid min-h-[calc(100vh-4rem)]">
+            <main class="app-grid min-h-[calc(100vh-4rem)] bg-gray-50 transition-colors dark:bg-gray-950">
                 @isset($header)
-                    <div class="border-b border-gray-200 bg-white">
+                    <div class="border-b border-gray-200 bg-white transition-colors dark:border-gray-800 dark:bg-gray-900">
                         <div class="mx-auto max-w-screen-2xl px-4 py-5 sm:px-6 lg:px-8">
                             {{ $header }}
                         </div>
