@@ -36,9 +36,8 @@
         <div class="space-y-1">
             <x-input-label for="login-password" value="Contraseña" />
 
-            <x-text-input
+            <x-password-input
                 id="login-password"
-                type="password"
                 name="password"
                 required
                 autocomplete="current-password"
