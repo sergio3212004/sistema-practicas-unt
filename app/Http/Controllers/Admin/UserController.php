@@ -9,6 +9,7 @@ use App\Models\RazonSocial;
 use App\Models\Rol;
 use App\Models\User;
 use App\Services\UserManagementService;
+use App\View\Presenters\UsuarioPresenter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -18,7 +19,7 @@ class UserController extends Controller
         private readonly UserManagementService $users,
     ) {}
 
-    public function index(): View
+    public function index(UsuarioPresenter $presenter): View
     {
         $users = User::query()
             ->with('rol', 'alumno', 'administrador', 'empresa.razonSocial', 'profesor')
@@ -26,8 +27,11 @@ class UserController extends Controller
         $roleCounts = Rol::query()
             ->withCount('user')
             ->pluck('user_count', 'nombre');
+        $resumenUsuarios = $users->getCollection()->mapWithKeys(fn (User $user): array => [
+            $user->id => $presenter->resumen($user),
+        ]);
 
-        return view('admin.usuarios.index', compact('users', 'roleCounts'));
+        return view('admin.usuarios.index', compact('users', 'roleCounts', 'resumenUsuarios'));
     }
 
     public function create(): View

@@ -1,5 +1,3 @@
-@props(['title' => config('app.name', 'Prácticas Preprofesionales UNT'), 'subtitle' => null])
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -7,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title }}</title>
+    <title>{{ $documentTitle }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet">
@@ -15,15 +13,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-gray-100">
-    @php
-        $defaultTitle = config('app.name', 'Prácticas Preprofesionales UNT');
-        $heading = $title !== $defaultTitle
-            ? $title
-            : (request()->routeIs('empresa.*') ? 'Registro de empresa' : 'Acceso institucional');
-        $description = $subtitle ?: (request()->routeIs('login')
-            ? 'Continúa con tus credenciales para acceder a tu espacio de trabajo.'
-            : 'Registra los datos de tu organización para colaborar con nuestros estudiantes.');
-    @endphp
     <main class="min-h-screen lg:grid lg:grid-cols-[minmax(380px,0.9fr)_minmax(560px,1.1fr)]">
         <section class="tech-grid relative overflow-hidden bg-blue-950 px-6 py-8 text-white sm:px-10 lg:flex lg:min-h-screen lg:flex-col lg:justify-between lg:px-14 lg:py-12">
             <div class="absolute inset-0 bg-cover bg-center opacity-[0.08]" style="background-image: url('{{ asset('images/bg-login.jpg') }}')"></div>
@@ -81,13 +70,13 @@
                             href="{{ route('login') }}"
                             @class([
                                 'relative flex min-h-14 items-center justify-center gap-1.5 px-2 text-xs font-semibold transition sm:gap-2 sm:px-4 sm:text-sm',
-                                'bg-white text-blue-800' => request()->routeIs('login'),
-                                'text-gray-600 hover:bg-white hover:text-gray-900' => ! request()->routeIs('login'),
+                                'bg-white text-blue-800' => $loginActive,
+                                'text-gray-600 hover:bg-white hover:text-gray-900' => ! $loginActive,
                             ])
                         >
                             @svg('heroicon-o-arrow-right-end-on-rectangle', 'h-5 w-5')
                             <span class="whitespace-nowrap">Iniciar sesión</span>
-                            @if(request()->routeIs('login'))
+                            @if($loginActive)
                                 <span class="absolute inset-x-0 bottom-0 h-1 bg-gold-500"></span>
                             @endif
                         </a>
@@ -95,13 +84,13 @@
                             href="{{ route('empresa.register.form') }}"
                             @class([
                                 'relative flex min-h-14 items-center justify-center gap-1.5 px-2 text-xs font-semibold transition sm:gap-2 sm:px-4 sm:text-sm',
-                                'bg-white text-blue-800' => request()->routeIs('empresa.register.form', 'empresa.verify.form'),
-                                'text-gray-600 hover:bg-white hover:text-gray-900' => ! request()->routeIs('empresa.register.form', 'empresa.verify.form'),
+                                'bg-white text-blue-800' => $companyActive,
+                                'text-gray-600 hover:bg-white hover:text-gray-900' => ! $companyActive,
                             ])
                         >
                             @svg('heroicon-o-building-office-2', 'h-5 w-5')
                             <span class="whitespace-nowrap">Registro empresa</span>
-                            @if(request()->routeIs('empresa.register.form', 'empresa.verify.form'))
+                            @if($companyActive)
                                 <span class="absolute inset-x-0 bottom-0 h-1 bg-gold-500"></span>
                             @endif
                         </a>
@@ -113,7 +102,7 @@
                 </div>
 
                 <p class="mt-6 text-center text-xs leading-5 text-gray-500">
-                    © {{ date('Y') }} Universidad Nacional de Trujillo · Escuela de Ingeniería Informática
+                    © {{ $currentYear }} Universidad Nacional de Trujillo · Escuela de Ingeniería Informática
                 </p>
             </div>
         </section>

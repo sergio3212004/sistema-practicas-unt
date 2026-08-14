@@ -8,26 +8,25 @@ use App\Mail\SolicitudFirmaEmpresaMail;
 use App\Mail\SolicitudFirmaProgramaMail;
 use App\Models\FichaRegistro;
 use App\Models\FichaRegistroHorario;
+use App\Models\FirmaToken;
 use App\Models\RazonSocial;
 use App\Models\Semestre;
+use App\View\Presenters\CalificacionPresenter;
+use App\View\Presenters\HorarioPresenter;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use App\Models\FirmaToken;
-use App\Rules\Ruc;
 use Illuminate\Support\Facades\Storage;
-use Barryvdh\DomPDF\Facade\Pdf;
-
+use Illuminate\Support\Str;
 
 class FichaRegistroController extends Controller
 {
     /**
      * Listar fichas del alumno
      */
-    public function index()
+    public function index(CalificacionPresenter $presenter)
     {
         $alumno = Auth::user()->alumno;
 
@@ -35,7 +34,11 @@ class FichaRegistroController extends Controller
             ->where('alumno_id', $alumno->id)
             ->first();
 
-        return view('alumno.ficha-registro.index', compact('ficha'));
+        $resumenCalificacion = $ficha?->cronograma?->estaCalificado()
+            ? $presenter->resumen($ficha->cronograma->calificacion)
+            : null;
+
+        return view('alumno.ficha-registro.index', compact('ficha', 'resumenCalificacion'));
     }
 
     /**
@@ -63,10 +66,10 @@ class FichaRegistroController extends Controller
             /** --------------------------------
              * OBTENER RAZÓN SOCIAL
              * -------------------------------- */
-            $razonSocial = \App\Models\RazonSocial::findOrFail($request->razon_social_id);
+            $razonSocial = RazonSocial::findOrFail($request->razon_social_id);
 
             $razonSocialCompleta = trim(
-                $request->nombre_empresa . ' ' . $razonSocial->acronimo
+                $request->nombre_empresa.' '.$razonSocial->acronimo
             );
 
             /** -------------------------
@@ -76,8 +79,8 @@ class FichaRegistroController extends Controller
             $firmaBase64 = str_replace('data:image/png;base64,', '', $firmaBase64);
             $firmaBase64 = str_replace(' ', '+', $firmaBase64);
 
-            $nombreFirma = 'firma_alumno_' . $alumno->id . '_' . time() . '.png';
-            Storage::disk('public')->put('firmas/ficha-registro/' . $nombreFirma, base64_decode($firmaBase64));
+            $nombreFirma = 'firma_alumno_'.$alumno->id.'_'.time().'.png';
+            Storage::disk('public')->put('firmas/ficha-registro/'.$nombreFirma, base64_decode($firmaBase64));
 
             /** -------------------------
              * CREAR FICHA
@@ -106,7 +109,7 @@ class FichaRegistroController extends Controller
                 'telefono_jefe_directo' => $request->telefono_jefe_directo,
                 'correo_jefe_directo' => $request->correo_jefe_directo,
                 'firma_practicante' => $nombreFirma,
-                'aceptado' => null
+                'aceptado' => null,
             ]);
 
             /** -------------------------
@@ -120,7 +123,6 @@ class FichaRegistroController extends Controller
                     'hora_fin' => $horario['hora_fin'],
                 ]);
             }
-
 
             // ==========================
             // GENERAR TOKENS DE FIRMA
@@ -149,7 +151,6 @@ class FichaRegistroController extends Controller
             Mail::to($tokenJefe->email)
                 ->send(new SolicitudFirmaProgramaMail($tokenJefe));
         });
-
 
         // Limpiar sesión de código
         session()->forget('codigo_ficha_validado');
@@ -191,13 +192,13 @@ class FichaRegistroController extends Controller
         DB::transaction(function () use ($fichaRegistro) {
             // Eliminar firmas del storage si existen
             if ($fichaRegistro->firma_practicante) {
-                Storage::disk('public')->delete('firmas/ficha-registro/' . $fichaRegistro->firma_practicante);
+                Storage::disk('public')->delete('firmas/ficha-registro/'.$fichaRegistro->firma_practicante);
             }
             if ($fichaRegistro->firma_empresa) {
-                Storage::disk('public')->delete('firmas/ficha-registro/' . $fichaRegistro->firma_empresa);
+                Storage::disk('public')->delete('firmas/ficha-registro/'.$fichaRegistro->firma_empresa);
             }
             if ($fichaRegistro->firma_programa) {
-                Storage::disk('public')->delete('firmas/ficha-registro/' . $fichaRegistro->firma_programa);
+                Storage::disk('public')->delete('firmas/ficha-registro/'.$fichaRegistro->firma_programa);
             }
 
             // Eliminar tokens de firma asociados
@@ -215,8 +216,7 @@ class FichaRegistroController extends Controller
             ->with('success', 'Ficha de registro eliminada correctamente.');
     }
 
-
-    public function downloadPdf(FichaRegistro $fichaRegistro)
+    public function downloadPdf(FichaRegistro $fichaRegistro, HorarioPresenter $presenter)
     {
         // Verificar que el alumno sea el dueño de la ficha
         if ($fichaRegistro->alumno_id !== auth()->user()->alumno->id) {
@@ -232,16 +232,16 @@ class FichaRegistroController extends Controller
         ]);
 
         // Generar PDF
-        $pdf = Pdf::loadView('alumno.ficha-registro.pdf', compact('fichaRegistro'));
+        $horarioSemanal = $presenter->semana($fichaRegistro->horarios);
+        $pdf = Pdf::loadView('alumno.ficha-registro.pdf', compact('fichaRegistro', 'horarioSemanal'));
 
         // Configurar el PDF
         $pdf->setPaper('a4', 'portrait');
 
         // Nombre del archivo
-        $nombreArchivo = 'FichaDeRegistro_' . $fichaRegistro->alumno->codigo_matricula . '.pdf';
+        $nombreArchivo = 'FichaDeRegistro_'.$fichaRegistro->alumno->codigo_matricula.'.pdf';
 
         // Descargar el PDF
         return $pdf->download($nombreArchivo);
     }
-
 }

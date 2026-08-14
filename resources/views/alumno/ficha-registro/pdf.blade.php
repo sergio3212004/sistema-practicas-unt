@@ -338,46 +338,10 @@
         <div class="field" style="margin-top: 10px;">
             <div class="field-label">Días y Horario:</div>
             <table class="horarios-table">
-                @php
-                    $diasNombres = ['LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
-                    $horariosMap = array_fill(0, 6, null);
-
-                    foreach($fichaRegistro->horarios as $h) {
-                        $diaNum = (int)trim($h->dia_semana);
-                        if ($diaNum >= 1 && $diaNum <= 6) {
-                            $indice = $diaNum - 1;
-
-                            // Parsear horas
-                            $horaInicio = $h->hora_inicio;
-                            $horaFin = $h->hora_fin;
-
-                            if (strlen($horaInicio) > 5) {
-                                try {
-                                    $horaInicio = \Carbon\Carbon::parse($horaInicio)->format('H:i');
-                                } catch (\Exception $e) {
-                                    $horaInicio = substr($horaInicio, 11, 5);
-                                }
-                            }
-
-                            if (strlen($horaFin) > 5) {
-                                try {
-                                    $horaFin = \Carbon\Carbon::parse($horaFin)->format('H:i');
-                                } catch (\Exception $e) {
-                                    $horaFin = substr($horaFin, 11, 5);
-                                }
-                            }
-
-                            $horariosMap[$indice] = [
-                                'inicio' => $horaInicio,
-                                'fin' => $horaFin
-                            ];
-                        }
-                    }
-                @endphp
                 <thead>
                 <tr>
                     <th style="width: 60px; text-align: center;">HORA</th>
-                    @foreach($diasNombres as $dia)
+                    @foreach($horarioSemanal['days'] as $dia)
                         <th style="text-align: center;">{{ $dia }}</th>
                     @endforeach
                 </tr>
@@ -385,11 +349,11 @@
                 <tbody>
                 <tr>
                     <td style="text-align: center; font-weight: bold;">De/A</td>
-                    @foreach($horariosMap as $horario)
+                    @foreach($horarioSemanal['schedules'] as $horario)
                         <td style="text-align: center; font-size: 9px;">
                             @if($horario)
-                                De: {{ $horario['inicio'] }}<br>
-                                A: {{ $horario['fin'] }}
+                                De: {{ $horario['start'] }}<br>
+                                A: {{ $horario['end'] }}
                             @else
                                 -
                             @endif

@@ -209,13 +209,10 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @php
-                                        $dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-                                    @endphp
                                     @foreach($cronograma->fichaRegistro->horarios as $horario)
                                         <tr>
                                             <td class="border border-gray-300 px-4 py-2 font-medium">
-                                                {{ $dias[$horario->dia_semana - 1] }}
+                                                {{ $horario->nombre_dia }}
                                             </td>
                                             <td class="border border-gray-300 px-4 py-2">
                                                 De {{ $horario->hora_inicio }} a {{ $horario->hora_fin }}
@@ -273,12 +270,8 @@
                                         <tr>
                                             @for($mes = 1; $mes <= 4; $mes++)
                                                 @for($semana = 1; $semana <= 4; $semana++)
-                                                    @php
-                                                        $campo = "m{$mes}_s{$semana}";
-                                                        $marcado = $actividad->$campo;
-                                                    @endphp
-                                                    <td class="border border-gray-300 px-2 py-2 text-center {{ $marcado ? 'bg-green-100' : '' }}">
-                                                        @if($marcado)
+                                                    <td class="border border-gray-300 px-2 py-2 text-center {{ $actividad->{"m{$mes}_s{$semana}"} ? 'bg-green-100' : '' }}">
+                                                        @if($actividad->{"m{$mes}_s{$semana}"})
                                                             <span class="text-green-600 font-bold text-lg">✓</span>
                                                         @else
                                                             <span class="text-gray-300">-</span>

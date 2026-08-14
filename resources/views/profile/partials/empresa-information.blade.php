@@ -15,7 +15,7 @@
     </div>
 
     {{-- ================== EMPRESA ================== --}}
-    @if(auth()->user()->empresa)
+    @if($user->empresa)
         <div class="pt-4 border-t border-gray-200">
             <h3 class="text-md font-semibold text-blue-700 mb-3">
                 Información de la Empresa
@@ -25,19 +25,19 @@
 
                 <div>
                     <x-input-label value="RUC" />
-                    <x-text-input class="mt-1 block w-full bg-gray-100" :value="auth()->user()->empresa->ruc" disabled />
+                    <x-text-input class="mt-1 block w-full bg-gray-100" :value="$user->empresa->ruc" disabled />
                 </div>
 
                 <div>
                     <x-input-label value="Razón Social / Nombre" />
-                    <x-text-input class="mt-1 block w-full bg-gray-100" :value="auth()->user()->empresa->nombre" disabled />
+                    <x-text-input class="mt-1 block w-full bg-gray-100" :value="$user->empresa->nombre" disabled />
                 </div>
 
                 {{-- CAMPO TELÉFONO --}}
                 <div>
                     <x-input-label for="telefono" value="Teléfono de contacto" />
                     <x-text-input id="telefono" name="telefono" type="text" class="mt-1 block w-full" required
-                                  :value="old('telefono', auth()->user()->empresa->telefono)" />
+                                  :value="old('telefono', $user->empresa->telefono)" />
                     <x-input-error :messages="$errors->get('telefono')" class="mt-2" />
                 </div>
 
@@ -45,7 +45,7 @@
                 <div>
                     <x-input-label for="departamento" value="Departamento" />
                     <x-text-input id="departamento" name="departamento" type="text" class="mt-1 block w-full"
-                                  :value="old('departamento', auth()->user()->empresa->departamento)" />
+                                  :value="old('departamento', $user->empresa->departamento)" />
                     <x-input-error :messages="$errors->get('departamento')" class="mt-2" />
                 </div>
 
@@ -53,7 +53,7 @@
                 <div>
                     <x-input-label for="provincia" value="Provincia" />
                     <x-text-input id="provincia" name="provincia" type="text" class="mt-1 block w-full"
-                                  :value="old('provincia', auth()->user()->empresa->provincia)" />
+                                  :value="old('provincia', $user->empresa->provincia)" />
                     <x-input-error :messages="$errors->get('provincia')" class="mt-2" />
                 </div>
 
@@ -61,7 +61,7 @@
                 <div>
                     <x-input-label for="distrito" value="Distrito" />
                     <x-text-input id="distrito" name="distrito" type="text" class="mt-1 block w-full"
-                                  :value="old('distrito', auth()->user()->empresa->distrito)" />
+                                  :value="old('distrito', $user->empresa->distrito)" />
                     <x-input-error :messages="$errors->get('distrito')" class="mt-2" />
                 </div>
 
@@ -69,7 +69,7 @@
                 <div class="md:col-span-2">
                     <x-input-label for="direccion" value="Dirección fiscal" />
                     <x-text-input id="direccion" name="direccion" type="text" class="mt-1 block w-full"
-                                  :value="old('direccion', auth()->user()->empresa->direccion)" />
+                                  :value="old('direccion', $user->empresa->direccion)" />
                     <x-input-error :messages="$errors->get('direccion')" class="mt-2" />
                 </div>
 

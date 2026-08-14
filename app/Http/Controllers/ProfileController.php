@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -16,8 +15,15 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $user = $request->user()->load([
+            'rol',
+            'alumno.aula',
+            'profesor',
+            'empresa',
+        ]);
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
         ]);
     }
 
@@ -40,7 +46,7 @@ class ProfileController extends Controller
                 $updateData['cv'] = $request->cv_link;
             }
 
-            if (!empty($updateData)) {
+            if (! empty($updateData)) {
                 $user->alumno->update($updateData);
             }
 
@@ -51,6 +57,7 @@ class ProfileController extends Controller
         if ($user->profesor) {
             if ($request->filled('telefono')) {
                 $user->profesor->update(['telefono' => $request->telefono]);
+
                 return Redirect::route('profile.edit')->with('status', 'profesor-updated');
             }
         }
@@ -62,6 +69,7 @@ class ProfileController extends Controller
             // Simplified: Update whatever comes in request that is not null presumably? Or just update all matching fields.
             // Since we validated them as nullable, we can update.
             $user->empresa->update($empresaData);
+
             return Redirect::route('profile.edit')->with('status', 'empresa-updated');
         }
 
@@ -76,6 +84,4 @@ class ProfileController extends Controller
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
-
-
 }

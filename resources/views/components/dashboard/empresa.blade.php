@@ -1,20 +1,14 @@
-@props(['empresa'])
-
-@php
-    $publicaciones = $empresa->publicaciones;
-    $totalPostulaciones = $publicaciones->sum(fn ($publicacion) => $publicacion->postulaciones->count());
-    $postulacionesPendientes = $publicaciones->sum(fn ($publicacion) => $publicacion->postulaciones->where('estado', 'pendiente')->count());
-@endphp
+@props(['data'])
 
 <section class="rounded-2xl bg-blue-950 p-6 text-white shadow-panel sm:p-7">
     <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <p class="text-xs font-bold uppercase tracking-[0.16em] text-gold-400">Vinculación empresarial</p>
-            <h2 class="mt-2 text-2xl font-bold tracking-tight">Bienvenido, {{ $empresa->nombre }}</h2>
+            <h2 class="mt-2 text-2xl font-bold tracking-tight">Bienvenido, {{ $data->empresa->nombre }}</h2>
             <p class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-blue-100">
-                <span>{{ $empresa->razonSocial->nombre ?? $empresa->razonSocial->acronimo ?? 'Empresa registrada' }}</span>
+                <span>{{ $data->empresa->razonSocial->nombre ?? $data->empresa->razonSocial->acronimo ?? 'Empresa registrada' }}</span>
                 <span class="text-blue-400">·</span>
-                <span>RUC {{ $empresa->ruc }}</span>
+                <span>RUC {{ $data->empresa->ruc }}</span>
             </p>
         </div>
         <a href="{{ route('empresa.publicaciones.create') }}" class="ui-btn border-gold-400 bg-gold-500 text-gray-950 hover:border-gold-300 hover:bg-gold-400">
@@ -24,10 +18,10 @@
 </section>
 
 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-    <x-ui.stat-card label="Ofertas publicadas" :value="$publicaciones->count()" description="Histórico de publicaciones" icon="heroicon-o-newspaper" />
-    <x-ui.stat-card label="Ofertas activas" :value="$publicaciones->where('estado', 'Disponible')->count()" description="Visibles para estudiantes" icon="heroicon-o-check-circle" tone="success" />
-    <x-ui.stat-card label="Postulaciones" :value="$totalPostulaciones" description="Candidaturas recibidas" icon="heroicon-o-users" />
-    <x-ui.stat-card label="Pendientes" :value="$postulacionesPendientes" description="Requieren revisión" icon="heroicon-o-clock" tone="warning" />
+    <x-ui.stat-card label="Ofertas publicadas" :value="$data->metricas['publicaciones']" description="Histórico de publicaciones" icon="heroicon-o-newspaper" />
+    <x-ui.stat-card label="Ofertas activas" :value="$data->metricas['activas']" description="Visibles para estudiantes" icon="heroicon-o-check-circle" tone="success" />
+    <x-ui.stat-card label="Postulaciones" :value="$data->metricas['postulaciones']" description="Candidaturas recibidas" icon="heroicon-o-users" />
+    <x-ui.stat-card label="Pendientes" :value="$data->metricas['pendientes']" description="Requieren revisión" icon="heroicon-o-clock" tone="warning" />
 </div>
 
 <div class="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
@@ -40,13 +34,7 @@
             <span class="ui-badge-info">RUC verificado</span>
         </div>
         <div class="grid gap-x-8 gap-y-5 p-5 sm:grid-cols-2 sm:p-6">
-            @foreach([
-                ['label' => 'Razón social', 'value' => $empresa->razonSocial->acronimo ?? 'No especificada'],
-                ['label' => 'Correo', 'value' => $empresa->user->email ?? 'No registrado'],
-                ['label' => 'Teléfono', 'value' => $empresa->telefono ?? 'No registrado'],
-                ['label' => 'Ubicación', 'value' => collect([$empresa->distrito, $empresa->provincia, $empresa->departamento])->filter()->implode(', ') ?: 'No especificada'],
-                ['label' => 'Dirección', 'value' => $empresa->direccion ?? 'No especificada'],
-            ] as $detail)
+            @foreach($data->detalles as $detail)
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-gray-500">{{ $detail['label'] }}</p>
                     <p class="mt-1 break-words text-sm font-semibold text-gray-900">{{ $detail['value'] }}</p>

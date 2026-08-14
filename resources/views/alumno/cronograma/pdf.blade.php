@@ -281,11 +281,8 @@
                 <td class="left-align">{{ $act->actividad }}</td>
                 @for($mes = 1; $mes <= 4; $mes++)
                     @for($sem = 1; $sem <= 4; $sem++)
-                        @php
-                            $col = "m{$mes}_s{$sem}";
-                        @endphp
                         <td>
-                            @if($act->$col)
+                            @if($act->{"m{$mes}_s{$sem}"})
                                 <span class="check-mark">x</span>
                             @endif
                         </td>

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="'Semana '.$semana->numero">
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
@@ -46,7 +46,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-600">Total Actividades</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ $semana->actividades->count() }}</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $metricas['actividades'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-600">Activas</p>
                             <p class="text-2xl font-bold text-gray-900">
-                                {{ $semana->actividades->filter(fn($a) => $a->estaActiva())->count() }}
+                                {{ $metricas['activas'] }}
                             </p>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-600">Entregas Recibidas</p>
                             <p class="text-2xl font-bold text-gray-900">
-                                {{ $semana->actividades->sum(fn($a) => $a->entregas->count()) }}
+                                {{ $metricas['entregas'] }}
                             </p>
                         </div>
                     </div>
@@ -189,7 +189,7 @@
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900">Actividades de la Semana</h3>
                             <p class="text-sm text-gray-600 mt-1">
-                                {{ $semana->actividades->count() }} {{ $semana->actividades->count() === 1 ? 'actividad registrada' : 'actividades registradas' }}
+                                {{ $metricas['actividades'] }} {{ $metricas['actividades'] === 1 ? 'actividad registrada' : 'actividades registradas' }}
                             </p>
                         </div>
                         <a href="{{ route('profesor.actividades.create', ['aula' => $semana->aula, 'semana' => $semana]) }}"
@@ -245,14 +245,11 @@
                                             </svg>
                                             Límite: {{ $actividad->fecha_limite->format('d/m/Y') }}
                                         </span>
-                                        @php
-                                            $progreso = $actividad->obtenerProgreso();
-                                        @endphp
                                         <span class="flex items-center">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                             </svg>
-                                            Entregas: {{ $progreso['entregadas'] }}/{{ $progreso['total'] }} ({{ $progreso['porcentaje'] }}%)
+                                            Entregas: {{ $progresoActividades[$actividad->id]['entregadas'] }}/{{ $progresoActividades[$actividad->id]['total'] }} ({{ $progresoActividades[$actividad->id]['porcentaje'] }}%)
                                         </span>
                                         <span class="flex items-center">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -54,7 +54,7 @@
                            border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                 >
                     <option value="">Seleccione una razón social</option>
-                    @foreach(\App\Models\RazonSocial::all() as $razon)
+                    @foreach($razonesSociales as $razon)
                         <option value="{{ $razon->id }}" @selected(old('razon_social_id') == $razon->id)>
                             {{ $razon->acronimo }}
                         </option>

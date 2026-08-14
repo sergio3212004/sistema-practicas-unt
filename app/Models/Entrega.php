@@ -18,7 +18,7 @@ class Entrega extends Model
     ];
 
     protected $casts = [
-        'fecha_entrega' => 'datetime'
+        'fecha_entrega' => 'datetime',
     ];
 
     // Relación con Actividad
@@ -36,30 +36,16 @@ class Entrega extends Model
     // Método helper para verificar si está calificada
     public function estaCalificada()
     {
-        return !is_null($this->nota);
+        return ! is_null($this->nota);
     }
 
     // Método helper para verificar si fue entregada a tiempo
     public function fueEntregadaATiempo()
     {
-        if (!$this->fecha_entrega) {
+        if (! $this->fecha_entrega) {
             return false;
         }
 
         return $this->fecha_entrega <= $this->actividad->fecha_limite;
     }
-
-    // Método helper para obtener el estado visual
-    public function obtenerEstadoVisual()
-    {
-        $estados = [
-            'pendiente' => ['clase' => 'bg-yellow-100 text-yellow-800', 'texto' => 'Pendiente'],
-            'entregado' => ['clase' => 'bg-blue-100 text-blue-800', 'texto' => 'Entregado'],
-            'observado' => ['clase' => 'bg-green-100 text-green-800', 'texto' => 'Revisado'],
-            'rechazado' => ['clase' => 'bg-red-100 text-red-800', 'texto' => 'Rechazado'],
-        ];
-
-        return $estados[$this->estado] ?? ['clase' => 'bg-gray-100 text-gray-800', 'texto' => ucfirst($this->estado)];
-    }
-
 }

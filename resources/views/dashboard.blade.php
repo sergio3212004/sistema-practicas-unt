@@ -9,20 +9,19 @@
     </x-slot>
 
     <div class="ui-page">
-        @if (isset($administrador))
-            <x-dashboard.admin :administrador="$administrador" :semestres="$semestres" />
-        @elseif (isset($alumno))
-            <x-dashboard.alumno :alumno="$alumno" :metricas="$metricasAlumno" />
-        @elseif (isset($profesor))
-            <x-dashboard.profesor
-                :semestre-activo="$semestreActivo"
-                :profesor="$profesor"
-                :aulas="$aulas"
-                :total-entregas="$totalEntregas"
-                :actividades-activas="$actividadesActivas"
-            />
-        @elseif (isset($empresa))
-            <x-dashboard.empresa :empresa="$empresa" />
-        @endif
+        @switch($dashboard->role()->value)
+            @case('administrador')
+                <x-dashboard.admin :data="$dashboard" />
+                @break
+            @case('alumno')
+                <x-dashboard.alumno :data="$dashboard" />
+                @break
+            @case('profesor')
+                <x-dashboard.profesor :data="$dashboard" />
+                @break
+            @case('empresa')
+                <x-dashboard.empresa :data="$dashboard" />
+                @break
+        @endswitch
     </div>
 </x-app-layout>

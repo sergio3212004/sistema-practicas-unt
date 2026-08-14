@@ -198,30 +198,9 @@
                                         </div>
                                     </div>
 
-                                    @php
-                                        $calificacion = $ficha->cronograma->calificacion;
-                                        if ($calificacion >= 17) {
-                                            $mensaje = '¡Excelente desempeño!';
-                                            $color = 'text-green-700';
-                                            $bgColor = 'bg-green-100';
-                                        } elseif ($calificacion >= 14) {
-                                            $mensaje = 'Buen trabajo';
-                                            $color = 'text-blue-700';
-                                            $bgColor = 'bg-blue-100';
-                                        } elseif ($calificacion >= 11) {
-                                            $mensaje = 'Desempeño regular';
-                                            $color = 'text-yellow-700';
-                                            $bgColor = 'bg-yellow-100';
-                                        } else {
-                                            $mensaje = 'Necesitas mejorar';
-                                            $color = 'text-red-700';
-                                            $bgColor = 'bg-red-100';
-                                        }
-                                    @endphp
-
-                                    <div class="mt-4 {{ $bgColor }} rounded-lg px-4 py-3">
-                                        <p class="text-sm font-semibold {{ $color }} text-center">
-                                            {{ $mensaje }}
+                                    <div class="mt-4 {{ $resumenCalificacion['backgroundClass'] }} rounded-lg px-4 py-3">
+                                        <p class="text-sm font-semibold {{ $resumenCalificacion['textClass'] }} text-center">
+                                            {{ $resumenCalificacion['message'] }}
                                         </p>
                                     </div>
                                 </div>

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="$practica->nombre">
     <div class="max-w-6xl mx-auto px-4 py-8">
 
         {{-- Header --}}
@@ -115,11 +115,7 @@
         {{-- CTA --}}
         <div class="mt-10 text-center">
             @auth
-                @if(auth()->user()->alumno)
-                    @php
-                        $alumno = auth()->user()->alumno;
-                    @endphp
-
+                @if($alumno)
                     @if($practica->estado === 'Cubierta')
                         {{-- Práctica cubierta --}}
                         <div class="inline-flex items-center gap-2 px-8 py-3 bg-gray-100 text-gray-600 text-lg font-semibold rounded-xl">
@@ -168,7 +164,7 @@
                                     <p class="text-sm text-gray-700">
                                         <strong>Próximos pasos:</strong><br>
                                         Espera el contacto de {{ $practica->empresa->nombre }}
-                                        al correo: <strong>{{ auth()->user()->email }}</strong>
+                                        al correo: <strong>{{ $correoAlumno }}</strong>
                                     </p>
                                 </div>
                             </div>

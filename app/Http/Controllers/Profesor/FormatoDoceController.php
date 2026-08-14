@@ -36,7 +36,10 @@ class FormatoDoceController extends Controller
             })
             ->get();
 
-        return view('profesor.formato-doce.create', compact('aulas'));
+        return view('profesor.formato-doce.create', [
+            'aulas' => $aulas,
+            'nombreProfesor' => request()->user()->nombre ?? 'Docente',
+        ]);
     }
 
     public function getAlumnos(Aula $aula)

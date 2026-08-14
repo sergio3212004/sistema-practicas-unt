@@ -7,6 +7,7 @@ use App\Http\Requests\Profesor\StoreActividadRequest;
 use App\Models\Actividad;
 use App\Models\Aula;
 use App\Models\TipoActividad;
+use App\View\Presenters\EntregaPresenter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
@@ -33,7 +34,7 @@ class ActividadesController extends Controller
             ->with('success', 'Actividad creada exitosamente.');
     }
 
-    public function show(Actividad $actividad): View
+    public function show(Actividad $actividad, EntregaPresenter $presenter): View
     {
         Gate::authorize('manage', $actividad);
 
@@ -44,7 +45,11 @@ class ActividadesController extends Controller
             'entregas.alumno.user',
         );
 
-        return view('profesor.actividades.show', compact('actividad'));
+        $estadosEntregas = $actividad->entregas->mapWithKeys(fn ($entrega): array => [
+            $entrega->id => $presenter->estado($entrega),
+        ]);
+
+        return view('profesor.actividades.show', compact('actividad', 'estadosEntregas'));
     }
 
     public function destroy(Actividad $actividad): RedirectResponse

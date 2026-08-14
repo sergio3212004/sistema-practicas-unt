@@ -36,10 +36,6 @@
                         </div>
 
                         <div class="p-6">
-                            @php
-                                $estadoVisual = $entrega->obtenerEstadoVisual();
-                            @endphp
-
                             <div class="flex items-start space-x-4">
                                 <div class="flex-shrink-0">
                                     @if($entrega->estado === 'entregado')
@@ -63,8 +59,8 @@
 
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-3">
-                                        <span class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-semibold {{ $estadoVisual['clase'] }}">
-                                            {{ $estadoVisual['texto'] }}
+                                        <span class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-semibold {{ $estadoEntrega['class'] }}">
+                                            {{ $estadoEntrega['text'] }}
                                         </span>
 
                                         @if($entrega->fueEntregadaATiempo())

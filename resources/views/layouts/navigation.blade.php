@@ -1,9 +1,3 @@
-@php
-    $role = auth()->user()->rol->nombre;
-    $roleLabel = \App\Enums\UserRole::tryFrom($role)?->label() ?? ucfirst($role);
-    $menuItems = config("navigation.{$role}", []);
-@endphp
-
 <div
     x-cloak
     x-show="navigationOpen"
@@ -46,47 +40,46 @@
     </div>
 
     <nav class="flex-1 overflow-y-auto px-4 py-5">
-        <p class="mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.16em] text-blue-300">Espacio de {{ strtolower($roleLabel) }}</p>
+        <p class="mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.16em] text-blue-300">Espacio de {{ strtolower($layout->roleLabel) }}</p>
 
         <div class="space-y-1">
             <a
                 href="{{ route('dashboard') }}"
                 @class([
                     'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
-                    'bg-white text-blue-950 shadow-sm' => request()->routeIs('dashboard'),
-                    'text-blue-100 hover:bg-white/10 hover:text-white' => ! request()->routeIs('dashboard'),
+                    'bg-white text-blue-950 shadow-sm' => $layout->dashboardActive,
+                    'text-blue-100 hover:bg-white/10 hover:text-white' => ! $layout->dashboardActive,
                 ])
             >
-                @if(request()->routeIs('dashboard'))
+                @if($layout->dashboardActive)
                     <span class="absolute inset-y-2 left-0 w-1 rounded-r-full bg-gold-500"></span>
                 @endif
                 <span @class([
                     'flex h-9 w-9 items-center justify-center rounded-lg',
-                    'bg-blue-50 text-blue-700' => request()->routeIs('dashboard'),
-                    'bg-white/10 text-blue-100 group-hover:bg-white/15' => ! request()->routeIs('dashboard'),
+                    'bg-blue-50 text-blue-700' => $layout->dashboardActive,
+                    'bg-white/10 text-blue-100 group-hover:bg-white/15' => ! $layout->dashboardActive,
                 ])>
                     @svg('heroicon-o-squares-2x2', 'h-5 w-5')
                 </span>
                 <span>Resumen</span>
             </a>
 
-            @foreach($menuItems as $item)
-                @php($active = request()->routeIs($item['pattern']))
+            @foreach($layout->menuItems as $item)
                 <a
                     href="{{ route($item['route']) }}"
                     @class([
                         'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
-                        'bg-white text-blue-950 shadow-sm' => $active,
-                        'text-blue-100 hover:bg-white/10 hover:text-white' => ! $active,
+                        'bg-white text-blue-950 shadow-sm' => $item['active'],
+                        'text-blue-100 hover:bg-white/10 hover:text-white' => ! $item['active'],
                     ])
                 >
-                    @if($active)
+                    @if($item['active'])
                         <span class="absolute inset-y-2 left-0 w-1 rounded-r-full bg-gold-500"></span>
                     @endif
                     <span @class([
                         'flex h-9 w-9 items-center justify-center rounded-lg',
-                        'bg-blue-50 text-blue-700' => $active,
-                        'bg-white/10 text-blue-100 group-hover:bg-white/15' => ! $active,
+                        'bg-blue-50 text-blue-700' => $item['active'],
+                        'bg-white/10 text-blue-100 group-hover:bg-white/15' => ! $item['active'],
                     ])>
                         @svg($item['icon'], 'h-5 w-5')
                     </span>

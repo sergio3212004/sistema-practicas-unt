@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="$actividad->titulo">
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
@@ -98,9 +98,6 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                             @foreach($actividad->entregas as $entrega)
-                                @php
-                                    $estado = $entrega->obtenerEstadoVisual();
-                                @endphp
                                 <tr class="hover:bg-gray-50 transition">
                                     <!-- Alumno -->
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -121,8 +118,8 @@
 
                                     <!-- Estado -->
                                     <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $estado['clase'] }}">
-                    {{ $estado['texto'] }}
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $estadosEntregas[$entrega->id]['class'] }}">
+                    {{ $estadosEntregas[$entrega->id]['text'] }}
                 </span>
                                     </td>
 

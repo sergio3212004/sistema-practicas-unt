@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Prácticas Preprofesionales UNT') }}</title>
+    <title>{{ $documentTitle }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet">
@@ -37,15 +37,15 @@
 
                     <div class="flex items-center gap-3">
                         <div class="hidden text-right md:block">
-                            <p class="max-w-52 truncate text-sm font-semibold text-gray-900">{{ auth()->user()->nombre ?? 'Usuario' }}</p>
-                            <p class="text-xs text-gray-500">{{ \App\Enums\UserRole::tryFrom(auth()->user()->rol->nombre)?->label() ?? 'Usuario' }}</p>
+                            <p class="max-w-52 truncate text-sm font-semibold text-gray-900">{{ $layout->userName }}</p>
+                            <p class="text-xs text-gray-500">{{ $layout->roleLabel }}</p>
                         </div>
                         <a
                             href="{{ route('profile.edit') }}"
                             class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-700 text-sm font-bold text-white shadow-sm transition hover:bg-blue-800"
-                            aria-label="Abrir perfil de {{ auth()->user()->nombre ?? 'usuario' }}"
+                            aria-label="Abrir perfil de {{ $layout->userName }}"
                         >
-                            {{ str(auth()->user()->nombre ?? auth()->user()->email ?? 'U')->substr(0, 1)->upper() }}
+                            {{ $layout->initial }}
                         </a>
                     </div>
                 </div>
