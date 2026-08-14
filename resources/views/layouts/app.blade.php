@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet">
 
+    @include('layouts.partials.theme-script')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
@@ -45,6 +46,7 @@
                     </div>
 
                     <div class="flex items-center gap-3">
+                        <x-theme-toggle />
                         <div class="hidden text-right md:block">
                             <p class="max-w-52 truncate text-sm font-semibold text-gray-900">{{ $layout->userName }}</p>
                             <p class="text-xs text-gray-500">{{ $layout->roleLabel }}</p>

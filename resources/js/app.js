@@ -4,6 +4,27 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
+Alpine.data('themeToggle', () => ({
+    dark: document.documentElement.classList.contains('dark'),
+
+    init() {
+        this.$watch('dark', (dark) => {
+            document.documentElement.classList.toggle('dark', dark);
+            document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+
+            try {
+                window.localStorage.setItem('theme.preference', dark ? 'dark' : 'light');
+            } catch (_) {
+                // El cambio sigue activo aunque el navegador bloquee localStorage.
+            }
+        });
+    },
+
+    toggle() {
+        this.dark = ! this.dark;
+    },
+}));
+
 Alpine.data('navigation', () => ({
     navigationOpen: false,
     navigationExpanded: true,
