@@ -43,6 +43,37 @@ composer run dev
 La aplicación estará disponible en <http://127.0.0.1:8000> y Vite recargará los
 recursos frontend al modificarlos.
 
+## Consulta de RUC para el registro de empresas
+
+El formulario consulta el padrón RUC desde el backend y autocompleta el nombre o
+razón social, tipo de persona jurídica, domicilio fiscal y ubigeo. Los campos que
+el proveedor no entregue quedan habilitados para completarlos manualmente. Si el
+servicio no está disponible, el formulario informa el problema y activa un modo
+manual de contingencia.
+
+SUNAT publica el padrón RUC como datos abiertos, pero su servicio de ficha RUC no
+es una API REST pública de acceso inmediato para entidades privadas. La
+integración predeterminada usa el proveedor APIS.net.pe/Decolecta, que mantiene
+una API sobre el padrón publicado por SUNAT. Genera un token en
+<https://apis.net.pe/> y configúralo únicamente en el servidor:
+
+```dotenv
+SUNAT_RUC_API_URL=https://api.decolecta.com/v1/sunat/ruc/full
+SUNAT_RUC_API_TOKEN=tu_token
+SUNAT_RUC_CONNECT_TIMEOUT=3
+SUNAT_RUC_TIMEOUT=8
+```
+
+Después de cambiar estas variables en producción, ejecuta:
+
+```bash
+php artisan config:cache
+```
+
+El cliente externo está aislado en `app/Services/Sunat/SunatRucService.php`, por
+lo que puede reemplazarse si la universidad obtiene acceso directo a los
+servicios web de SUNAT.
+
 ## Verificación
 
 ```bash

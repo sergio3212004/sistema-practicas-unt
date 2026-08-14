@@ -40,4 +40,11 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'sunat' => [
+        'ruc_lookup_url' => env('SUNAT_RUC_API_URL', 'https://api.decolecta.com/v1/sunat/ruc/full'),
+        'ruc_api_token' => env('SUNAT_RUC_API_TOKEN'),
+        'connect_timeout' => env('SUNAT_RUC_CONNECT_TIMEOUT', 3),
+        'timeout' => env('SUNAT_RUC_TIMEOUT', 8),
+    ],
+
 ];
