@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        color-scheme: light;
+        --unt-blue: 18 55 123;
+        --unt-gold: 230 173 9;
+        --unt-green: 12 143 61;
+        --unt-red: 216 38 26;
+        --unt-ink: 30 26 23;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-gray-50 font-sans text-gray-900 antialiased;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    ::selection {
+        background: rgb(var(--unt-gold) / 0.28);
+        color: rgb(var(--unt-ink));
+    }
+
+    :focus-visible {
+        outline: 3px solid rgb(var(--unt-gold) / 0.72);
+        outline-offset: 2px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-gray-100;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply rounded-full bg-gray-300;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-gray-400;
+    }
+}
+
+@layer components {
+    .ui-page {
+        @apply mx-auto w-full max-w-screen-2xl space-y-6;
+    }
+
+    .ui-card {
+        @apply rounded-2xl border border-gray-200 bg-white shadow-panel;
+    }
+
+    .ui-card-header {
+        @apply flex flex-col gap-2 border-b border-gray-100 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6;
+    }
+
+    .ui-card-body {
+        @apply p-5 sm:p-6;
+    }
+
+    .ui-eyebrow {
+        @apply text-xs font-bold uppercase tracking-[0.16em] text-blue-700;
+    }
+
+    .ui-heading {
+        @apply text-2xl font-bold tracking-tight text-gray-950 sm:text-3xl;
+    }
+
+    .ui-subheading {
+        @apply max-w-3xl text-sm leading-6 text-gray-600 sm:text-base;
+    }
+
+    .ui-btn {
+        @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold transition duration-150 disabled:cursor-not-allowed disabled:opacity-50;
+    }
+
+    .ui-btn-primary {
+        @apply ui-btn border-blue-700 bg-blue-700 text-white shadow-sm hover:border-blue-800 hover:bg-blue-800;
+    }
+
+    .ui-btn-secondary {
+        @apply ui-btn border-gray-300 bg-white text-gray-800 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800;
+    }
+
+    .ui-btn-danger {
+        @apply ui-btn border-red-600 bg-red-600 text-white hover:border-red-700 hover:bg-red-700;
+    }
+
+    .ui-btn-ghost {
+        @apply ui-btn border-transparent bg-transparent text-gray-700 hover:bg-gray-100 hover:text-blue-800;
+    }
+
+    .ui-field {
+        @apply w-full rounded-xl border-gray-300 bg-white text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-blue-700 focus:ring-blue-700;
+    }
+
+    .ui-label {
+        @apply mb-1.5 block text-sm font-semibold text-gray-800;
+    }
+
+    .ui-help {
+        @apply mt-1.5 text-xs leading-5 text-gray-500;
+    }
+
+    .ui-stat {
+        @apply ui-card relative overflow-hidden p-5;
+    }
+
+    .ui-stat::before {
+        content: '';
+        @apply absolute inset-x-0 top-0 h-1 bg-blue-700;
+    }
+
+    .ui-badge {
+        @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold;
+    }
+
+    .ui-badge-info {
+        @apply ui-badge border-blue-200 bg-blue-50 text-blue-800;
+    }
+
+    .ui-badge-success {
+        @apply ui-badge border-green-200 bg-green-50 text-green-800;
+    }
+
+    .ui-badge-warning {
+        @apply ui-badge border-yellow-200 bg-yellow-50 text-yellow-900;
+    }
+
+    .ui-badge-danger {
+        @apply ui-badge border-red-200 bg-red-50 text-red-800;
+    }
+
+    .ui-icon-box {
+        @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-700;
+    }
+
+    .ui-empty {
+        @apply ui-card flex flex-col items-center px-6 py-12 text-center;
+    }
+
+    .ui-table-wrap {
+        @apply overflow-x-auto rounded-2xl border border-gray-200 bg-white shadow-panel;
+    }
+
+    .ui-table {
+        @apply min-w-full divide-y divide-gray-200 text-left text-sm;
+    }
+
+    .ui-table thead {
+        @apply bg-gray-50 text-xs font-bold uppercase tracking-wider text-gray-600;
+    }
+
+    .ui-table th {
+        @apply px-5 py-3.5;
+    }
+
+    .ui-table td {
+        @apply px-5 py-4 text-gray-700;
+    }
+
+    .ui-table tbody {
+        @apply divide-y divide-gray-100;
+    }
+
+    .tech-grid {
+        background-image:
+            linear-gradient(rgb(255 255 255 / 0.055) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(255 255 255 / 0.055) 1px, transparent 1px);
+        background-size: 28px 28px;
+    }
+
+    .app-grid {
+        background-image:
+            linear-gradient(rgb(var(--unt-blue) / 0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(var(--unt-blue) / 0.025) 1px, transparent 1px);
+        background-size: 32px 32px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
