@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Empresa;
 
 use App\Http\Controllers\Controller;
 use App\Mail\CodigoVerificacionEmail;
-use App\Models\SolicitudEmpresa;
 use App\Models\RazonSocial;
+use App\Models\SolicitudEmpresa;
+use App\Rules\Ruc;
+use App\Services\Companies\CompanyRegistrationLookup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 
 class EmpresaRegisterController extends Controller
 {
@@ -20,16 +23,30 @@ class EmpresaRegisterController extends Controller
     public function create()
     {
         $razonesSociales = RazonSocial::all();
+
         return view('empresa.empresa-register', compact('razonesSociales'));
     }
 
     /**
      * Procesa el registro de la empresa y envía código de verificación
      */
-    public function register(Request $request)
+    public function register(Request $request, CompanyRegistrationLookup $companyLookup)
     {
-        $request->validate([
-            'ruc' => ['required', 'string', 'size:11', 'unique:empresas,ruc', 'unique:solicitudes_empresa,ruc'],
+        $ruc = $request->validate([
+            'ruc' => ['bail', 'required', 'string', new Ruc],
+        ])['ruc'];
+        $trustedCompanyData = $companyLookup->trustedDataFor($ruc);
+
+        if ($trustedCompanyData === null) {
+            throw ValidationException::withMessages([
+                'ruc' => 'Consulta el RUC antes de registrar la empresa.',
+            ]);
+        }
+
+        $request->merge($trustedCompanyData);
+
+        $validated = $request->validate([
+            'ruc' => ['required', 'string', new Ruc, 'unique:empresas,ruc', 'unique:solicitudes_empresa,ruc'],
             'nombre' => ['required', 'string', 'max:255'],
             'razon_social_id' => ['required', 'exists:razones_sociales,id'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email', 'unique:solicitudes_empresa,email'],
@@ -46,16 +63,16 @@ class EmpresaRegisterController extends Controller
 
         // Crear solicitud en la base de datos (sin email verificado aún)
         $solicitud = SolicitudEmpresa::create([
-            'ruc' => $request->ruc,
-            'nombre' => $request->nombre,
-            'razon_social_id' => $request->razon_social_id,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'telefono' => $request->telefono,
-            'departamento' => $request->departamento,
-            'provincia' => $request->provincia,
-            'distrito' => $request->distrito,
-            'direccion' => $request->direccion,
+            'ruc' => $validated['ruc'],
+            'nombre' => $validated['nombre'],
+            'razon_social_id' => $validated['razon_social_id'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'telefono' => $validated['telefono'] ?? null,
+            'departamento' => $validated['departamento'] ?? null,
+            'provincia' => $validated['provincia'] ?? null,
+            'distrito' => $validated['distrito'] ?? null,
+            'direccion' => $validated['direccion'] ?? null,
             'email_verificado' => false,
             'codigo_verificacion' => $codigoVerificacion,
             'estado' => 'pendiente',
@@ -66,13 +83,16 @@ class EmpresaRegisterController extends Controller
 
         // Enviar email con código de verificación
         try {
-            Mail::to($request->email)->send(new CodigoVerificacionEmail($codigoVerificacion, $request->nombre));
+            Mail::to($validated['email'])->send(new CodigoVerificacionEmail($codigoVerificacion, $validated['nombre']));
         } catch (\Exception $e) {
             // Si falla el envío, eliminar la solicitud
             $solicitud->delete();
             Session::forget('solicitud_empresa_id');
+
             return back()->withErrors(['email' => 'Error al enviar el código de verificación. Verifica tu email.'])->withInput();
         }
+
+        $companyLookup->forget();
 
         // Redirigir a la vista de verificación
         return redirect()->route('empresa.verify.form')->with('success', 'Código de verificación enviado a tu email');
@@ -83,14 +103,15 @@ class EmpresaRegisterController extends Controller
      */
     public function showVerifyForm()
     {
-        if (!Session::has('solicitud_empresa_id')) {
+        if (! Session::has('solicitud_empresa_id')) {
             return redirect()->route('login')->withErrors(['error' => 'No hay registro pendiente']);
         }
 
         $solicitud = SolicitudEmpresa::find(Session::get('solicitud_empresa_id'));
 
-        if (!$solicitud || $solicitud->email_verificado) {
+        if (! $solicitud || $solicitud->email_verificado) {
             Session::forget('solicitud_empresa_id');
+
             return redirect()->route('login')->withErrors(['error' => 'No hay registro pendiente']);
         }
 
@@ -108,14 +129,15 @@ class EmpresaRegisterController extends Controller
 
         $solicitudId = Session::get('solicitud_empresa_id');
 
-        if (!$solicitudId) {
+        if (! $solicitudId) {
             return redirect()->route('login')->withErrors(['error' => 'Sesión expirada. Intenta registrarte nuevamente.']);
         }
 
         $solicitud = SolicitudEmpresa::find($solicitudId);
 
-        if (!$solicitud) {
+        if (! $solicitud) {
             Session::forget('solicitud_empresa_id');
+
             return redirect()->route('login')->withErrors(['error' => 'Solicitud no encontrada. Intenta registrarte nuevamente.']);
         }
 
@@ -143,14 +165,15 @@ class EmpresaRegisterController extends Controller
     {
         $solicitudId = Session::get('solicitud_empresa_id');
 
-        if (!$solicitudId) {
+        if (! $solicitudId) {
             return redirect()->route('login')->withErrors(['error' => 'No hay registro pendiente']);
         }
 
         $solicitud = SolicitudEmpresa::find($solicitudId);
 
-        if (!$solicitud) {
+        if (! $solicitud) {
             Session::forget('solicitud_empresa_id');
+
             return redirect()->route('login')->withErrors(['error' => 'Solicitud no encontrada']);
         }
 

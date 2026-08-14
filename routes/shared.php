@@ -3,11 +3,15 @@
 use App\Http\Controllers\Alumno\FirmaCronogramaController;
 use App\Http\Controllers\Alumno\FirmaTokenController;
 use App\Http\Controllers\Empresa\EmpresaRegisterController;
+use App\Http\Controllers\Empresa\RucLookupController;
 use App\Http\Controllers\GoogleDriveController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->prefix('empresa')->name('empresa.')->group(function (): void {
     Route::get('register', [EmpresaRegisterController::class, 'create'])->name('register.form');
+    Route::post('ruc/consultar', RucLookupController::class)
+        ->middleware('throttle:10,1')
+        ->name('ruc.lookup');
     Route::post('register', [EmpresaRegisterController::class, 'register'])->name('register');
     Route::get('verify', [EmpresaRegisterController::class, 'showVerifyForm'])->name('verify.form');
     Route::post('verify', [EmpresaRegisterController::class, 'verifyCode'])->name('verify.code');
