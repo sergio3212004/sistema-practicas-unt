@@ -2,22 +2,28 @@
     x-cloak
     x-show="navigationOpen"
     x-transition.opacity
-    @click="navigationOpen = false"
+    @click="closeNavigation()"
     class="fixed inset-0 z-40 bg-gray-950/55 backdrop-blur-sm lg:hidden"
     aria-hidden="true"
 ></div>
 
 <aside
-    :class="navigationOpen ? 'translate-x-0' : '-translate-x-full'"
-    class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-blue-950/40 bg-blue-950 text-white shadow-2xl transition-transform duration-200 ease-out lg:translate-x-0 lg:shadow-none"
+    id="primary-navigation"
+    :class="{
+        'translate-x-0': navigationOpen,
+        '-translate-x-full': ! navigationOpen,
+        'lg:translate-x-0': navigationExpanded,
+        'lg:-translate-x-full': ! navigationExpanded,
+    }"
+    class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-blue-950/40 bg-blue-950 text-white shadow-2xl transition-transform duration-200 ease-out lg:shadow-none"
     aria-label="Navegación principal"
 >
     <div class="tech-grid relative border-b border-white/10 px-5 py-6">
         <div class="absolute inset-x-0 bottom-0 h-1 bg-gold-500"></div>
         <button
             type="button"
-            @click="navigationOpen = false"
-            class="absolute right-3 top-3 rounded-lg p-2 text-blue-200 hover:bg-white/10 hover:text-white lg:hidden"
+            @click="closeNavigation()"
+            class="absolute right-3 top-3 rounded-lg p-2 text-blue-200 transition hover:bg-white/10 hover:text-white"
             aria-label="Cerrar menú principal"
         >
             @svg('heroicon-o-x-mark', 'h-5 w-5')

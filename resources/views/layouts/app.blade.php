@@ -14,18 +14,27 @@
     @stack('styles')
 </head>
 <body>
-    <div x-data="{ navigationOpen: false }" @keydown.escape.window="navigationOpen = false" class="min-h-screen bg-gray-50">
+    <div
+        x-data="navigation"
+        @keydown.escape.window="closeNavigation()"
+        @resize.window="syncNavigation()"
+        class="min-h-screen bg-gray-50"
+    >
         @include('layouts.navigation')
 
-        <div class="min-h-screen lg:pl-72">
+        <div
+            :class="navigationExpanded ? 'lg:pl-72' : 'lg:pl-0'"
+            class="min-h-screen transition-[padding] duration-200 ease-out"
+        >
             <header class="sticky top-0 z-20 border-b border-gray-200 bg-white/95 backdrop-blur">
                 <div class="flex h-16 items-center gap-4 px-4 sm:px-6 lg:px-8">
                     <button
                         type="button"
-                        @click="navigationOpen = true"
-                        class="ui-btn-ghost -ml-2 px-2.5 lg:hidden"
-                        aria-label="Abrir menú principal"
-                        :aria-expanded="navigationOpen"
+                        @click="toggleNavigation()"
+                        class="ui-btn-ghost -ml-2 px-2.5"
+                        :aria-label="navigationVisible() ? 'Cerrar menú principal' : 'Abrir menú principal'"
+                        :aria-expanded="navigationVisible()"
+                        aria-controls="primary-navigation"
                     >
                         @svg('heroicon-o-bars-3', 'h-6 w-6')
                     </button>
