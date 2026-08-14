@@ -10,10 +10,14 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet">
 
+    @include('layouts.partials.theme-script')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-gray-100">
-    <main class="min-h-screen lg:grid lg:grid-cols-[minmax(380px,0.9fr)_minmax(560px,1.1fr)]">
+    <main class="relative min-h-screen lg:grid lg:grid-cols-[minmax(380px,0.9fr)_minmax(560px,1.1fr)]">
+        <div class="absolute right-4 top-4 z-20 sm:right-6 sm:top-6">
+            <x-theme-toggle />
+        </div>
         <section class="tech-grid relative overflow-hidden bg-blue-950 px-6 py-8 text-white sm:px-10 lg:flex lg:min-h-screen lg:flex-col lg:justify-between lg:px-14 lg:py-12">
             <div class="absolute inset-0 bg-cover bg-center opacity-[0.08]" style="background-image: url('{{ asset('images/bg-login.jpg') }}')"></div>
             <div class="absolute inset-0 bg-gradient-to-b from-blue-950/70 via-blue-950/90 to-blue-950"></div>
@@ -22,7 +26,7 @@
 
             <div class="relative">
                 <div class="flex items-center gap-4">
-                    <div class="flex h-[82px] w-[104px] items-center justify-center rounded-xl bg-white p-2.5 shadow-raised">
+                    <div class="theme-logo-surface flex h-[82px] w-[104px] items-center justify-center rounded-xl bg-white p-2.5 shadow-raised">
                         <img
                             src="{{ asset('logo-informatica.png') }}"
                             alt="Logo de la Escuela de Ingeniería Informática"

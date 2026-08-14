@@ -30,7 +30,7 @@
         </button>
 
         <a href="{{ route('dashboard') }}" class="flex items-center gap-4 rounded-xl focus:outline-none">
-            <span class="flex h-[72px] w-[88px] shrink-0 items-center justify-center rounded-xl bg-white p-2 shadow-sm">
+            <span class="theme-logo-surface flex h-[72px] w-[88px] shrink-0 items-center justify-center rounded-xl bg-white p-2 shadow-sm">
                 <img
                     src="{{ asset('logo-informatica.png') }}"
                     alt="Escuela de Ingeniería Informática"

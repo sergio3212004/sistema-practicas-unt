@@ -54,3 +54,11 @@ Se mantiene el archivo `public/logo-informatica.png` sin modificar su forma ni s
 - No utilizar enlaces con `href="#"` como promesa de una función inexistente.
 - Tablas y grupos de acciones deben funcionar desde 320 px; la navegación lateral se convierte en panel móvil.
 - Respetar `prefers-reduced-motion` y mantener foco visible con teclado.
+
+## Tema claro y oscuro
+
+- Ambos temas usan exclusivamente la paleta institucional; el tema oscuro cambia superficies y contraste, no la identidad cromática.
+- La preferencia se guarda en el navegador. Sin una elección previa, se respeta `prefers-color-scheme` del sistema operativo.
+- El azul sigue siendo el color de acción principal, el dorado se mantiene como acento y verde/rojo conservan su uso semántico.
+- El logotipo siempre permanece sin alteraciones sobre una superficie blanca, también en modo oscuro.
+- El selector de tema debe estar disponible en los layouts autenticado y público, ser operable con teclado y exponer una etiqueta accesible.
