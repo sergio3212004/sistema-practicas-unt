@@ -21,7 +21,7 @@
     </div>
 
     {{-- ================== ALUMNO ================== --}}
-    @if(auth()->user()->alumno)
+    @if($user->alumno)
         <div class="pt-4 border-t border-gray-200">
             <h3 class="text-md font-semibold text-blue-700 mb-3">
                 Información del Alumno
@@ -33,7 +33,7 @@
                     <x-input-label value="Código de matrícula" />
                     <x-text-input
                         class="mt-1 block w-full bg-gray-100"
-                        :value="auth()->user()->alumno->codigo_matricula"
+                        :value="$user->alumno->codigo_matricula"
                         disabled
                     />
                 </div>
@@ -42,7 +42,7 @@
                     <x-input-label value="Nombres" />
                     <x-text-input
                         class="mt-1 block w-full bg-gray-100"
-                        :value="auth()->user()->alumno->nombres"
+                        :value="$user->alumno->nombres"
                         disabled
                     />
                 </div>
@@ -51,7 +51,7 @@
                     <x-input-label value="Apellido paterno" />
                     <x-text-input
                         class="mt-1 block w-full bg-gray-100"
-                        :value="auth()->user()->alumno->apellido_paterno"
+                        :value="$user->alumno->apellido_paterno"
                         disabled
                     />
                 </div>
@@ -60,7 +60,7 @@
                     <x-input-label value="Apellido materno" />
                     <x-text-input
                         class="mt-1 block w-full bg-gray-100"
-                        :value="auth()->user()->alumno->apellido_materno"
+                        :value="$user->alumno->apellido_materno"
                         disabled
                     />
                 </div>
@@ -74,7 +74,7 @@
                         type="text"
                         class="mt-1 block w-full"
                         required
-                        :value="old('telefono', auth()->user()->alumno->telefono)"
+                        :value="old('telefono', $user->alumno->telefono)"
                     />
 
                     <x-input-error :messages="$errors->get('telefono')" class="mt-2" />
@@ -84,7 +84,7 @@
                     <x-input-label value="Aula" />
                     <x-text-input
                         class="mt-1 block w-full bg-gray-100"
-                        :value="auth()->user()->alumno->aula->numero ?? 'No asignada'"
+                        :value="$user->alumno->aula->numero ?? 'No asignada'"
                         disabled
                     />
                 </div>
@@ -97,7 +97,7 @@
                     Curriculum Vitae (CV)
                 </h4>
 
-                @if(auth()->user()->alumno->cv)
+                @if($user->alumno->cv)
                     <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
@@ -109,7 +109,7 @@
                                     <p class="text-xs text-gray-600">Último archivo seleccionado</p>
                                 </div>
                             </div>
-                            <a href="{{ auth()->user()->alumno->cv }}"
+                            <a href="{{ $user->alumno->cv }}"
                                target="_blank"
                                class="inline-flex items-center px-3 py-2 border border-green-600 rounded-md text-sm font-medium text-green-600 hover:bg-green-50 transition-colors">
                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,14 +136,14 @@
                                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M12.545 10.239v3.821h5.445c-.712 2.315-2.647 3.972-5.445 3.972a6.033 6.033 0 110-12.064c1.498 0 2.866.549 3.921 1.453l2.814-2.814A9.969 9.969 0 0012.545 2C7.021 2 2.543 6.477 2.543 12s4.478 10 10.002 10c8.396 0 10.249-7.85 9.426-11.748l-9.426-.013z"/>
                                 </svg>
-                                {{ auth()->user()->alumno->cv ? 'Cambiar CV desde Google Drive' : 'Seleccionar CV desde Google Drive' }}
+                                {{ $user->alumno->cv ? 'Cambiar CV desde Google Drive' : 'Seleccionar CV desde Google Drive' }}
                             </button>
                         </div>
                     </div>
                 </div>
 
                 {{-- Campo oculto para almacenar el enlace seleccionado --}}
-                <input type="hidden" id="cv_link" name="cv_link" value="{{ old('cv_link', auth()->user()->alumno->cv) }}">
+                <input type="hidden" id="cv_link" name="cv_link" value="{{ old('cv_link', $user->alumno->cv) }}">
 
                 {{-- Previsualización del archivo seleccionado --}}
                 <div id="selected-file-preview" class="mt-4 hidden">
@@ -270,7 +270,7 @@
     }
 
     function clearSelectedFile() {
-        document.getElementById('cv_link').value = '{{ old('cv_link', auth()->user()->alumno->cv ?? '') }}';
+        document.getElementById('cv_link').value = '{{ old('cv_link', $user->alumno->cv ?? '') }}';
         document.getElementById('selected-file-preview').classList.add('hidden');
     }
 

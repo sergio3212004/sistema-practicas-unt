@@ -1,26 +1,22 @@
-@props(['administrador', 'semestres'])
-
-@php
-    $semestreActivo = $semestres->firstWhere('activo', true);
-@endphp
+@props(['data'])
 
 <section class="rounded-2xl bg-blue-950 p-6 text-white shadow-panel sm:p-7">
     <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <p class="text-xs font-bold uppercase tracking-[0.16em] text-gold-400">Administración académica</p>
-            <h2 class="mt-2 text-2xl font-bold tracking-tight">Bienvenido, {{ $administrador->nombre_completo }}</h2>
+            <h2 class="mt-2 text-2xl font-bold tracking-tight">Bienvenido, {{ $data->administrador->nombre_completo }}</h2>
             <p class="mt-2 max-w-2xl text-sm leading-6 text-blue-100">Configura el periodo académico y accede a la gestión central del sistema.</p>
         </div>
         <span class="ui-badge border-white/15 bg-white/10 text-white">
-            <span class="h-2 w-2 rounded-full {{ $semestreActivo ? 'bg-green-400' : 'bg-gold-400' }}"></span>
-            {{ $semestreActivo?->nombre ?? 'Sin semestre activo' }}
+            <span class="h-2 w-2 rounded-full {{ $data->semestreActivo ? 'bg-green-400' : 'bg-gold-400' }}"></span>
+            {{ $data->semestreActivo?->nombre ?? 'Sin semestre activo' }}
         </span>
     </div>
 </section>
 
 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-    <x-ui.stat-card label="Semestres registrados" :value="$semestres->count()" description="Histórico académico" icon="heroicon-o-calendar-days" />
-    <x-ui.stat-card label="Periodo actual" :value="$semestreActivo?->nombre ?? '—'" description="Semestre habilitado" icon="heroicon-o-bolt" tone="success" />
+    <x-ui.stat-card label="Semestres registrados" :value="$data->totalSemestres" description="Histórico académico" icon="heroicon-o-calendar-days" />
+    <x-ui.stat-card label="Periodo actual" :value="$data->semestreActivo?->nombre ?? '—'" description="Semestre habilitado" icon="heroicon-o-bolt" tone="success" />
     <x-ui.stat-card label="Gestión de usuarios" value="Activa" description="Cuentas y perfiles" icon="heroicon-o-users" />
     <x-ui.stat-card label="Solicitudes" value="Revisar" description="Empresas pendientes" icon="heroicon-o-check-badge" tone="warning" />
 </div>
@@ -42,8 +38,8 @@
                 </div>
                 <div>
                     <label for="semestre_activo" class="ui-label">Semestre</label>
-                    <select name="semestre_id" id="semestre_activo" class="ui-field" required @disabled($semestres->isEmpty())>
-                        @forelse ($semestres as $semestre)
+                    <select name="semestre_id" id="semestre_activo" class="ui-field" required @disabled($data->semestres->isEmpty())>
+                        @forelse ($data->semestres as $semestre)
                             <option value="{{ $semestre->id }}" @selected($semestre->activo)>
                                 {{ $semestre->nombre }}{{ $semestre->activo ? ' · Activo' : '' }}
                             </option>
@@ -52,7 +48,7 @@
                         @endforelse
                     </select>
                 </div>
-                <button type="submit" class="ui-btn-danger w-full" @disabled($semestres->isEmpty())>
+                <button type="submit" class="ui-btn-danger w-full" @disabled($data->semestres->isEmpty())>
                     @svg('heroicon-o-lock-closed', 'h-4 w-4')
                     Cerrar semestre
                 </button>

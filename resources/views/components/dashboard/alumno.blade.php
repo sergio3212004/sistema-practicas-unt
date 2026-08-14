@@ -1,34 +1,34 @@
-@props(['alumno', 'metricas'])
+@props(['data'])
 
 <section class="rounded-2xl bg-blue-950 p-6 text-white shadow-panel sm:p-7">
     <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <p class="text-xs font-bold uppercase tracking-[0.16em] text-gold-400">Espacio del estudiante</p>
-            <h2 class="mt-2 text-2xl font-bold tracking-tight">Hola, {{ auth()->user()->nombre }}</h2>
+            <h2 class="mt-2 text-2xl font-bold tracking-tight">Hola, {{ $data->nombre }}</h2>
             <p class="mt-2 max-w-2xl text-sm leading-6 text-blue-100">Revisa tu aula, controla tus entregas y mantén al día la documentación de tus prácticas.</p>
         </div>
         <span class="ui-badge border-white/15 bg-white/10 text-white">
-            <span class="h-2 w-2 rounded-full {{ $alumno->aula ? 'bg-green-400' : 'bg-gold-400' }}"></span>
-            {{ $alumno->aula ? 'Aula asignada' : 'Asignación pendiente' }}
+            <span class="h-2 w-2 rounded-full {{ $data->alumno->aula ? 'bg-green-400' : 'bg-gold-400' }}"></span>
+            {{ $data->alumno->aula ? 'Aula asignada' : 'Asignación pendiente' }}
         </span>
     </div>
 </section>
 
 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-    <x-ui.stat-card label="Total de entregas" :value="$metricas['total']" description="Actividades registradas" icon="heroicon-o-document-text" />
-    <x-ui.stat-card label="Pendientes" :value="$metricas['pendientes']" description="Requieren tu atención" icon="heroicon-o-clock" tone="warning" />
-    <x-ui.stat-card label="Progreso" :value="$metricas['progreso'].'%'" description="Entregas completadas" icon="heroicon-o-chart-bar" tone="success" />
-    <x-ui.stat-card label="Promedio" :value="$metricas['promedio'] ?? '—'" description="Según notas disponibles" icon="heroicon-o-star" tone="neutral" />
+    <x-ui.stat-card label="Total de entregas" :value="$data->metricas['total']" description="Actividades registradas" icon="heroicon-o-document-text" />
+    <x-ui.stat-card label="Pendientes" :value="$data->metricas['pendientes']" description="Requieren tu atención" icon="heroicon-o-clock" tone="warning" />
+    <x-ui.stat-card label="Progreso" :value="$data->metricas['progreso'].'%'" description="Entregas completadas" icon="heroicon-o-chart-bar" tone="success" />
+    <x-ui.stat-card label="Promedio" :value="$data->metricas['promedio'] ?? '—'" description="Según notas disponibles" icon="heroicon-o-star" tone="neutral" />
 </div>
 
-@if($alumno->aula)
+@if($data->alumno->aula)
     <div class="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        <a href="{{ route('alumno.aula.index', $alumno->aula) }}" class="ui-card group overflow-hidden transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-raised">
+        <a href="{{ route('alumno.aula.index', $data->alumno->aula) }}" class="ui-card group overflow-hidden transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-raised">
             <div class="border-b border-blue-900/20 bg-blue-900 px-5 py-5 text-white sm:px-6">
                 <div class="flex items-center justify-between gap-4">
                     <div>
                         <p class="text-xs font-bold uppercase tracking-[0.15em] text-gold-400">Aula asignada</p>
-                        <h3 class="mt-1 text-2xl font-bold">Aula {{ $alumno->aula->numero }}</h3>
+                        <h3 class="mt-1 text-2xl font-bold">Aula {{ $data->alumno->aula->numero }}</h3>
                     </div>
                     <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10">@svg('heroicon-o-academic-cap', 'h-6 w-6')</span>
                 </div>
@@ -39,14 +39,14 @@
                         <span class="ui-icon-box">@svg('heroicon-o-calendar-days', 'h-5 w-5')</span>
                         <div>
                             <dt class="text-xs font-bold uppercase tracking-wider text-gray-500">Semestre</dt>
-                            <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $alumno->aula->semestre->nombre ?? 'No registrado' }}</dd>
+                            <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $data->alumno->aula->semestre->nombre ?? 'No registrado' }}</dd>
                         </div>
                     </div>
                     <div class="flex items-start gap-3">
                         <span class="ui-icon-box">@svg('heroicon-o-user', 'h-5 w-5')</span>
                         <div>
                             <dt class="text-xs font-bold uppercase tracking-wider text-gray-500">Docente</dt>
-                            <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $alumno->aula->profesor->user->nombre ?? 'No asignado' }}</dd>
+                            <dd class="mt-1 text-sm font-semibold text-gray-900">{{ $data->alumno->aula->profesor->user->nombre ?? 'No asignado' }}</dd>
                         </div>
                     </div>
                 </dl>
@@ -70,9 +70,9 @@
 
             <div class="mt-6 space-y-3">
                 @foreach([
-                    ['label' => 'Pendientes', 'value' => $metricas['pendientes'], 'dot' => 'bg-gold-500'],
-                    ['label' => 'Entregadas', 'value' => $metricas['entregadas'], 'dot' => 'bg-blue-600'],
-                    ['label' => 'Revisadas', 'value' => $metricas['revisadas'], 'dot' => 'bg-green-600'],
+                    ['label' => 'Pendientes', 'value' => $data->metricas['pendientes'], 'dot' => 'bg-gold-500'],
+                    ['label' => 'Entregadas', 'value' => $data->metricas['entregadas'], 'dot' => 'bg-blue-600'],
+                    ['label' => 'Revisadas', 'value' => $data->metricas['revisadas'], 'dot' => 'bg-green-600'],
                 ] as $row)
                     <div class="flex items-center justify-between rounded-xl bg-gray-50 px-4 py-3">
                         <span class="flex items-center gap-2 text-sm font-medium text-gray-700"><span class="h-2.5 w-2.5 rounded-full {{ $row['dot'] }}"></span>{{ $row['label'] }}</span>
@@ -84,10 +84,10 @@
             <div class="mt-6">
                 <div class="mb-2 flex items-center justify-between text-xs font-semibold">
                     <span class="text-gray-600">Progreso general</span>
-                    <span class="text-blue-800">{{ $metricas['progreso'] }}%</span>
+                    <span class="text-blue-800">{{ $data->metricas['progreso'] }}%</span>
                 </div>
-                <div class="h-2.5 overflow-hidden rounded-full bg-gray-200" role="progressbar" aria-valuenow="{{ $metricas['progreso'] }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de entregas">
-                    <div class="h-full rounded-full bg-blue-700" style="width: {{ $metricas['progreso'] }}%"></div>
+                <div class="h-2.5 overflow-hidden rounded-full bg-gray-200" role="progressbar" aria-valuenow="{{ $data->metricas['progreso'] }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de entregas">
+                    <div class="h-full rounded-full bg-blue-700" style="width: {{ $data->metricas['progreso'] }}%"></div>
                 </div>
             </div>
         </section>

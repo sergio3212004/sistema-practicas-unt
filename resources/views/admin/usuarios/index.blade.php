@@ -52,10 +52,6 @@
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
-                                @php
-                                    $role = \App\Enums\UserRole::tryFrom($user->rol->nombre);
-                                    $isCompany = $user->rol->nombre === 'empresa';
-                                @endphp
                                 <tr class="transition hover:bg-blue-50/40">
                                     <td>
                                         <div class="flex items-center gap-3">
@@ -67,14 +63,14 @@
                                     </td>
                                     <td>
                                         <p class="font-semibold text-gray-900">{{ $user->nombre ?: 'Sin perfil asignado' }}</p>
-                                        @if($isCompany && $user->empresa?->razonSocial?->acronimo)
+                                        @if($resumenUsuarios[$user->id]['isCompany'] && $user->empresa?->razonSocial?->acronimo)
                                             <p class="mt-0.5 text-xs text-gray-500">{{ $user->empresa->razonSocial->acronimo }}</p>
                                         @endif
                                     </td>
                                     <td>
-                                        <span class="{{ $isCompany ? 'ui-badge-success' : 'ui-badge-info' }}">
+                                        <span class="{{ $resumenUsuarios[$user->id]['isCompany'] ? 'ui-badge-success' : 'ui-badge-info' }}">
                                             <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
-                                            {{ $role?->label() ?? ucfirst($user->rol->nombre) }}
+                                            {{ $resumenUsuarios[$user->id]['roleLabel'] }}
                                         </span>
                                     </td>
                                     <td>

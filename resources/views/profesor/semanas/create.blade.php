@@ -145,7 +145,7 @@
                             Semanas existentes en esta aula
                         </h4>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                            @foreach($aula->semanas->sortBy('numero') as $semana)
+                            @foreach($aula->semanas as $semana)
                                 <div class="bg-white border border-gray-200 rounded-lg px-3 py-2 text-center">
                                     <p class="text-xs text-gray-500">Semana</p>
                                     <p class="text-lg font-bold text-gray-900">{{ $semana->numero }}</p>

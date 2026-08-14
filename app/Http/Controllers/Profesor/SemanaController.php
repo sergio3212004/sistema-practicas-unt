@@ -7,6 +7,7 @@ use App\Http\Requests\Profesor\StoreSemanaRequest;
 use App\Http\Requests\Profesor\UpdateSemanaRequest;
 use App\Models\Aula;
 use App\Models\Semana;
+use App\View\Presenters\ActividadPresenter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -31,8 +32,11 @@ class SemanaController extends Controller
     {
         Gate::authorize('manage', $aula);
 
-        $aula->load('semestre', 'semanas');
-        $siguienteNumero = ($aula->semanas()->max('numero') ?? 0) + 1;
+        $aula->load([
+            'semestre',
+            'semanas' => fn ($query) => $query->orderBy('numero'),
+        ]);
+        $siguienteNumero = ($aula->semanas->max('numero') ?? 0) + 1;
 
         return view('profesor.semanas.create', compact('aula', 'siguienteNumero'));
     }
@@ -46,13 +50,30 @@ class SemanaController extends Controller
             ->with('success', 'Semana creada exitosamente.');
     }
 
-    public function show(Semana $semana): View
+    public function show(Semana $semana, ActividadPresenter $presenter): View
     {
         Gate::authorize('manage', $semana);
 
-        $semana->load('aula.semestre', 'actividades.tipoActividad', 'actividades.entregas');
+        $semana->load([
+            'aula.semestre',
+            'aula.alumnos',
+            'actividades' => fn ($query) => $query->orderBy('fecha_inicio'),
+            'actividades.tipoActividad',
+            'actividades.entregas',
+        ]);
+        $totalAlumnos = $semana->aula->alumnos->count();
+        $progresoActividades = $semana->actividades->mapWithKeys(fn ($actividad): array => [
+            $actividad->id => $presenter->progreso($actividad, $totalAlumnos),
+        ]);
+        $metricas = [
+            'actividades' => $semana->actividades->count(),
+            'activas' => $semana->actividades->filter->estaActiva()->count(),
+            'entregas' => $semana->actividades->sum(
+                fn ($actividad): int => $actividad->entregas->count()
+            ),
+        ];
 
-        return view('profesor.semanas.show', compact('semana'));
+        return view('profesor.semanas.show', compact('semana', 'metricas', 'progresoActividades'));
     }
 
     public function edit(Semana $semana): View

@@ -15,7 +15,7 @@
     </div>
 
     {{-- ================== PROFESOR ================== --}}
-    @if(auth()->user()->profesor)
+    @if($user->profesor)
         <div class="pt-4 border-t border-gray-200">
             <h3 class="text-md font-semibold text-blue-700 mb-3">
                 Información del Profesor
@@ -25,25 +25,25 @@
 
                 <div>
                     <x-input-label value="Código Docente" />
-                    <x-text-input class="mt-1 block w-full bg-gray-100" :value="auth()->user()->profesor->codigo_profesor"
+                    <x-text-input class="mt-1 block w-full bg-gray-100" :value="$user->profesor->codigo_profesor"
                                   disabled />
                 </div>
 
                 <div>
                     <x-input-label value="Nombres" />
-                    <x-text-input class="mt-1 block w-full bg-gray-100" :value="auth()->user()->profesor->nombres"
+                    <x-text-input class="mt-1 block w-full bg-gray-100" :value="$user->profesor->nombres"
                                   disabled />
                 </div>
 
                 <div>
                     <x-input-label value="Apellido paterno" />
-                    <x-text-input class="mt-1 block w-full bg-gray-100" :value="auth()->user()->profesor->apellido_paterno"
+                    <x-text-input class="mt-1 block w-full bg-gray-100" :value="$user->profesor->apellido_paterno"
                                   disabled />
                 </div>
 
                 <div>
                     <x-input-label value="Apellido materno" />
-                    <x-text-input class="mt-1 block w-full bg-gray-100" :value="auth()->user()->profesor->apellido_materno"
+                    <x-text-input class="mt-1 block w-full bg-gray-100" :value="$user->profesor->apellido_materno"
                                   disabled />
                 </div>
 
@@ -51,7 +51,7 @@
                 <div>
                     <x-input-label for="telefono" value="Teléfono" />
                     <x-text-input id="telefono" name="telefono" type="text" class="mt-1 block w-full" required
-                                  :value="old('telefono', auth()->user()->profesor->telefono)" />
+                                  :value="old('telefono', $user->profesor->telefono)" />
 
                     <x-input-error :messages="$errors->get('telefono')" class="mt-2" />
                 </div>

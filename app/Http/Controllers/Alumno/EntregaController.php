@@ -8,6 +8,7 @@ use App\Http\Requests\Alumno\UpdateEntregaRequest;
 use App\Models\Actividad;
 use App\Models\Entrega;
 use App\Services\GoogleDriveService;
+use App\View\Presenters\EntregaPresenter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
@@ -124,7 +125,7 @@ class EntregaController extends Controller
     /**
      * Mostrar los detalles de una entrega específica
      */
-    public function show(Entrega $entrega)
+    public function show(Entrega $entrega, EntregaPresenter $presenter)
     {
         Gate::authorize('manage', $entrega);
 
@@ -142,7 +143,11 @@ class EntregaController extends Controller
             $driveInfo = json_decode($entrega->ruta, true);
         }
 
-        return view('alumno.entregas.show', compact('entrega', 'driveInfo'));
+        return view('alumno.entregas.show', [
+            'entrega' => $entrega,
+            'driveInfo' => $driveInfo,
+            'estadoEntrega' => $presenter->estado($entrega),
+        ]);
     }
 
     /**

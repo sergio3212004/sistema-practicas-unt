@@ -1,4 +1,4 @@
-<x-guest-layout title="Iniciar Sesión" subtitle="Accede al sistema institucional">
+<x-guest-layout title="Iniciar sesión" subtitle="Accede al sistema institucional">
 
     {{-- Session Status --}}
     <x-auth-session-status class="mb-6" :status="session('status')" />
@@ -36,9 +36,8 @@
         <div class="space-y-1">
             <x-input-label for="login-password" value="Contraseña" />
 
-            <x-text-input
+            <x-password-input
                 id="login-password"
-                type="password"
                 name="password"
                 required
                 autocomplete="current-password"
@@ -79,4 +78,3 @@
     </form>
 
 </x-guest-layout>
-

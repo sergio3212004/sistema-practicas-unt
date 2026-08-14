@@ -7,7 +7,7 @@ El proyecto sigue una arquitectura Laravel modular por actor. Cada petición deb
 ```text
 Ruta -> Middleware -> FormRequest -> Controlador -> Acción/Servicio -> Modelo
                          |               |
-                    autorización      respuesta HTTP
+                    autorización     ViewModel/Presenter -> Vista Blade
                        (Policy)
 ```
 
@@ -19,6 +19,9 @@ Ruta -> Middleware -> FormRequest -> Controlador -> Acción/Servicio -> Modelo
 - Los servicios encapsulan procesos reutilizables o integraciones externas.
 - Las políticas verifican la propiedad de cada recurso.
 - Los modelos representan datos, relaciones y comportamiento propio de la entidad.
+- Los `ViewModels` agrupan los datos que necesita una pantalla y calculan sus métricas.
+- Los `Presenters` traducen valores del dominio a texto, clases y estructuras de presentación.
+- Las vistas Blade solo renderizan datos y delegan secciones repetibles a componentes.
 
 ## Organización
 
@@ -32,7 +35,19 @@ app/
 │   └── Requests/            # Validación y autorización de entrada
 ├── Models/                  # Entidades y relaciones Eloquent
 ├── Policies/                # Autorización por propiedad del recurso
-└── Services/                # Procesos reutilizables e integraciones
+├── Services/                # Procesos reutilizables e integraciones
+└── View/
+    ├── {Actor}/{Pantalla}/    # ViewModels de pantallas con datos complejos
+    ├── Composers/           # Datos transversales de layouts
+    ├── Dashboards/          # ViewModels del panel por actor
+    ├── Layout/              # Objetos de datos para layouts
+    ├── Presenters/          # Formato y estado visual reutilizable
+    └── PageTitleResolver.php # Título del documento según la ruta actual
+
+resources/views/
+├── components/              # Piezas reutilizables y secciones de pantalla
+├── layouts/                 # Estructura global autenticada y pública
+└── {actor}/{recurso}/       # Pantallas agrupadas por actor y recurso
 
 routes/
 ├── web.php                  # Punto de composición
@@ -74,6 +89,17 @@ routes/
 - Credenciales y tokens no se guardan en controladores ni vistas.
 - Cada integración externa tiene un servicio propio, como `GoogleDriveService`.
 
+### Vistas y datos de presentación
+
+- Una vista no importa modelos, no usa fachadas de base de datos y no ejecuta consultas Eloquent.
+- El controlador carga todas las relaciones requeridas antes de renderizar.
+- Las métricas de una pantalla pertenecen a un `ViewModel`; el formato de estados pertenece a un `Presenter`.
+- Los datos globales de navegación se preparan con un `View Composer`, no con llamadas a `auth()` o `request()` dentro de Blade.
+- Los títulos del navegador se declaran por nombre de ruta en `config/page-titles.php`; las vistas de detalle pueden sobrescribirlos con el atributo `title` del layout.
+- Una sección con estructura y responsabilidad propias se extrae a `resources/views/components`.
+- Los componentes reciben datos explícitos mediante `@props`; no descubren datos de negocio por su cuenta.
+- Los condicionales Blade se limitan a elegir qué representación mostrar, no a implementar reglas de negocio.
+
 ## Cómo añadir una funcionalidad
 
 1. Elegir el módulo propietario y declarar su ruta con el verbo HTTP correcto.
@@ -83,6 +109,7 @@ routes/
 5. Extraer una acción para un caso de uso con varias escrituras o reglas.
 6. Extraer un servicio si la lógica se reutiliza o integra un proveedor externo.
 7. Añadir pruebas de acceso, validación, resultado y aislamiento entre propietarios.
+8. Si hay interfaz, preparar sus datos fuera de Blade y reutilizar componentes existentes.
 
 ## Verificación local
 

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="'Aula '.$aula->numero">
     <div class="max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-md">
 
         {{-- Encabezado --}}

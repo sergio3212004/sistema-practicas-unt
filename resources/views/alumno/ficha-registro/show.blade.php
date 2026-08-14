@@ -301,10 +301,7 @@
                                         <td class="border border-blue-300 p-2 text-center font-semibold">De:</td>
                                         @for ($dia = 1; $dia <= 6; $dia++)
                                             <td class="border border-blue-300 p-2 text-center">
-                                                @php
-                                                    $horario = $fichaRegistro->horarios->firstWhere('dia_semana', $dia);
-                                                @endphp
-                                                {{ $horario ? $horario->hora_inicio : '____' }}
+                                                {{ $fichaRegistro->horarios->firstWhere('dia_semana', $dia)?->hora_inicio ?? '____' }}
                                             </td>
                                         @endfor
                                     </tr>
@@ -312,10 +309,7 @@
                                         <td class="border border-blue-300 p-2 text-center font-semibold">A:</td>
                                         @for ($dia = 1; $dia <= 6; $dia++)
                                             <td class="border border-blue-300 p-2 text-center">
-                                                @php
-                                                    $horario = $fichaRegistro->horarios->firstWhere('dia_semana', $dia);
-                                                @endphp
-                                                {{ $horario ? $horario->hora_fin : '____' }}
+                                                {{ $fichaRegistro->horarios->firstWhere('dia_semana', $dia)?->hora_fin ?? '____' }}
                                             </td>
                                         @endfor
                                     </tr>

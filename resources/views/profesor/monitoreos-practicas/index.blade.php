@@ -115,18 +115,11 @@
                         </p>
                     </div>
                     <div class="text-center">
-                        @php
-                            $totalSemanas = $semanas->count();
-                            $semanasConMonitoreo = $semanas->filter(function($semana) {
-                                return $semana->monitoreosPracticas->isNotEmpty();
-                            })->count();
-                            $porcentaje = $totalSemanas > 0 ? round(($semanasConMonitoreo / $totalSemanas) * 100) : 0;
-                        @endphp
                         <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white shadow-md border-4 border-blue-500">
-                            <span class="text-3xl font-bold text-blue-700">{{ $porcentaje }}%</span>
+                            <span class="text-3xl font-bold text-blue-700">{{ $progresoMonitoreo['porcentaje'] }}%</span>
                         </div>
                         <p class="text-sm text-gray-600 mt-2">
-                            {{ $semanasConMonitoreo }} de {{ $totalSemanas }} semanas
+                            {{ $progresoMonitoreo['semanasRegistradas'] }} de {{ $progresoMonitoreo['totalSemanas'] }} semanas
                         </p>
                     </div>
                 </div>
@@ -152,14 +145,9 @@
 
                 <div class="space-y-4">
                     @forelse($semanas as $semana)
-                        @php
-                            $monitoreo = $semana->monitoreosPracticas->first();
-                            $tieneMonitoreo = $monitoreo !== null;
-                        @endphp
-
-                        <div class="relative pl-8 pb-8 border-l-2 {{ $tieneMonitoreo ? 'border-green-500' : 'border-gray-300' }} last:border-l-0 last:pb-0">
+                        <div class="relative pl-8 pb-8 border-l-2 {{ $resumenSemanas[$semana->id]['registrado'] ? 'border-green-500' : 'border-gray-300' }} last:border-l-0 last:pb-0">
                             <!-- Indicador de estado -->
-                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full {{ $tieneMonitoreo ? 'bg-green-500' : 'bg-yellow-500' }} border-4 border-white shadow"></div>
+                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full {{ $resumenSemanas[$semana->id]['registrado'] ? 'bg-green-500' : 'bg-yellow-500' }} border-4 border-white shadow"></div>
 
                             <!-- Contenido de la semana -->
                             <div class="bg-gray-50 rounded-lg border border-gray-200 p-5 hover:shadow-md transition-all duration-200">
@@ -172,7 +160,7 @@
                                                     - {{ $semana->nombre }}
                                                 @endif
                                             </h4>
-                                            @if($tieneMonitoreo)
+                                            @if($resumenSemanas[$semana->id]['registrado'])
                                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                                     <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
@@ -189,31 +177,27 @@
                                             @endif
                                         </div>
 
-                                        @if($tieneMonitoreo)
-                                            @php
-                                                $totalActividades = $monitoreo->monitoreosPracticasActividades->count();
-                                                $actividadesAlDia = $monitoreo->monitoreosPracticasActividades->where('al_dia', true)->count();
-                                            @endphp
+                                        @if($resumenSemanas[$semana->id]['registrado'])
                                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                                                 <div class="bg-white rounded-lg p-3 border border-gray-200">
                                                     <p class="text-xs font-medium text-gray-600 mb-1">Actividades Monitoreadas</p>
-                                                    <p class="text-2xl font-bold text-blue-700">{{ $totalActividades }}</p>
+                                                    <p class="text-2xl font-bold text-blue-700">{{ $resumenSemanas[$semana->id]['totalActividades'] }}</p>
                                                 </div>
                                                 <div class="bg-white rounded-lg p-3 border border-gray-200">
                                                     <p class="text-xs font-medium text-gray-600 mb-1">Al Día</p>
-                                                    <p class="text-2xl font-bold text-green-700">{{ $actividadesAlDia }}</p>
+                                                    <p class="text-2xl font-bold text-green-700">{{ $resumenSemanas[$semana->id]['actividadesAlDia'] }}</p>
                                                 </div>
                                                 <div class="bg-white rounded-lg p-3 border border-gray-200">
                                                     <p class="text-xs font-medium text-gray-600 mb-1">Con Retraso</p>
-                                                    <p class="text-2xl font-bold text-red-700">{{ $totalActividades - $actividadesAlDia }}</p>
+                                                    <p class="text-2xl font-bold text-red-700">{{ $resumenSemanas[$semana->id]['actividadesConRetraso'] }}</p>
                                                 </div>
                                             </div>
 
                                             <!-- Lista de actividades monitoreadas -->
-                                            @if($monitoreo->monitoreosPracticasActividades->isNotEmpty())
+                                            @if($resumenSemanas[$semana->id]['monitoreo']->monitoreosPracticasActividades->isNotEmpty())
                                                 <div class="mt-4 space-y-2">
                                                     <p class="text-sm font-medium text-gray-700">Actividades del Cronograma:</p>
-                                                    @foreach($monitoreo->monitoreosPracticasActividades as $actividadMonitoreada)
+                                                    @foreach($resumenSemanas[$semana->id]['monitoreo']->monitoreosPracticasActividades as $actividadMonitoreada)
                                                         <div class="flex items-center justify-between bg-white p-3 rounded border border-gray-200">
                                                             <div class="flex items-center gap-2">
                                                                 @if($actividadMonitoreada->al_dia)
@@ -248,9 +232,9 @@
                                         @endif
                                     </div>
 
-                                    @if($tieneMonitoreo)
+                                    @if($resumenSemanas[$semana->id]['registrado'])
                                         <div class="flex gap-2">
-                                            <a href="{{ route('profesor.monitoreos-practicas.show', $monitoreo) }}"
+                                            <a href="{{ route('profesor.monitoreos-practicas.show', $resumenSemanas[$semana->id]['monitoreo']) }}"
                                                class="inline-flex items-center px-4 py-2 bg-blue-800 hover:bg-blue-900 text-white text-sm font-medium rounded-lg transition-colors duration-200">
                                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>

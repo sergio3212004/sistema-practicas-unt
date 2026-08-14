@@ -10,21 +10,18 @@
     </header>
 
     <div class="mt-6 space-y-6">
-        @csrf
-        @method('patch')
-
         {{-- ================== ALUMNO ================== --}}
-        @if(auth()->user()->alumno)
+        @if($user->alumno)
             @include('profile.partials.alumno-information')
         @endif
 
         {{-- ================== PROFESOR ================== --}}
-        @if(auth()->user()->profesor)
+        @if($user->profesor)
             @include('profile.partials.profesor-information')
         @endif
 
         {{-- ================== EMPRESA ================== --}}
-        @if(auth()->user()->empresa)
+        @if($user->empresa)
             @include('profile.partials.empresa-information')
         @endif
     </div>

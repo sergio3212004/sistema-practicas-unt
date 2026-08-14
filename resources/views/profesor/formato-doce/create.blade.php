@@ -59,7 +59,7 @@
                                 DOCENTE RESPONSABLE DEL MONITOREO:
                             </label>
                             <input type="text"
-                                   value="{{ auth()->user()->nombre ?? 'Docente' }}"
+                                   value="{{ $nombreProfesor }}"
                                    readonly
                                    class="w-full px-4 py-2 border-b-2 border-gray-400 bg-transparent text-gray-700 font-medium focus:outline-none">
                         </div>

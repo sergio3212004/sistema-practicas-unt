@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="'Aula '.$aula->numero">
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-600">Total Estudiantes</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ $aula->alumnos->count() }}</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $metricas['estudiantes'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-600">Total Semanas</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ $aula->semanas->count() }}</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $metricas['semanas'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-600">Actividades Activas</p>
                             <p class="text-2xl font-bold text-gray-900">
-                                {{ $aula->actividades()->where('fecha_inicio', '<=', now())->where('fecha_limite', '>=', now())->count() }}
+                                {{ $metricas['actividadesActivas'] }}
                             </p>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-600">Total Actividades</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ $aula->actividades->count() }}</p>
+                            <p class="text-2xl font-bold text-gray-900">{{ $metricas['actividades'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -203,7 +203,7 @@
                     <!-- Pestaña de Semanas y Actividades -->
                     <div x-show="tab === 'semanas'" x-transition>
                         <div class="space-y-4">
-                            @forelse($aula->semanas()->orderBy('numero')->get() as $semana)
+                            @forelse($aula->semanas as $semana)
                                 <div class="border border-gray-200 rounded-lg overflow-hidden">
                                     <!-- Cabecera de la semana -->
                                     <div class="bg-gray-50 px-6 py-4 flex items-center justify-between">
@@ -290,14 +290,11 @@
                                                                 </svg>
                                                                 Límite: {{ $actividad->fecha_limite->format('d/m/Y') }}
                                                             </span>
-                                                            @php
-                                                                $progreso = $actividad->obtenerProgreso();
-                                                            @endphp
                                                             <span class="flex items-center">
                                                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                                                 </svg>
-                                                                Entregas: {{ $progreso['entregadas'] }}/{{ $progreso['total'] }} ({{ $progreso['porcentaje'] }}%)
+                                                                Entregas: {{ $progresoActividades[$actividad->id]['entregadas'] }}/{{ $progresoActividades[$actividad->id]['total'] }} ({{ $progresoActividades[$actividad->id]['porcentaje'] }}%)
                                                             </span>
                                                         </div>
                                                     </div>
@@ -465,9 +462,6 @@
                                     </div>
 
                                     {{-- Monitoreo de Prácticas --}}
-                                    @php
-                                        $totalMonitoreos = $alumno->fichaRegistro->cronograma->monitoreosPracticas()->count();
-                                    @endphp
                                     <div class="documento-item border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200"
                                          data-alumno="{{ $alumno->id }}"
                                          data-tipo="monitoreo_practicas">
@@ -483,7 +477,7 @@
                                                     <p class="text-sm text-gray-600">{{ $alumno->user->nombre }}</p>
                                                     <p class="text-xs text-gray-500 mt-1">
                                                         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
-                                                            {{ $totalMonitoreos }} {{ $totalMonitoreos === 1 ? 'semana registrada' : 'semanas registradas' }}
+                                                            {{ $monitoreosPorAlumno[$alumno->id] }} {{ $monitoreosPorAlumno[$alumno->id] === 1 ? 'semana registrada' : 'semanas registradas' }}
                                                         </span>
                                                     </p>
                                                 </div>

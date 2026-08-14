@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Alumno;
 
 use App\Http\Controllers\Controller;
 use App\Models\Publicacion;
-use Illuminate\Http\Request;
 
 class VerPracticaController extends Controller
 {
@@ -26,6 +25,12 @@ class VerPracticaController extends Controller
         $postulacion = $practica->postulaciones()
             ->where('alumno_id', $alumno->id)
             ->first();
-        return view('alumno.practicas.show', compact('practica', 'postulacion'));
+
+        return view('alumno.practicas.show', [
+            'practica' => $practica,
+            'postulacion' => $postulacion,
+            'alumno' => $alumno,
+            'correoAlumno' => auth()->user()->email,
+        ]);
     }
 }
