@@ -1,6 +1,6 @@
-<x-app-layout>
-    <div class="container mx-auto px-4 py-8">
-        <div class="max-w-6xl mx-auto">
+<x-app-layout :title="'Cronograma · '.$cronograma->fichaRegistro->alumno->nombre_completo">
+    <x-slot name="header"><x-ui.page-header eyebrow="Documentación de prácticas" title="Plan de prácticas" :description="$cronograma->fichaRegistro->alumno->nombre_completo.' · '.$cronograma->fichaRegistro->alumno->codigo_matricula" icon="heroicon-o-calendar-days"><x-slot name="actions"><a href="{{ route('profesor.aulas.show', $cronograma->fichaRegistro->alumno->aula) }}" class="ui-btn-secondary">@svg('heroicon-o-arrow-left', 'h-4 w-4') Volver al aula</a>@if($cronograma->estaFirmadoCompleto())<span class="ui-badge-success">Firmas completas</span>@else<span class="ui-badge-warning">Firmas pendientes</span>@endif</x-slot></x-ui.page-header></x-slot>
+    <div class="ui-page max-w-6xl">
 
             {{--<!-- Mensajes de éxito/error -->
             @if(session('success'))
@@ -16,7 +16,7 @@
             @endif--}}
 
             <!-- Encabezado con estado -->
-            <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
+            <div class="ui-card overflow-hidden">
                 <div class="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
                     <div>
                         <h1 class="text-2xl font-bold">PLAN DE PRÁCTICAS PRE-PROFESIONALES</h1>
@@ -348,7 +348,7 @@
                     <form id="formFirma"
                           method="POST"
                           action="{{ route('profesor.cronogramas.firmar', $cronograma) }}"
-                          class="bg-white shadow rounded-lg p-6 mt-8">
+                          class="ui-card p-6 mt-8">
 
                         @csrf
 
@@ -378,12 +378,12 @@
                                     onclick="limpiarFirma()"
                                     data-signature-clear
                                     data-status="firma-estado"
-                                    class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+                                    class="ui-btn-secondary">
                                 Limpiar
                             </button>
 
                             <button type="submit"
-                                    class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                    class="ui-btn-primary">
                                 Firmar Cronograma
                             </button>
                         </div>
@@ -418,7 +418,7 @@
                                    min="0"
                                    max="20"
                                    required
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   class="ui-field"
                                    placeholder="Ej: 18.5">
                             @error('calificacion')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -427,7 +427,7 @@
 
                         <div class="mt-6">
                             <button type="submit"
-                                    class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium">
+                                    class="ui-btn-primary">
                                 Registrar Calificación
                             </button>
                         </div>
@@ -437,14 +437,14 @@
                 <!-- Botones de acción -->
                 <div class="mt-8 flex justify-between">
                     <a href="{{ route('profesor.aulas.show', $cronograma->fichaRegistro->alumno->aula) }}"
-                       class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                       class="ui-btn-secondary">
                         Volver
                     </a>
                 </div>
             </div>
-        </div>
     </div>
 
+    @push('styles')
     <style>
         @media print {
             .no-print {
@@ -455,7 +455,9 @@
             }
         }
     </style>
+    @endpush
 
+    @push('scripts')
     <script>
         const canvas = document.getElementById('canvasFirma');
         if (canvas) {
@@ -531,5 +533,6 @@
             });
         }
     </script>
+    @endpush
 
 </x-app-layout>

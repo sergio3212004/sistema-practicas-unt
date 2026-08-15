@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Profesor;
 
 use App\Http\Controllers\Controller;
 use App\Models\FichaRegistro;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FichaRegistroController extends Controller
@@ -35,8 +34,9 @@ class FichaRegistroController extends Controller
             'aceptado' => true,
         ]);
 
-        return back()->with('success', 'Ficha aceptada correctamente');
+        return back()->with('success', 'Ficha rechazada correctamente');
     }
+
     public function rechazar(FichaRegistro $fichaRegistro)
     {
         $profesor = Auth::user()->profesor;

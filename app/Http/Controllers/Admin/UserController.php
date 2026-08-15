@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\UserManagementService;
 use App\View\Presenters\UsuarioPresenter;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -19,19 +20,50 @@ class UserController extends Controller
         private readonly UserManagementService $users,
     ) {}
 
-    public function index(UsuarioPresenter $presenter): View
+    public function index(Request $request, UsuarioPresenter $presenter): View
     {
+        $filters = $request->validate([
+            'q' => ['nullable', 'string', 'max:100'],
+            'rol' => ['nullable', 'integer', 'exists:roles,id'],
+        ]);
+
         $users = User::query()
             ->with('rol', 'alumno', 'administrador', 'empresa.razonSocial', 'profesor')
-            ->paginate(10);
+            ->when($filters['q'] ?? null, function ($query, string $search): void {
+                $query->where(function ($query) use ($search): void {
+                    $query->where('email', 'like', "%{$search}%")
+                        ->orWhereHas('alumno', fn ($query) => $query
+                            ->where('codigo_matricula', 'like', "%{$search}%")
+                            ->orWhere('nombres', 'like', "%{$search}%")
+                            ->orWhere('apellido_paterno', 'like', "%{$search}%")
+                            ->orWhere('apellido_materno', 'like', "%{$search}%"))
+                        ->orWhereHas('profesor', fn ($query) => $query
+                            ->where('codigo_profesor', 'like', "%{$search}%")
+                            ->orWhere('nombres', 'like', "%{$search}%")
+                            ->orWhere('apellido_paterno', 'like', "%{$search}%")
+                            ->orWhere('apellido_materno', 'like', "%{$search}%"))
+                        ->orWhereHas('administrador', fn ($query) => $query
+                            ->where('nombres', 'like', "%{$search}%")
+                            ->orWhere('apellido_paterno', 'like', "%{$search}%")
+                            ->orWhere('apellido_materno', 'like', "%{$search}%"))
+                        ->orWhereHas('empresa', fn ($query) => $query
+                            ->where('ruc', 'like', "%{$search}%")
+                            ->orWhere('nombre', 'like', "%{$search}%"));
+                });
+            })
+            ->when($filters['rol'] ?? null, fn ($query, int $roleId) => $query->where('rol_id', $roleId))
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
         $roleCounts = Rol::query()
             ->withCount('user')
             ->pluck('user_count', 'nombre');
+        $roles = Rol::query()->orderBy('nombre')->get(['id', 'nombre']);
         $resumenUsuarios = $users->getCollection()->mapWithKeys(fn (User $user): array => [
             $user->id => $presenter->resumen($user),
         ]);
 
-        return view('admin.usuarios.index', compact('users', 'roleCounts', 'resumenUsuarios'));
+        return view('admin.usuarios.index', compact('users', 'roleCounts', 'roles', 'resumenUsuarios'));
     }
 
     public function create(): View
@@ -53,7 +85,7 @@ class UserController extends Controller
 
     public function show(User $usuario): View
     {
-        $usuario->load('rol', 'alumno', 'administrador', 'empresa', 'profesor');
+        $usuario->load('rol', 'alumno', 'administrador', 'empresa.razonSocial', 'profesor');
         $razonesSociales = RazonSocial::query()->orderBy('acronimo')->get();
 
         return view('admin.usuarios.show', compact('usuario', 'razonesSociales'));

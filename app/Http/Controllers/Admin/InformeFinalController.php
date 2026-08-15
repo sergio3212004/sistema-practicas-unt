@@ -23,7 +23,7 @@ class InformeFinalController extends Controller
                 $q->where('nombres', 'like', "%{$nombre}%")
                     ->orWhere('apellido_paterno', 'like', "%{$nombre}%")
                     ->orWhere('apellido_materno', 'like', "%{$nombre}%")
-                    ->orWhere('codigo', 'like', "%{$nombre}%");
+                    ->orWhere('codigo_matricula', 'like', "%{$nombre}%");
             });
         }
 
@@ -32,7 +32,7 @@ class InformeFinalController extends Controller
             $query->where('semestre_id', $request->semestre_id);
         }
 
-        $informes = $query->orderBy('fecha_subida', 'desc')->paginate(20);
+        $informes = $query->orderBy('fecha_subida', 'desc')->paginate(20)->withQueryString();
 
         // Obtener todos los semestres para el filtro
         $semestres = Semestre::orderBy('id', 'desc')->get();
@@ -68,7 +68,7 @@ class InformeFinalController extends Controller
     {
         $informe = InformeFinal::findOrFail($id);
 
-        if (!Storage::disk('public')->exists($informe->archivo_pdf)) {
+        if (! Storage::disk('public')->exists($informe->archivo_pdf)) {
             return redirect()->back()->with('error', 'El archivo no existe');
         }
 

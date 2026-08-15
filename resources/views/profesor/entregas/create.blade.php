@@ -1,18 +1,10 @@
-<x-app-layout>
+<x-app-layout title="Crear entrega">
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h1 class="font-semibold text-xl text-gray-800 leading-tight">
-                Crear Nueva Entrega
-            </h1>
-            <a href="{{ route('dashboard') }}"
-               class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition">
-                @svg('heroicon-o-arrow-left', 'w-4 h-4 mr-2')
-                Volver al Dashboard
-            </a>
-        </div>
+        <x-ui.page-header eyebrow="Planificación académica" title="Crear entrega" description="Programa un trabajo semanal con instrucciones y fechas claras." icon="heroicon-o-document-plus"><x-slot name="actions"><a href="{{ route('dashboard') }}" class="ui-btn-secondary">@svg('heroicon-o-arrow-left', 'h-4 w-4') Volver</a></x-slot></x-ui.page-header>
     </x-slot>
 
-    <div class="py-12 mt-12">
+    <div class="ui-page max-w-5xl">
+        <x-ui.form-errors />
         <div class="px-6 lg:px-12">
 
             {{-- Mensaje de éxito --}}
@@ -34,7 +26,7 @@
             <div class="bg-white overflow-hidden shadow-lg rounded-lg">
 
                 {{-- Header con gradiente --}}
-                <div class="bg-gradient-to-r from-amber-700 via-yellow-800 to-amber-900 px-8 py-10">
+                <div class="bg-blue-900 px-8 py-10">
                     <div>
                         <h3 class="text-4xl font-black text-white drop-shadow-lg">Nueva Entrega</h3>
                         <p class="text-amber-50 mt-2 text-lg font-medium">Asigna una tarea a tus estudiantes</p>
@@ -156,7 +148,7 @@
                                 Cancelar
                             </a>
                             <button type="submit"
-                                    class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-amber-700 to-yellow-800 hover:from-amber-800 hover:to-yellow-900 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                                    class="inline-flex items-center px-8 py-3 ui-btn-primary text-white font-bold rounded-lg shadow-lg  transform  transition-all duration-200">
                                 @svg('heroicon-o-check-circle', 'w-5 h-5 mr-2')
                                 Crear Entrega
                             </button>
@@ -170,7 +162,7 @@
         {{-- Información adicional --}}
         <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div
-                class="group bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-lg p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-default">
+                class="group bg-blue-50 border-2 border-blue-200 rounded-lg p-6   transition-all duration-300 cursor-default">
                 <div class="flex flex-col items-center text-center">
                     <div
                         class="w-14 h-14 bg-blue-500 rounded-lg flex items-center justify-center mb-4 group-hover:rotate-12 transition-transform duration-300">
@@ -185,7 +177,7 @@
             </div>
 
             <div
-                class="group bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-lg p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-default">
+                class="group bg-green-50 border-2 border-green-200 rounded-lg p-6   transition-all duration-300 cursor-default">
                 <div class="flex flex-col items-center text-center">
                     <div
                         class="w-14 h-14 bg-green-500 rounded-lg flex items-center justify-center mb-4 group-hover:rotate-12 transition-transform duration-300">
@@ -202,7 +194,7 @@
             </div>
 
             <div
-                class="group bg-gradient-to-br from-amber-50 to-yellow-100 border-2 border-amber-200 rounded-lg p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-default">
+                class="group bg-amber-50 border-2 border-amber-200 rounded-lg p-6   transition-all duration-300 cursor-default">
                 <div class="flex flex-col items-center text-center">
                     <div
                         class="w-14 h-14 bg-amber-500 rounded-lg flex items-center justify-center mb-4 group-hover:rotate-12 transition-transform duration-300">
@@ -220,6 +212,7 @@
     </div>
     </div>
 
+    @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const semanaSel = document.getElementById('semanaSel');
@@ -251,4 +244,5 @@
             });
         });
     </script>
+    @endpush
 </x-app-layout>

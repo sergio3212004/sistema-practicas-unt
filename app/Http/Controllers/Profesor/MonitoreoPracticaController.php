@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Alumno;
 use App\Models\MonitoreoPractica;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class MonitoreoPracticaController extends Controller
@@ -29,6 +30,7 @@ class MonitoreoPracticaController extends Controller
         if (! $aula) {
             return redirect()->back()->with('error', 'El alumno no está asignado a ninguna aula.');
         }
+        Gate::authorize('manage', $aula);
 
         // Obtener todas las semanas del aula con sus monitoreos
         $semanas = $aula->semanas()
@@ -86,6 +88,7 @@ class MonitoreoPracticaController extends Controller
             'cronograma.fichaRegistro',
             'monitoreosPracticasActividades.cronogramaActividad',
         ]);
+        Gate::authorize('manage', $monitoreoPractica->alumno->aula);
 
         $actividades = $monitoreoPractica->monitoreosPracticasActividades;
         $actividadesAlDia = $actividades->where('al_dia', true)->count();

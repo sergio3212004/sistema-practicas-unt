@@ -6,7 +6,7 @@
         <!-- Datos personales -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-                <label for="nombres_admin" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="nombres_admin" class="ui-label">
                     Nombres
                     <span class="text-red-500">*</span>
                 </label>
@@ -22,12 +22,12 @@
                            autocomplete="given-name"
                            value="{{ old('nombres_admin', $admin->nombres ?? '') }}"
                            placeholder="Nombres completos"
-                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                           class="ui-field pl-10">
                 </div>
             </div>
 
             <div>
-                <label for="apellido_paterno_admin" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="apellido_paterno_admin" class="ui-label">
                     Apellido Paterno
                     <span class="text-red-500">*</span>
                 </label>
@@ -42,12 +42,12 @@
                            name="apellido_paterno_admin"
                            value="{{ old('apellido_paterno_admin', $admin->apellido_paterno ?? '') }}"
                            placeholder="Apellido paterno"
-                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                           class="ui-field pl-10">
                 </div>
             </div>
 
             <div>
-                <label for="apellido_materno_admin" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="apellido_materno_admin" class="ui-label">
                     Apellido Materno
                     <span class="text-red-500">*</span>
                 </label>
@@ -62,12 +62,12 @@
                            name="apellido_materno_admin"
                            value="{{ old('apellido_materno_admin', $admin->apellido_materno ?? '') }}"
                            placeholder="Apellido materno"
-                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                           class="ui-field pl-10">
                 </div>
             </div>
 
             <div>
-                <label for="telefono_admin" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="telefono_admin" class="ui-label">
                     Teléfono
                     <span class="text-gray-400 text-xs">(opcional)</span>
                 </label>
@@ -84,21 +84,21 @@
                            autocomplete="tel"
                            value="{{ old('telefono_admin', $admin->telefono ?? '') }}"
                            placeholder="Ej: 987654321"
-                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                           class="ui-field pl-10">
                 </div>
             </div>
         </div>
 
         <!-- Información adicional -->
-        <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+        <div class="rounded-xl border border-blue-200 bg-blue-50 p-4">
             <div class="flex items-start">
                 <div class="flex-shrink-0">
-                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-5 w-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm text-purple-800">
+                    <p class="text-sm leading-6 text-blue-800">
                         <span class="font-semibold">Permisos de administrador:</span> Este usuario tendrá acceso completo para gestionar el sistema de prácticas pre-profesionales.
                     </p>
                 </div>

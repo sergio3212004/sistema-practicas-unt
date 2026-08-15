@@ -108,6 +108,26 @@ it('keeps custom dialogs keyboard operable and restores focus', function () {
     }
 });
 
+it('applies the dark theme to shared components and legacy role views', function () {
+    $css = File::get(resource_path('css/app.css'));
+    $guestLayout = File::get(resource_path('views/layouts/guest.blade.php'));
+    $appLayout = File::get(resource_path('views/layouts/app.blade.php'));
+
+    expect($css)
+        ->toContain('.dark .ui-field')
+        ->toContain('.dark .ui-btn-ghost')
+        ->toContain("input[type='text']")
+        ->toContain('[class~="bg-indigo-50"]')
+        ->toContain('[class~="hover:bg-blue-50/40"]')
+        ->toContain('--tw-gradient-from: #0A1934')
+        ->and($guestLayout)
+        ->toContain("@include('layouts.partials.theme-script')")
+        ->toContain('<x-theme-toggle />')
+        ->and($appLayout)
+        ->toContain("@include('layouts.partials.theme-script')")
+        ->toContain('<x-theme-toggle />');
+});
+
 it('secures and announces links that open a new tab', function () {
     $violations = [];
 

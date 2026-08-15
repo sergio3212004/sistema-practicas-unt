@@ -1,18 +1,9 @@
-<x-app-layout>
+<x-app-layout :title="$entrega->titulo">
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h1 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ $entrega->titulo }}
-            </h1>
-            <a href="{{ route('profesor.informes.index') }}"
-               class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition">
-                @svg('heroicon-o-arrow-left', 'w-4 h-4 mr-2')
-                Volver a Informes
-            </a>
-        </div>
+        <x-ui.page-header eyebrow="Evaluación académica" :title="$entrega->titulo" description="Revisa trabajos y registra calificaciones." icon="heroicon-o-clipboard-document-check"><x-slot name="actions"><a href="{{ route('profesor.informes.index') }}" class="ui-btn-secondary">@svg('heroicon-o-arrow-left', 'h-4 w-4') Volver</a></x-slot></x-ui.page-header>
     </x-slot>
 
-    <div class="py-12 mt-12">
+    <div class="ui-page">
         <div class="px-6 lg:px-12">
 
             {{-- Mensaje de éxito --}}
@@ -32,7 +23,7 @@
 
             {{-- Información de la Entrega --}}
             <div class="bg-white overflow-hidden shadow-lg rounded-lg mb-6">
-                <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 px-8 py-8">
+                <div class="bg-blue-900 px-8 py-8">
                     <h3 class="text-3xl font-black text-white drop-shadow-lg">{{ $entrega->titulo }}</h3>
                     @if($entrega->descripcion)
                         <p class="text-indigo-50 mt-2 text-base">{{ $entrega->descripcion }}</p>
@@ -108,7 +99,7 @@
                                 <td class="px-6 py-4">
                                     @if($alumno['link_entrega'])
                                         <a href="{{ $alumno['link_entrega'] }}" target="_blank" rel="noopener noreferrer"
-                                           class="inline-flex items-center text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                           class="inline-flex items-center text-blue-800 hover:text-blue-950 text-sm font-medium">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                       d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -140,7 +131,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                                     @if($alumno['entrega_alumno_id'])
                                         <button type="button" onclick="abrirModalCalificar({{ json_encode($alumno) }})"
-                                                class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">
+                                                class="inline-flex items-center px-4 py-2 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-900 transition">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -164,10 +155,10 @@
     <div id="modalCalificar" class="hidden fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto z-50"
          role="dialog" aria-modal="true" aria-labelledby="modalCalificarTitulo" aria-describedby="modalAlumnoNombre">
         <div class="flex items-center justify-center min-h-screen px-4">
-            <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full">
+            <div class="bg-white rounded-lg shadow-sm max-w-2xl w-full">
                 <form id="formCalificar" method="POST">
                     @csrf
-                    <div class="px-8 py-6 bg-gradient-to-r from-indigo-500 to-purple-600">
+                    <div class="px-8 py-6 bg-blue-900">
                         <h2 id="modalCalificarTitulo" class="text-2xl font-bold text-white">Calificar entrega</h2>
                         <p class="text-indigo-100 mt-1" id="modalAlumnoNombre"></p>
                     </div>
@@ -177,7 +168,7 @@
                         <div>
                             <p class="block text-sm font-semibold text-gray-700 mb-2">Enlace de entrega</p>
                             <a id="modalLinkEntrega" target="_blank" rel="noopener noreferrer"
-                               class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium">
+                               class="inline-flex items-center text-blue-800 hover:text-blue-950 font-medium">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                           d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -213,7 +204,7 @@
                             Cancelar
                         </button>
                         <button type="submit"
-                                class="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                                class="px-8 py-3 ui-btn-primary text-white font-bold rounded-lg shadow-lg  transform  transition-all duration-200">
                             Guardar Calificación
                         </button>
                     </div>
@@ -222,6 +213,7 @@
         </div>
     </div>
 
+    @push('scripts')
     <script>
         let modalCalificarTrigger = null;
 
@@ -290,4 +282,5 @@
             }
         });
     </script>
+    @endpush
 </x-app-layout>

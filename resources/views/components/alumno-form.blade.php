@@ -5,7 +5,7 @@
 
         <!-- Código de Matrícula -->
         <div>
-            <label for="codigo_matricula_alumno" class="block text-sm font-semibold text-gray-700 mb-2">
+            <label for="codigo_matricula_alumno" class="ui-label">
                 Código de Matrícula
                 <span class="text-red-500">*</span>
             </label>
@@ -20,14 +20,14 @@
                        name="codigo_matricula_alumno"
                        value="{{ old('codigo_matricula_alumno', $alumno->codigo_matricula ?? '') }}"
                        placeholder="Ej: 2020123456"
-                       class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                       class="ui-field pl-10">
             </div>
         </div>
 
         <!-- Datos personales -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-                <label for="nombres_alumno" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="nombres_alumno" class="ui-label">
                     Nombres
                     <span class="text-red-500">*</span>
                 </label>
@@ -43,12 +43,12 @@
                            autocomplete="given-name"
                            value="{{ old('nombres_alumno', $alumno->nombres ?? '') }}"
                            placeholder="Nombres completos"
-                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                           class="ui-field pl-10">
                 </div>
             </div>
 
             <div>
-                <label for="apellido_paterno_alumno" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="apellido_paterno_alumno" class="ui-label">
                     Apellido Paterno
                     <span class="text-red-500">*</span>
                 </label>
@@ -63,12 +63,12 @@
                            name="apellido_paterno_alumno"
                            value="{{ old('apellido_paterno_alumno', $alumno->apellido_paterno ?? '') }}"
                            placeholder="Apellido paterno"
-                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                           class="ui-field pl-10">
                 </div>
             </div>
 
             <div>
-                <label for="apellido_materno_alumno" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="apellido_materno_alumno" class="ui-label">
                     Apellido Materno
                     <span class="text-red-500">*</span>
                 </label>
@@ -83,12 +83,12 @@
                            name="apellido_materno_alumno"
                            value="{{ old('apellido_materno_alumno', $alumno->apellido_materno ?? '') }}"
                            placeholder="Apellido materno"
-                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                           class="ui-field pl-10">
                 </div>
             </div>
 
             <div>
-                <label for="telefono_alumno" class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="telefono_alumno" class="ui-label">
                     Teléfono
                     <span class="text-gray-400 text-xs">(opcional)</span>
                 </label>
@@ -105,7 +105,7 @@
                            autocomplete="tel"
                            value="{{ old('telefono_alumno', $alumno->telefono ?? '') }}"
                            placeholder="Ej: 987654321"
-                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                           class="ui-field pl-10">
                 </div>
             </div>
         </div>

@@ -1,24 +1,6 @@
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div>
-        <p class="font-semibold text-gray-600">Código Profesor</p>
-        <p>{{ $usuario->profesor->codigo_profesor }}</p>
-    </div>
-
-    <div>
-        <p class="font-semibold text-gray-600">Teléfono</p>
-        <p>{{ $usuario->profesor->telefono ?? '—' }}</p>
-    </div>
-
-    <div>
-        <p class="font-semibold text-gray-600">Nombres</p>
-        <p>{{ $usuario->profesor->nombres }}</p>
-    </div>
-
-    <div>
-        <p class="font-semibold text-gray-600">Apellidos</p>
-        <p>
-            {{ $usuario->profesor->apellido_paterno }}
-            {{ $usuario->profesor->apellido_materno }}
-        </p>
-    </div>
-</div>
+<dl class="grid gap-4 sm:grid-cols-2">
+    <div class="rounded-xl border border-gray-100 bg-gray-50 p-4"><dt class="text-xs font-bold uppercase tracking-wider text-gray-500">Código de docente</dt><dd class="mt-1 font-semibold text-gray-900">{{ $usuario->profesor?->codigo_profesor ?: 'No registrado' }}</dd></div>
+    <div class="rounded-xl border border-gray-100 bg-gray-50 p-4"><dt class="text-xs font-bold uppercase tracking-wider text-gray-500">Teléfono</dt><dd class="mt-1 font-semibold text-gray-900">{{ $usuario->profesor?->telefono ?: 'No registrado' }}</dd></div>
+    <div class="rounded-xl border border-gray-100 bg-gray-50 p-4"><dt class="text-xs font-bold uppercase tracking-wider text-gray-500">Nombres</dt><dd class="mt-1 font-semibold text-gray-900">{{ $usuario->profesor?->nombres ?: 'No registrados' }}</dd></div>
+    <div class="rounded-xl border border-gray-100 bg-gray-50 p-4"><dt class="text-xs font-bold uppercase tracking-wider text-gray-500">Apellidos</dt><dd class="mt-1 font-semibold text-gray-900">{{ collect([$usuario->profesor?->apellido_paterno, $usuario->profesor?->apellido_materno])->filter()->implode(' ') ?: 'No registrados' }}</dd></div>
+</dl>

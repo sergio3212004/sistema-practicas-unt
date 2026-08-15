@@ -1,46 +1,20 @@
-<x-app-layout>
+<x-app-layout :title="'Ficha · '.$fichaRegistro->alumno->nombre_completo">
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="p-2 bg-gradient-to-br from-blue-800 to-blue-900 rounded-lg">
-                    @svg('heroicon-o-document-text', 'w-6 h-6 text-white')
-                </div>
-                <div>
-                    <h1 class="font-bold text-2xl text-gray-800 leading-tight">
-                        Ficha de Registro - Vista Completa
-                    </h1>
-                    <p class="text-sm text-gray-500 mt-0.5">Formato 01: Ficha de Registro de Prácticas Pre Profesionales</p>
-                </div>
-            </div>
-
-            <!-- Badge de estado -->
-            <div>
-                @if($fichaRegistro->aceptado)
-                    <span class="inline-flex items-center px-4 py-2 bg-green-100 text-green-900 text-sm font-semibold rounded-full shadow-lg">
-                        @svg('heroicon-o-check-circle', 'w-5 h-5 mr-2')
-                        Ficha Aceptada
-                    </span>
-                @else
-                    <span class="inline-flex items-center px-4 py-2 bg-yellow-400 text-gray-900 text-sm font-semibold rounded-full shadow-lg">
-                        @svg('heroicon-o-clock', 'w-5 h-5 mr-2')
-                        En Proceso de Validación
-                    </span>
-                @endif
-            </div>
-        </div>
+        <x-ui.page-header eyebrow="Documentación de prácticas" title="Ficha de registro" :description="$fichaRegistro->alumno->nombre_completo.' · '.$fichaRegistro->alumno->codigo_matricula" icon="heroicon-o-document-text">
+            <x-slot name="actions"><a href="{{ route('profesor.aulas.show', $fichaRegistro->alumno->aula) }}" class="ui-btn-secondary">@svg('heroicon-o-arrow-left', 'h-4 w-4') Volver al aula</a>@if($fichaRegistro->aceptado === true)<span class="ui-badge-success">Ficha aceptada</span>@elseif($fichaRegistro->aceptado === false)<span class="ui-badge-danger">Ficha rechazada</span>@else<span class="ui-badge-warning">Pendiente de revisión</span>@endif</x-slot>
+        </x-ui.page-header>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+    <div class="ui-page max-w-6xl">
 
             <!-- Contenedor principal con estilo formal -->
-            <div class="bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-200">
+            <div class="ui-card overflow-hidden">
 
                 <!-- Encabezado oficial de la universidad -->
-                <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-8 py-8">
+                <div class="bg-blue-900 px-8 py-8">
                     <div class="text-center">
                         <div class="flex justify-center mb-4">
-                            <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-xl">
+                            <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm">
                                 @svg('heroicon-o-academic-cap', 'w-12 h-12 text-blue-800')
                             </div>
                         </div>
@@ -53,7 +27,7 @@
                         <p class="text-lg font-medium text-blue-200 mb-1">
                             MONITOREO DE PRÁCTICAS PRE PROFESIONALES
                         </p>
-                        <div class="inline-block bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-bold text-sm mt-3 shadow-lg">
+                        <div class="inline-block bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-bold text-sm mt-3 shadow-sm">
                             FORMATO 01: FICHA DE REGISTRO
                         </div>
                     </div>
@@ -63,7 +37,7 @@
 
                     <!-- Sección 1: ESTUDIANTE -->
                     <div class="mb-8 border-2 border-blue-200 rounded-xl overflow-hidden">
-                        <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
+                        <div class="bg-blue-900 px-6 py-3">
                             <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-user', 'w-5 h-5 mr-2')
                                 1. ESTUDIANTE
@@ -132,7 +106,7 @@
 
                     <!-- Sección 2: EMPRESA O INSTITUCIÓN -->
                     <div class="mb-8 border-2 border-blue-200 rounded-xl overflow-hidden">
-                        <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
+                        <div class="bg-blue-900 px-6 py-3">
                             <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-building-office', 'w-5 h-5 mr-2')
                                 2. EMPRESA O INSTITUCIÓN
@@ -246,7 +220,7 @@
 
                     <!-- Sección 3: CARACTERÍSTICAS DE LA PRÁCTICA -->
                     <div class="mb-8 border-2 border-blue-200 rounded-xl overflow-hidden">
-                        <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
+                        <div class="bg-blue-900 px-6 py-3">
                             <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-clipboard-document-list', 'w-5 h-5 mr-2')
                                 3. CARACTERÍSTICAS DE LA PRÁCTICA
@@ -373,7 +347,7 @@
 
                     <!-- Sección 4: FIRMAS -->
                     <div class="border-2 border-blue-200 rounded-xl overflow-hidden">
-                        <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
+                        <div class="bg-blue-900 px-6 py-3">
                             <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-pencil-square', 'w-5 h-5 mr-2')
                                 4. FIRMAS Y APROBACIONES
@@ -455,15 +429,14 @@
 
                     <!-- Botones de acción -->
                     <div class="flex flex-wrap justify-between items-center gap-4 mt-8 pt-6 border-t-2 border-gray-200">
-                        <a href="{{ route('profesor.aulas.show', $fichaRegistro->alumno->aula) }}"
-                           class="inline-flex items-center px-6 py-3 bg-white border-2 border-gray-300 rounded-xl text-gray-700 font-semibold hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm group">
+                        <a href="{{ route('profesor.aulas.show', $fichaRegistro->alumno->aula) }}" class="ui-btn-secondary">
                             @svg('heroicon-o-arrow-left', 'w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform')
                             Volver al inicio
                         </a>
 
                         <div class="flex gap-3">
                             <!-- Botón de eliminar (solo si no está aceptado) -->
-                            @if(!$fichaRegistro->aceptado)
+                            @if($fichaRegistro->aceptado === null)
                             <form method="POST"
                                   action="{{ route('profesor.fichas.rechazar', $fichaRegistro) }}"
                                   onsubmit="return confirm('¿Rechazar esta ficha de registro?')">
@@ -471,7 +444,7 @@
                                 @method('PATCH')
 
                                 <button type="submit"
-                                        class="inline-flex items-center px-6 py-3 bg-red-600 border-2 border-red-600 rounded-xl text-white font-semibold hover:bg-red-700 hover:border-red-700 transition-all duration-200 shadow-lg group">
+                                        class="ui-btn-danger">
                                     Rechazar Ficha
                                 </button>
 
@@ -479,7 +452,7 @@
 
                             @endif
 
-                            @if(!$fichaRegistro->aceptado)
+                            @if($fichaRegistro->aceptado === null)
                             <form method="POST"
                                   action="{{ route('profesor.fichas.aceptar', $fichaRegistro) }}"
                                   onsubmit="return confirm('¿Aceptar esta ficha de registro?')">
@@ -487,7 +460,7 @@
                                 @method('PATCH')
 
                                 <button type="submit"
-                                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-700 to-green-800 border-2 border-green-700 rounded-xl text-white font-semibold hover:from-green-800 hover:to-green-900 hover:shadow-xl hover:scale-105 transition-all duration-200 group">
+                                        class="ui-btn-primary">
                                     Aceptar ficha
                                 </button>
 
@@ -501,7 +474,7 @@
             </div>
 
             <!-- Información adicional -->
-            @if(!$fichaRegistro->aceptado)
+            @if($fichaRegistro->aceptado === null)
                 <div class="mt-6 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg p-6 shadow-md">
                     <div class="flex items-start">
                         <div class="flex-shrink-0">
@@ -518,7 +491,6 @@
                 </div>
             @endif
 
-        </div>
     </div>
 
 
