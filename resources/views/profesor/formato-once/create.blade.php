@@ -1,27 +1,20 @@
-<x-app-layout>
-    <div class="container mx-auto px-4 py-8 max-w-full">
-        <div class="mb-6">
-            <a href="{{ route('profesor.formato-once.index') }}" class="text-blue-600 hover:text-blue-800 flex items-center mb-4">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                </svg>
-                Volver al listado
-            </a>
-            <h1 class="text-3xl font-bold text-gray-800">Crear Formato 11 - Conformidad de PPP</h1>
-            <p class="text-gray-600 mt-2">Aula {{ $aula->numero }} - {{ $aula->semestre->nombre ?? 'Sin semestre' }}</p>
-        </div>
+<x-app-layout title="Nuevo Formato 11">
+    <x-slot name="header"><x-ui.page-header eyebrow="Documentación académica" title="Nuevo Formato 11" :description="'Aula '.$aula->numero.' · '.($aula->semestre?->nombre ?? 'Sin semestre').' · evalúa la conformidad de cada estudiante.'" icon="heroicon-o-document-plus"><x-slot name="actions"><a href="{{ route('profesor.formato-once.list', $aula) }}" class="ui-btn-secondary">@svg('heroicon-o-arrow-left', 'h-4 w-4') Volver al historial</a></x-slot></x-ui.page-header></x-slot>
+    <div class="ui-page">
+        <x-ui.form-errors />
 
         <form id="formatoOnceForm" action="{{ route('profesor.formato-once.store', $aula->id) }}" method="POST" class="space-y-6">
             @csrf
 
             <!-- Tabla de alumnos -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="ui-card overflow-hidden">
                 <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
                     <h2 class="text-xl font-semibold text-gray-800">Alumnos del Aula ({{ $aula->alumnos->count() }})</h2>
                 </div>
 
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <table class="ui-table">
+                        <caption class="sr-only">Datos de estudiantes del Formato 11</caption>
                         <thead class="bg-gray-50">
                         <tr>
                             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="min-width: 180px;">
@@ -70,7 +63,7 @@
                                            name="alumnos[{{ $index }}][sede_practicas]"
                                            value="{{ old("alumnos.$index.sede_practicas", $alumno->fichaActual->empresa ?? '') }}"
                                            required
-                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                           class="ui-field min-w-48 text-sm"
                                            placeholder="Sede de prácticas">
                                     @error('alumnos.' . $index . '.sede_practicas')
                                     <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -85,13 +78,13 @@
                                                max="10"
                                                value="{{ old("alumnos.$index.ciclo_numero", 6) }}"
                                                required
-                                               class="w-16 px-2 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm text-center"
+                                               class="ui-field w-20 text-sm text-center"
                                                placeholder="6">
                                         <span class="text-gray-500 font-bold">/</span>
                                         <select name="alumnos[{{ $index }}][nivel]"
                                                 id="nivel_{{ $index }}"
                                                 required
-                                                class="flex-1 px-2 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                                class="ui-field min-w-32 flex-1 text-sm">
                                             <option value="">Nivel</option>
                                             <option value="inicial" {{ old("alumnos.$index.nivel") == 'inicial' ? 'selected' : '' }}>Inicial</option>
                                             <option value="intermedio" {{ old("alumnos.$index.nivel") == 'intermedio' ? 'selected' : '' }}>Intermedio</option>
@@ -110,7 +103,7 @@
                                 <td class="px-4 py-4" style="min-width: 250px;">
                                     <textarea name="alumnos[{{ $index }}][competencias]"
                                               rows="3"
-                                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm resize-y"
+                                              class="ui-field min-w-64 text-sm resize-y"
                                               placeholder="Ej: Competencia Genérica G1.1&#10;Competencia Específica E1.1">{{ old("alumnos.$index.competencias") }}</textarea>
                                     @error('alumnos.' . $index . '.competencias')
                                     <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -119,7 +112,7 @@
                                 <td class="px-4 py-4" style="min-width: 250px;">
                                     <textarea name="alumnos[{{ $index }}][capacidades]"
                                               rows="3"
-                                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm resize-y"
+                                              class="ui-field min-w-64 text-sm resize-y"
                                               placeholder="Capacidades de la competencia...">{{ old("alumnos.$index.capacidades") }}</textarea>
                                     @error('alumnos.' . $index . '.capacidades')
                                     <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -128,7 +121,7 @@
                                 <td class="px-4 py-4" style="min-width: 250px;">
                                     <textarea name="alumnos[{{ $index }}][actividades]"
                                               rows="3"
-                                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm resize-y"
+                                              class="ui-field min-w-64 text-sm resize-y"
                                               placeholder="Actividades a desarrollar...">{{ old("alumnos.$index.actividades") }}</textarea>
                                     @error('alumnos.' . $index . '.actividades')
                                     <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -138,7 +131,7 @@
                                     <input type="text"
                                            name="alumnos[{{ $index }}][producto]"
                                            value="{{ old("alumnos.$index.producto") }}"
-                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                           class="ui-field min-w-48 text-sm"
                                            placeholder="Ej: Informe, proyecto">
                                     @error('alumnos.' . $index . '.producto')
                                     <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -147,7 +140,7 @@
                                 <td class="px-4 py-4 text-center" style="min-width: 120px;">
                                     <select name="alumnos[{{ $index }}][conformidad]"
                                             required
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                            class="ui-field min-w-48 text-sm">
                                         <option value="1" {{ old("alumnos.$index.conformidad", 1) == 1 ? 'selected' : '' }}>Sí</option>
                                         <option value="0" {{ old("alumnos.$index.conformidad") == 0 ? 'selected' : '' }}>No</option>
                                     </select>
@@ -158,7 +151,7 @@
                                 <td class="px-4 py-4" style="min-width: 250px;">
                                     <textarea name="alumnos[{{ $index }}][comentarios]"
                                               rows="3"
-                                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm resize-y"
+                                              class="ui-field min-w-64 text-sm resize-y"
                                               placeholder="Comentarios adicionales...">{{ old("alumnos.$index.comentarios") }}</textarea>
                                     @error('alumnos.' . $index . '.comentarios')
                                     <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -172,22 +165,28 @@
             </div>
 
             <!-- Firma del coordinador -->
-            <div class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto">
+            <div class="ui-card p-6 max-w-4xl mx-auto">
                 <div class="mb-4">
                     <h2 class="text-xl font-semibold text-gray-800 mb-2">Firma del Coordinador</h2>
-                    <p class="text-sm text-gray-600">Dibuje su firma en el área blanca usando el mouse o pantalla táctil</p>
+                    <p id="firma-instrucciones" class="text-sm text-gray-600">Dibuje su firma con el puntero o cargue una imagen mediante el campo accesible con teclado.</p>
                 </div>
 
                 <div class="space-y-4">
                     <!-- Canvas para la firma -->
                     <div class="border-2 border-gray-300 rounded-lg overflow-hidden bg-white">
-                        <canvas id="signatureCanvas" width="800" height="250" class="cursor-crosshair w-full"></canvas>
+                        <canvas id="signatureCanvas" width="800" height="250" class="cursor-crosshair w-full" role="img" aria-label="Área de firma del coordinador" aria-describedby="firma-instrucciones"></canvas>
+                    </div>
+
+                    <div>
+                        <label for="firmaArchivo" class="block text-sm font-semibold text-gray-700">Cargar imagen de firma (alternativa al dibujo)</label>
+                        <input id="firmaArchivo" type="file" accept="image/png,image/jpeg" class="mt-2 block w-full text-sm" data-signature-upload data-canvas="signatureCanvas" data-output="firmaCoordinadorInput" data-status="firma-estado">
+                        <p id="firma-estado" class="mt-2 text-sm text-gray-600" role="status" aria-live="polite"></p>
                     </div>
 
                     <!-- Controles de la firma -->
                     <div class="flex flex-wrap gap-4 items-center">
-                        <button type="button" id="clearSignature"
-                                class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-200 flex items-center gap-2">
+                        <button type="button" id="clearSignature" data-signature-clear data-status="firma-estado"
+                                class="ui-btn-secondary">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                             </svg>
@@ -210,11 +209,11 @@
 
                     <input type="hidden" name="firma_coordinador" id="firmaCoordinadorInput" required>
 
-                    <div id="signatureError" class="text-red-600 text-sm font-medium hidden bg-red-50 border border-red-200 rounded-md p-3">
+                    <div id="signatureError" class="text-red-700 text-sm font-medium hidden bg-red-50 border border-red-200 rounded-md p-3" role="alert">
                         <svg class="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                         </svg>
-                        Por favor, dibuje su firma antes de enviar el formulario.
+                        Dibuje o cargue una imagen de su firma antes de enviar el formulario.
                     </div>
                 </div>
             </div>
@@ -222,14 +221,14 @@
             <!-- Botones de acción -->
             <div class="flex gap-4 justify-end max-w-4xl mx-auto">
                 <a href="{{ route('profesor.formato-once.index') }}"
-                   class="px-6 py-3 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors duration-200 flex items-center gap-2">
+                   class="ui-btn-secondary">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                     Cancelar
                 </a>
                 <button type="submit"
-                        class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2">
+                        class="ui-btn-primary">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
@@ -239,6 +238,7 @@
         </form>
     </div>
 
+    @push('scripts')
     <script>
         // Variables del canvas
         const canvas = document.getElementById('signatureCanvas');
@@ -255,6 +255,11 @@
         let lastX = 0;
         let lastY = 0;
         let hasDrawn = false;
+
+        canvas.addEventListener('signature:loaded', () => {
+            hasDrawn = true;
+            signatureError.classList.add('hidden');
+        });
 
         // Configuración inicial del canvas
         ctx.strokeStyle = brushColorInput.value;
@@ -390,7 +395,7 @@
             if (!hasDrawn) {
                 e.preventDefault();
                 signatureError.classList.remove('hidden');
-                canvas.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                document.getElementById('firmaArchivo').focus();
                 return false;
             }
 
@@ -399,7 +404,9 @@
             firmaInput.value = signatureData;
         });
     </script>
+    @endpush
 
+    @push('styles')
     <style>
         /* Estilos para asegurar que el canvas sea responsive */
         #signatureCanvas {
@@ -434,5 +441,6 @@
             max-height: 200px;
         }
     </style>
+    @endpush
 
 </x-app-layout>

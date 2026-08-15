@@ -1,6 +1,6 @@
-<x-guest-layout>
+<x-guest-layout title="Verificar correo de empresa" subtitle="Confirma el registro con el código enviado a tu correo">
     <div class="mb-4 text-center">
-        <h2 class="text-2xl font-bold text-gray-900">Verificación de Email</h2>
+        <h2 class="text-xl font-bold text-gray-900">Código de verificación</h2>
         <p class="mt-2 text-sm text-gray-600">
             Hemos enviado un código de 6 dígitos a tu correo electrónico.
         </p>
@@ -8,7 +8,7 @@
 
     <!-- Success Message -->
     @if (session('success'))
-        <div class="mb-4 p-4 text-sm text-green-800 bg-green-100 rounded-lg">
+        <div class="mb-4 p-4 text-sm text-green-800 bg-green-100 rounded-lg" role="status" aria-atomic="true">
             {{ session('success') }}
         </div>
     @endif
@@ -24,13 +24,16 @@
                 class="block mt-1 w-full text-center text-2xl tracking-widest"
                 type="text"
                 name="codigo"
+                inputmode="numeric"
+                autocomplete="one-time-code"
                 required
                 autofocus
                 maxlength="6"
                 pattern="[0-9]{6}"
-                placeholder="000000" />
-            <x-input-error :messages="$errors->get('codigo')" class="mt-2" />
-            <p class="mt-2 text-xs text-gray-500">Ingresa el código de 6 dígitos</p>
+                placeholder="000000"
+                aria-describedby="codigo-ayuda" />
+            <x-input-error for="codigo" :messages="$errors->get('codigo')" class="mt-2" />
+            <p id="codigo-ayuda" class="mt-2 text-xs text-gray-500">Ingresa el código de 6 dígitos.</p>
         </div>
 
         <div class="flex items-center justify-between mt-6">

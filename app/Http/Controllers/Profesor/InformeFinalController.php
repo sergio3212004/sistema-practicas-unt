@@ -13,25 +13,32 @@ class InformeFinalController extends Controller
     //
     public function index(Request $request)
     {
-        $query = InformeFinal::with(['alumno', 'semestre']);
+        $filters = $request->validate([
+            'nombre' => ['nullable', 'string', 'max:100'],
+            'semestre_id' => ['nullable', 'integer', 'exists:semestres,id'],
+        ]);
+        $profesor = $request->user()->profesor;
+        $query = InformeFinal::query()
+            ->with(['alumno', 'semestre'])
+            ->whereHas('alumno.aula', fn ($query) => $query->where('profesor_id', $profesor->id));
 
         // Filtro por nombre de alumno
-        if ($request->filled('nombre')) {
-            $nombre = $request->nombre;
+        if ($filters['nombre'] ?? null) {
+            $nombre = $filters['nombre'];
             $query->whereHas('alumno', function ($q) use ($nombre) {
                 $q->where('nombres', 'like', "%{$nombre}%")
                     ->orWhere('apellido_paterno', 'like', "%{$nombre}%")
                     ->orWhere('apellido_materno', 'like', "%{$nombre}%")
-                    ->orWhere('codigo', 'like', "%{$nombre}%");
+                    ->orWhere('codigo_matricula', 'like', "%{$nombre}%");
             });
         }
 
         // Filtro por semestre/año
-        if ($request->filled('semestre_id')) {
-            $query->where('semestre_id', $request->semestre_id);
+        if ($filters['semestre_id'] ?? null) {
+            $query->where('semestre_id', $filters['semestre_id']);
         }
 
-        $informes = $query->orderBy('fecha_subida', 'desc')->paginate(20);
+        $informes = $query->orderBy('fecha_subida', 'desc')->paginate(20)->withQueryString();
 
         // Obtener todos los semestres para el filtro
         $semestres = Semestre::orderBy('id', 'desc')->get();
@@ -42,11 +49,14 @@ class InformeFinalController extends Controller
     /**
      * Descarga el PDF de un informe
      */
-    public function download($id)
+    public function download(Request $request, InformeFinal $informe)
     {
-        $informe = InformeFinal::findOrFail($id);
+        abort_unless(
+            $informe->alumno?->aula?->profesor_id === $request->user()->profesor?->id,
+            403,
+        );
 
-        if (!Storage::disk('public')->exists($informe->archivo_pdf)) {
+        if (! Storage::disk('public')->exists($informe->archivo_pdf)) {
             return redirect()->back()->with('error', 'El archivo no existe');
         }
 

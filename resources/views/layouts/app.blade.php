@@ -15,9 +15,11 @@
     @stack('styles')
 </head>
 <body>
+    <a href="#contenido-principal" class="ui-skip-link">Saltar al contenido principal</a>
+
     <div
         x-data="navigation"
-        @keydown.escape.window="closeNavigation()"
+        @keydown.escape.window="closeNavigation({ restoreFocus: true })"
         @resize.window="syncNavigation()"
         class="min-h-screen bg-gray-50 transition-colors dark:bg-gray-950"
     >
@@ -31,6 +33,7 @@
                 <div class="flex h-16 items-center gap-4 px-4 sm:px-6 lg:px-8">
                     <button
                         type="button"
+                        x-ref="navigationButton"
                         @click="toggleNavigation()"
                         class="ui-btn-ghost -ml-2 px-2.5"
                         :aria-label="navigationVisible() ? 'Cerrar menú principal' : 'Abrir menú principal'"
@@ -62,7 +65,11 @@
                 </div>
             </header>
 
-            <main class="app-grid min-h-[calc(100vh-4rem)] bg-gray-50 transition-colors dark:bg-gray-950">
+            <main
+                id="contenido-principal"
+                tabindex="-1"
+                class="app-grid min-h-[calc(100vh-4rem)] bg-gray-50 transition-colors dark:bg-gray-950"
+            >
                 @isset($header)
                     <div class="border-b border-gray-200 bg-white transition-colors dark:border-gray-800 dark:bg-gray-900">
                         <div class="mx-auto max-w-screen-2xl px-4 py-5 sm:px-6 lg:px-8">

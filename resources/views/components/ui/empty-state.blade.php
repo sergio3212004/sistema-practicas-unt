@@ -5,7 +5,7 @@
 ])
 
 <div {{ $attributes->merge(['class' => 'ui-empty']) }}>
-    <span class="ui-icon-box h-14 w-14">
+    <span class="ui-icon-box h-14 w-14" aria-hidden="true">
         @svg($icon, 'h-7 w-7')
     </span>
     <h2 class="mt-5 text-lg font-bold text-gray-950">{{ $title }}</h2>

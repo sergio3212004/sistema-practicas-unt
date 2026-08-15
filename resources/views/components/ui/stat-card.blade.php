@@ -18,7 +18,7 @@
 @endphp
 
 <article {{ $attributes->merge(['class' => 'ui-card relative overflow-hidden p-5']) }}>
-    <span class="absolute inset-x-0 top-0 h-1 {{ $styles['bar'] }}"></span>
+    <span class="absolute inset-x-0 top-0 h-1 {{ $styles['bar'] }}" aria-hidden="true"></span>
     <div class="flex items-start justify-between gap-4">
         <div class="min-w-0">
             <p class="text-sm font-semibold text-gray-600">{{ $label }}</p>
@@ -27,7 +27,7 @@
                 <p class="mt-1 text-xs leading-5 text-gray-500">{{ $description }}</p>
             @endif
         </div>
-        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border {{ $styles['icon'] }}">
+        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border {{ $styles['icon'] }}" aria-hidden="true">
             @svg($icon, 'h-5 w-5')
         </span>
     </div>

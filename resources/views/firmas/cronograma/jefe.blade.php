@@ -2,12 +2,14 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Firma de Cronograma</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-100">
+    <a href="#contenido-principal" class="ui-skip-link">Saltar al contenido principal</a>
 
-    <div class="max-w-6xl mx-auto py-10 px-4">
+    <main id="contenido-principal" tabindex="-1" class="max-w-6xl mx-auto py-10 px-4">
         <div class="bg-white shadow rounded-lg mb-6">
             <div class="bg-blue-600 text-white px-6 py-4 rounded-t-lg">
                 <h1 class="text-xl font-bold">PLAN DE PRÁCTICAS PRE-PROFESIONALES</h1>
@@ -26,16 +28,16 @@
                 <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-6">
                     <div class="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
                         <div>
-                            <h1 class="text-2xl font-bold">PLAN DE PRÁCTICAS PRE-PROFESIONALES</h1>
+                            <p class="text-2xl font-bold">PLAN DE PRÁCTICAS PRE-PROFESIONALES</p>
                             <p class="text-sm mt-1">FORMATO 02: PLAN DE PRÁCTICAS</p>
                         </div>
                         <div class="text-right">
                             @if($cronograma->estaFirmadoCompleto())
-                                <span class="inline-block px-4 py-2 bg-green-500 text-white rounded-full text-sm font-semibold">
+                                <span class="inline-block px-4 py-2 bg-green-100 text-green-900 rounded-full text-sm font-semibold">
                             ✓ Completado
                         </span>
                             @else
-                                <span class="inline-block px-4 py-2 bg-yellow-500 text-white rounded-full text-sm font-semibold">
+                                <span class="inline-block px-4 py-2 bg-amber-100 text-amber-900 rounded-full text-sm font-semibold">
                             ⏳ Firmas Pendientes
                         </span>
                             @endif
@@ -84,7 +86,7 @@
                                     </div>
                                     <div>
                                         <p class="font-medium text-gray-700">Jefe Directo</p>
-                                        <p class="text-xs text-yellow-600">Esperando firma</p>
+                                        <p class="text-xs text-amber-800">Esperando firma</p>
                                     </div>
                                 @endif
 
@@ -106,7 +108,7 @@
                                     </div>
                                     <div>
                                         <p class="font-medium text-gray-700">Profesor Supervisor</p>
-                                        <p class="text-xs text-yellow-600">Esperando firma</p>
+                                        <p class="text-xs text-amber-800">Esperando firma</p>
                                     </div>
                                 @endif
 
@@ -124,25 +126,25 @@
                         </h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Apellidos y Nombre</label>
+                                <p class="block text-sm font-medium text-gray-700 mb-1">Apellidos y Nombre</p>
                                 <p class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                                     {{ $cronograma->fichaRegistro->alumno->nombre_completo }}
                                 </p>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Nro. Matrícula</label>
+                                <p class="block text-sm font-medium text-gray-700 mb-1">Nro. Matrícula</p>
                                 <p class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                                     {{ $cronograma->fichaRegistro->alumno->codigo_matricula }}
                                 </p>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Ciclo</label>
+                                <p class="block text-sm font-medium text-gray-700 mb-1">Ciclo</p>
                                 <p class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                                     {{ $cronograma->fichaRegistro->ciclo }}
                                 </p>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Año y Semestre</label>
+                                <p class="block text-sm font-medium text-gray-700 mb-1">Año y Semestre</p>
                                 <p class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                                     {{ $cronograma->fichaRegistro->semestre->nombre ?? 'N/A' }}
                                 </p>
@@ -157,19 +159,19 @@
                         </h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Razón Social</label>
+                                <p class="block text-sm font-medium text-gray-700 mb-1">Razón Social</p>
                                 <p class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                                     {{ $cronograma->fichaRegistro->razon_social }}
                                 </p>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">RUC</label>
+                                <p class="block text-sm font-medium text-gray-700 mb-1">RUC</p>
                                 <p class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                                     {{ $cronograma->fichaRegistro->ruc }}
                                 </p>
                             </div>
                             <div class="md:col-span-2">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+                                <p class="block text-sm font-medium text-gray-700 mb-1">Dirección</p>
                                 <p class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                                     {{ $cronograma->fichaRegistro->direccion }}
                                 </p>
@@ -184,13 +186,13 @@
                         </h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de Inicio</label>
+                                <p class="block text-sm font-medium text-gray-700 mb-1">Fecha de Inicio</p>
                                 <p class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                                     {{ $cronograma->fichaRegistro->fecha_inicio->format('d/m/Y') }}
                                 </p>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de Término</label>
+                                <p class="block text-sm font-medium text-gray-700 mb-1">Fecha de Término</p>
                                 <p class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                                     {{ $cronograma->fichaRegistro->fecha_termino->format('d/m/Y') }}
                                 </p>
@@ -199,9 +201,10 @@
 
                         <!-- Horarios -->
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Días y Horario</label>
+                            <p class="block text-sm font-medium text-gray-700 mb-2">Días y Horario</p>
                             <div class="overflow-x-auto">
                                 <table class="min-w-full border border-gray-300">
+                                    <caption class="sr-only">Días y horarios de práctica</caption>
                                     <thead class="bg-gray-100">
                                     <tr>
                                         <th class="border border-gray-300 px-4 py-2">Día</th>
@@ -225,7 +228,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Área de Prácticas</label>
+                            <p class="block text-sm font-medium text-gray-700 mb-1">Área de Prácticas</p>
                             <p class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                                 {{ $cronograma->fichaRegistro->area_practicas }}
                             </p>
@@ -243,7 +246,7 @@
                                 <h3 class="font-semibold text-lg text-gray-700 mb-3">Actividad {{ $index + 1 }}</h3>
 
                                 <div class="mb-3">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+                                    <p class="block text-sm font-medium text-gray-700 mb-1">Descripción</p>
                                     <p class="px-3 py-2 bg-white border border-gray-200 rounded-md">
                                         {{ $actividad->actividad }}
                                     </p>
@@ -251,6 +254,7 @@
 
                                 <div class="overflow-x-auto">
                                     <table class="min-w-full border border-gray-300 text-sm">
+                                        <caption class="sr-only">Actividades programadas</caption>
                                         <thead class="bg-gray-200">
                                         <tr>
                                             <th class="border border-gray-300 px-2 py-1" colspan="4">Mes 1</th>
@@ -301,7 +305,7 @@
                                          alt="Firma Jefe Directo"
                                          class="mx-auto h-24 object-contain mb-2">
                                 @else
-                                    <p class="text-yellow-600 text-sm font-medium mb-2">Pendiente</p>
+                                    <p class="text-amber-800 text-sm font-medium mb-2">Pendiente</p>
                                 @endif
 
                                 {{-- Línea --}}
@@ -320,7 +324,7 @@
                                          alt="Firma Practicante"
                                          class="mx-auto h-24 object-contain mb-2">
                                 @else
-                                    <p class="text-yellow-600 text-sm font-medium mb-2">Pendiente</p>
+                                    <p class="text-amber-800 text-sm font-medium mb-2">Pendiente</p>
                                 @endif
 
                                 {{-- Línea --}}
@@ -338,7 +342,7 @@
                                          alt="Firma Profesor"
                                          class="mx-auto h-24 object-contain mb-2">
                                 @else
-                                    <p class="text-yellow-600 text-sm font-medium mb-2">Pendiente</p>
+                                    <p class="text-amber-800 text-sm font-medium mb-2">Pendiente</p>
                                 @endif
 
                                 {{-- Línea --}}
@@ -365,12 +369,22 @@
                 <canvas id="canvasFirma"
                         width="500"
                         height="150"
-                        class="bg-white"></canvas>
+                        class="bg-white"
+                        role="img"
+                        aria-label="Área de firma del jefe directo"
+                        aria-describedby="firma-instrucciones"></canvas>
             </div>
+
+            <p id="firma-instrucciones" class="mt-2 text-sm text-gray-700">Dibuje con el puntero o cargue una imagen de firma mediante el campo accesible con teclado.</p>
+            <label for="firmaArchivo" class="mt-3 block text-sm font-semibold text-gray-700">Cargar imagen de firma</label>
+            <input id="firmaArchivo" type="file" accept="image/png,image/jpeg" class="mt-2 block w-full text-sm" data-signature-upload data-canvas="canvasFirma" data-output="firmaJefe" data-status="firma-estado">
+            <p id="firma-estado" class="mt-2 text-sm text-gray-600" role="status" aria-live="polite"></p>
 
             <div class="mt-4 flex gap-4">
                 <button type="button"
                         onclick="limpiarFirma()"
+                        data-signature-clear
+                        data-status="firma-estado"
                         class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
                     Limpiar
                 </button>
@@ -381,7 +395,7 @@
                 </button>
             </div>
         </form>
-    </div>
+    </main>
 
     <script>
         const canvas = document.getElementById('canvasFirma');

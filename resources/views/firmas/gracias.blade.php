@@ -14,8 +14,9 @@
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
+<a href="#contenido-principal" class="ui-skip-link">Saltar al contenido principal</a>
 
-<div class="max-w-md w-full bg-white rounded-2xl shadow-xl border border-blue-200 overflow-hidden">
+<main id="contenido-principal" tabindex="-1" class="max-w-md w-full bg-white rounded-2xl shadow-xl border border-blue-200 overflow-hidden">
     <!-- Encabezado institucional -->
     <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-5 text-center">
         <div class="flex justify-center mb-3">
@@ -26,7 +27,7 @@
                 </svg>
             </div>
         </div>
-        <h2 class="text-xl font-bold text-white">ESCUELA DE INFORMÁTICA</h2>
+        <p class="text-xl font-bold text-white">ESCUELA DE INFORMÁTICA</p>
         <p class="text-blue-200 text-sm mt-1">Facultad de Ciencias Físicas y Matemáticas</p>
     </div>
 
@@ -62,7 +63,7 @@
             Formato 01: Ficha de Registro de Prácticas Pre Profesionales
         </p>
     </div>
-</div>
+</main>
 
 </body>
 </html>

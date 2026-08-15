@@ -1,337 +1,168 @@
-<x-app-layout>
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<x-app-layout title="Nuevo usuario">
+    <x-slot name="header">
+        <x-ui.page-header
+            eyebrow="Administración"
+            title="Crear usuario"
+            description="Crea las credenciales y completa únicamente los datos correspondientes al rol seleccionado."
+            icon="heroicon-o-user-plus"
+        >
+            <x-slot name="actions">
+                <a href="{{ route('admin.usuarios.index') }}" class="ui-btn-secondary">@svg('heroicon-o-arrow-left', 'h-4 w-4') Volver a usuarios</a>
+            </x-slot>
+        </x-ui.page-header>
+    </x-slot>
 
-        <!-- Encabezado -->
-        <div class="mb-8">
-            <div class="bg-gradient-to-r from-blue-800 to-blue-900 rounded-2xl shadow-lg p-8">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h1 class="text-3xl font-bold text-white mb-2">
-                            Crear Nuevo Usuario
-                        </h1>
-                        <p class="text-blue-100 text-sm">
-                            Complete el formulario para registrar un nuevo usuario en el sistema
-                        </p>
-                    </div>
-                    <div class="hidden md:block">
-                        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
-                            </svg>
+    <div class="ui-page max-w-6xl">
+        <x-ui.form-errors />
+
+        <form action="{{ route('admin.usuarios.store') }}" method="POST" aria-describedby="nota-campos-obligatorios">
+            @csrf
+
+            <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_19rem]">
+                <div class="space-y-6">
+                    <section class="ui-card overflow-hidden" aria-labelledby="datos-acceso-titulo">
+                        <div class="ui-card-header">
+                            <x-ui.section-heading
+                                title="Datos de acceso"
+                                description="Estas credenciales permiten iniciar sesión y determinan el espacio de trabajo disponible."
+                                icon="heroicon-o-key"
+                            />
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Botón Volver -->
-        <div class="mb-6">
-            <a href="{{ route('admin.usuarios.index') }}"
-               class="inline-flex items-center gap-2 px-4 py-2 bg-white text-blue-800 text-sm font-medium rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:border-blue-300 hover:shadow-md transition-all duration-200">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                </svg>
-                Volver al Listado
-            </a>
-        </div>
-
-        <!-- Formulario Principal -->
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-
-            <form action="{{ route('admin.usuarios.store') }}" method="POST" class="p-8">
-                @csrf
-
-                <!-- Mensajes de Error -->
-                @if ($errors->any())
-                    <div class="mb-8 bg-red-50 border-l-4 border-red-500 rounded-lg p-5 shadow-sm">
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0">
-                                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
+                        <div class="ui-card-body space-y-6">
+                            <div>
+                                <label for="email" class="ui-label">Correo electrónico <span class="text-red-500" aria-hidden="true">*</span></label>
+                                <input id="email" type="email" name="email" value="{{ old('email') }}" autocomplete="email" placeholder="usuario@unitru.edu.pe" class="ui-field" required>
+                                <p class="ui-help">Se utilizará como identificador único para acceder al sistema.</p>
                             </div>
-                            <div class="ml-4">
-                                <h3 class="text-red-800 font-semibold mb-2">Se encontraron los siguientes errores:</h3>
-                                <ul class="list-disc list-inside space-y-1 text-sm text-red-700">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
+
+                            <div class="grid gap-5 sm:grid-cols-2">
+                                <div>
+                                    <label for="password" class="ui-label">Contraseña <span class="text-red-500" aria-hidden="true">*</span></label>
+                                    <x-password-input id="password" name="password" autocomplete="new-password" class="block w-full" required />
+                                    <p class="ui-help">Usa al menos 8 caracteres.</p>
+                                </div>
+                                <div>
+                                    <label for="password_confirmation" class="ui-label">Confirmar contraseña <span class="text-red-500" aria-hidden="true">*</span></label>
+                                    <x-password-input id="password_confirmation" name="password_confirmation" autocomplete="new-password" class="block w-full" required />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="rol_id" class="ui-label">Rol del usuario <span class="text-red-500" aria-hidden="true">*</span></label>
+                                <select id="rol_id" name="rol_id" class="ui-field" aria-describedby="rol-ayuda" required>
+                                    <option value="">Selecciona un rol</option>
+                                    @foreach($roles as $rol)
+                                        <option value="{{ $rol->id }}" data-rol-nombre="{{ $rol->nombre }}" @selected(old('rol_id') == $rol->id)>{{ ucfirst($rol->nombre) }}</option>
                                     @endforeach
-                                </ul>
+                                </select>
+                                <p id="rol-ayuda" class="ui-help">Al elegir un rol aparecerán únicamente los campos necesarios para ese perfil.</p>
                             </div>
                         </div>
-                    </div>
-                @endif
+                    </section>
 
-                <!-- Sección: Datos de Acceso -->
-                <div class="mb-8">
-                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 shadow-sm">
-                        <div class="flex items-center mb-6">
-                            <div class="bg-blue-600 rounded-lg p-2 mr-3">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                                </svg>
-                            </div>
-                            <h2 class="text-xl font-bold text-gray-800">Datos de Acceso</h2>
+                    <section id="perfil-data" class="ui-card hidden overflow-hidden" aria-labelledby="perfil-titulo">
+                        <div class="ui-card-header">
+                            <x-ui.section-heading
+                                title="Información del perfil"
+                                description="Completa los datos institucionales vinculados a la cuenta."
+                                icon="heroicon-o-identification"
+                            />
                         </div>
-
-                        <div class="space-y-5">
-                            <!-- Email -->
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                    Email Institucional
-                                    <span class="text-red-500">*</span>
-                                </label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                        </svg>
-                                    </div>
-                                    <input type="email"
-                                           name="email"
-                                           value="{{ old('email') }}"
-                                           required
-                                           placeholder="ejemplo@unitru.edu.pe"
-                                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
-                                </div>
-                            </div>
-
-                            <!-- Contraseñas -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                        Contraseña
-                                        <span class="text-red-500">*</span>
-                                    </label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
-                                            </svg>
-                                        </div>
-                                        <input type="password"
-                                               name="password"
-                                               required
-                                               placeholder="••••••••"
-                                               class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                        Confirmar Contraseña
-                                        <span class="text-red-500">*</span>
-                                    </label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            </svg>
-                                        </div>
-                                        <input type="password"
-                                               name="password_confirmation"
-                                               required
-                                               placeholder="••••••••"
-                                               class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Rol -->
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                    Rol del Usuario
-                                    <span class="text-red-500">*</span>
-                                </label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                        </svg>
-                                    </div>
-                                    <select name="rol_id"
-                                            id="rol_id"
-                                            required
-                                            class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
-                                        <option value="">Seleccione un Rol</option>
-                                        @foreach ($roles as $rol)
-                                            <option value="{{ $rol->id }}"
-                                                    data-rol-nombre="{{ $rol->nombre }}"
-                                                {{ old('rol_id') == $rol->id ? 'selected' : '' }}>
-                                                {{ ucfirst($rol->nombre) }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <p class="mt-2 text-xs text-gray-500">
-                                    Seleccione el rol que determinará los permisos del usuario
-                                </p>
-                            </div>
+                        <div class="ui-card-body">
+                            <x-alumno-form />
+                            <x-administrador-form />
+                            <x-empresa-form :razonesSociales="$razonesSociales" />
+                            <x-profesor-form />
                         </div>
+                    </section>
+
+                    <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                        <a href="{{ route('admin.usuarios.index') }}" class="ui-btn-secondary">Cancelar</a>
+                        <button type="submit" class="ui-btn-primary">@svg('heroicon-o-check', 'h-4 w-4') Crear usuario</button>
                     </div>
                 </div>
 
-                <!-- Sección: Datos Específicos del Rol -->
-                <div id="perfil-data" class="hidden mb-8">
-                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200 shadow-sm">
-                        <div class="flex items-center mb-6">
-                            <div class="bg-indigo-600 rounded-lg p-2 mr-3">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                </svg>
-                            </div>
-                            <h2 class="text-xl font-bold text-gray-800">Información del Perfil</h2>
-                        </div>
-
-                        <x-alumno-form />
-                        <x-administrador-form />
-                        <x-empresa-form :usuario="$usuario ?? null" :razonesSociales="$razonesSociales"/>
-                        <x-profesor-form />
+                <aside class="space-y-4 lg:sticky lg:top-24 lg:self-start">
+                    <div class="ui-card p-5">
+                        <span class="ui-icon-box">@svg('heroicon-o-shield-check', 'h-5 w-5')</span>
+                        <h2 class="mt-4 font-bold text-gray-950">Antes de crear la cuenta</h2>
+                        <ul class="mt-3 space-y-3 text-sm leading-6 text-gray-600">
+                            <li>Verifica que el correo no pertenezca a otra cuenta.</li>
+                            <li>Confirma el rol: determina permisos y datos requeridos.</li>
+                            <li>Entrega la contraseña por un canal seguro.</li>
+                        </ul>
                     </div>
-                </div>
 
-                <!-- Botones de Acción -->
-                <div class="mt-8 flex flex-col sm:flex-row gap-4">
-                    <button type="submit"
-                            class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold rounded-xl shadow-lg hover:from-blue-700 hover:to-blue-800 hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                        Crear Usuario
-                    </button>
-
-                    <a href="{{ route('admin.usuarios.index') }}"
-                       class="sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 bg-white text-gray-700 font-semibold rounded-xl shadow border border-gray-300 hover:bg-gray-50 hover:shadow-md transition-all duration-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                        Cancelar
-                    </a>
-                </div>
-
-            </form>
-        </div>
-
-        <!-- Información Adicional -->
-        <div class="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
-            <div class="flex items-start">
-                <div class="flex-shrink-0">
-                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                </div>
-                <div class="ml-3">
-                    <p class="text-sm text-blue-800">
-                        <span class="font-semibold">Nota:</span> Los campos marcados con <span class="text-red-500">*</span> son obligatorios.
-                        Asegúrese de completar toda la información antes de enviar el formulario.
-                    </p>
-                </div>
+                    <div class="rounded-2xl border border-blue-200 bg-blue-50 p-4 text-sm leading-6 text-blue-800">
+                        <p id="nota-campos-obligatorios"><strong>Campos obligatorios:</strong> están identificados con un asterisco rojo.</p>
+                    </div>
+                </aside>
             </div>
-        </div>
-
+        </form>
     </div>
+
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', async () => {
+                document.getElementById('resumen-errores')?.focus();
+
+                const roleSelect = document.getElementById('rol_id');
+                const profileSection = document.getElementById('perfil-data');
+                const profileForms = [...document.querySelectorAll("#perfil-data [id$='-fields'], #perfil-data [id$='-data']")];
+
+                const syncRoleFields = () => {
+                    const role = roleSelect.options[roleSelect.selectedIndex]?.dataset.rolNombre;
+                    profileSection.classList.toggle('hidden', !role);
+                    profileForms.forEach(form => form.classList.toggle('hidden', !role || ![`${role}-fields`, `${role}-data`].includes(form.id)));
+                };
+
+                roleSelect.addEventListener('change', syncRoleFields);
+                syncRoleFields();
+
+                const department = document.getElementById('departamento');
+                const province = document.getElementById('provincia');
+                const district = document.getElementById('distrito');
+                if (!department || !province || !district) return;
+
+                let locations = [];
+                try {
+                    const response = await fetch("{{ asset('ubigeo.json') }}");
+                    if (!response.ok) throw new Error('No se pudo cargar el catálogo de ubicaciones.');
+                    locations = await response.json();
+                } catch (error) {
+                    console.error(error);
+                    return;
+                }
+
+                const previous = @js([
+                    'department' => old('departamento'),
+                    'province' => old('provincia'),
+                    'district' => old('distrito'),
+                ]);
+
+                const fill = (select, values, selected = '') => {
+                    select.innerHTML = '<option value="">Seleccione</option>';
+                    values.forEach(value => select.add(new Option(value, value, false, value === selected)));
+                    select.disabled = values.length === 0;
+                };
+                const syncProvinces = (selected = '') => {
+                    const item = locations.find(value => value.nombre === department.value);
+                    fill(province, item?.provincias.map(value => value.nombre) ?? [], selected);
+                };
+                const syncDistricts = (selected = '') => {
+                    const item = locations.find(value => value.nombre === department.value);
+                    const selectedProvince = item?.provincias.find(value => value.nombre === province.value);
+                    fill(district, selectedProvince?.distritos ?? [], selected);
+                };
+
+                fill(department, locations.map(value => value.nombre), previous.department);
+                if (previous.department) syncProvinces(previous.province);
+                if (previous.province) syncDistricts(previous.district);
+
+                department.addEventListener('change', () => { syncProvinces(); fill(district, []); });
+                province.addEventListener('change', () => syncDistricts());
+            });
+        </script>
+    @endpush
 </x-app-layout>
-
-<script>
-    document.addEventListener("DOMContentLoaded", async () => {
-
-        /* ============================================================
-           1) CONTROL DINÁMICO DE FORMULARIOS SEGÚN ROL
-           ============================================================ */
-
-        const rolSelect = document.getElementById("rol_id");
-        const perfilData = document.getElementById("perfil-data");
-
-        const formularios = document.querySelectorAll("#perfil-data [id$='-fields'], #perfil-data [id$='-data']");
-
-        const mostrarCamposSegunRol = () => {
-            const rolNombre = rolSelect.options[rolSelect.selectedIndex]?.dataset.rolNombre;
-
-            // Oculta todo si no hay rol
-            if (!rolNombre) {
-                perfilData.classList.add("hidden");
-                formularios.forEach(f => f.classList.add("hidden"));
-                return;
-            }
-
-            perfilData.classList.remove("hidden");
-
-            formularios.forEach(f => {
-                const esFormularioDelRol =
-                    f.id === `${rolNombre}-fields` || f.id === `${rolNombre}-data`;
-
-                f.classList.toggle("hidden", !esFormularioDelRol);
-            });
-        };
-
-        rolSelect.addEventListener("change", mostrarCamposSegunRol);
-        mostrarCamposSegunRol();
-
-
-
-        /* ============================================================
-           2) UBIGEO DINÁMICO (Departamento → Provincia → Distrito)
-           ============================================================ */
-
-        const departamentoSelect = document.getElementById("departamento");
-        const provinciaSelect = document.getElementById("provincia");
-        const distritoSelect = document.getElementById("distrito");
-
-        // Si no existe formulario de empresa, parar aquí
-        if (!departamentoSelect) return;
-
-        let ubigeo = [];
-        try {
-            ubigeo = await fetch("{{ asset('ubigeo.json') }}").then(res => res.json());
-        } catch (error) {
-            console.error("Error cargando ubigeo.json:", error);
-            return;
-        }
-
-        // Cargar departamentos
-        ubigeo.forEach(dep => {
-            const option = document.createElement("option");
-            option.value = dep.nombre;
-            option.textContent = dep.nombre;
-            departamentoSelect.appendChild(option);
-        });
-
-        // Cambia provincias al seleccionar departamento
-        departamentoSelect.addEventListener("change", () => {
-            provinciaSelect.innerHTML = '<option value="">Seleccione</option>';
-            distritoSelect.innerHTML = '<option value="">Seleccione</option>';
-            provinciaSelect.disabled = true;
-            distritoSelect.disabled = true;
-
-            const dep = ubigeo.find(d => d.nombre === departamentoSelect.value);
-            if (!dep) return;
-
-            dep.provincias.forEach(prov => {
-                const option = document.createElement("option");
-                option.value = prov.nombre;
-                option.textContent = prov.nombre;
-                provinciaSelect.appendChild(option);
-            });
-            provinciaSelect.disabled = false;
-        });
-
-        // Cambia distritos al seleccionar provincia
-        provinciaSelect.addEventListener("change", () => {
-            distritoSelect.innerHTML = '<option value="">Seleccione</option>';
-            distritoSelect.disabled = true;
-
-            const dep = ubigeo.find(d => d.nombre === departamentoSelect.value);
-            if (!dep) return;
-
-            const prov = dep.provincias.find(p => p.nombre === provinciaSelect.value);
-            if (!prov) return;
-
-            prov.distritos.forEach(dist => {
-                const option = document.createElement("option");
-                option.value = dist;
-                option.textContent = dist;
-                distritoSelect.appendChild(option);
-            });
-            distritoSelect.disabled = false;
-        });
-    });
-</script>

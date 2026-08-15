@@ -46,7 +46,7 @@
                 <div class="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl p-4 border border-yellow-200">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-yellow-600">Pendientes</p>
+                            <p class="text-sm font-medium text-amber-800">Pendientes</p>
                             <p class="text-2xl font-bold text-yellow-900">{{ $postulaciones->whereNull('aprobado')->count() }}</p>
                         </div>
                         <x-heroicon-o-clock class="h-10 w-10 text-yellow-400"/>
@@ -95,6 +95,7 @@
             @else
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
+                        <caption class="sr-only">Postulaciones recibidas</caption>
                         <thead class="bg-gradient-to-r from-indigo-50 to-blue-50">
                         <tr>
                             <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
@@ -155,10 +156,10 @@
                                 <td class="px-6 py-4 text-center">
                                     @if($postulacion->alumno->cv)
                                         <a href="{{ $postulacion->alumno->cv }}"
-                                           target="_blank"
+                                           target="_blank" rel="noopener noreferrer"
                                            class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg hover:bg-indigo-100 transition font-medium text-sm">
                                             <x-heroicon-o-document-text class="h-5 w-5"/>
-                                            Ver CV
+                                            Ver CV <span class="sr-only">(se abre en una pestaña nueva)</span>
                                         </a>
                                     @else
                                         <span class="text-sm text-gray-400">No disponible</span>
@@ -197,7 +198,7 @@
                                                 @method('PATCH')
                                                 <button type="submit"
                                                         onclick="return confirm('¿Estás seguro de aprobar esta postulación?')"
-                                                        class="inline-flex items-center gap-1.5 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium text-sm shadow-sm">
+                                                        class="inline-flex items-center gap-1.5 px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 transition font-medium text-sm shadow-sm">
                                                     <x-heroicon-o-check class="h-4 w-4"/>
                                                     Aprobar
                                                 </button>

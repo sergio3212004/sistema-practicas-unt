@@ -1,18 +1,9 @@
-<x-app-layout>
+<x-app-layout title="Informes de entregas">
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Informes de Entregas
-            </h2>
-            <a href="{{ route('dashboard') }}"
-               class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition">
-                @svg('heroicon-o-arrow-left', 'w-4 h-4 mr-2')
-                Volver al Dashboard
-            </a>
-        </div>
+        <x-ui.page-header eyebrow="Evaluación académica" title="Informes de entregas" description="Revisa el avance y las calificaciones de los trabajos programados." icon="heroicon-o-chart-bar-square" />
     </x-slot>
 
-    <div class="py-12 mt-12">
+    <div class="ui-page">
         <div class="px-6 lg:px-12">
 
             {{-- Mensaje de éxito --}}
@@ -32,7 +23,7 @@
 
             {{-- Header --}}
             <div class="bg-white overflow-hidden shadow-lg rounded-lg mb-6">
-                <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600 px-8 py-10">
+                <div class="bg-blue-900 px-8 py-10">
                     <div>
                         <h3 class="text-4xl font-black text-white drop-shadow-lg">Informes de Entregas</h3>
                         <p class="text-indigo-50 mt-2 text-lg font-medium">Revisa y califica los trabajos de tus
@@ -51,14 +42,14 @@
                     </svg>
                     <p class="text-gray-600 text-lg">No hay entregas creadas aún.</p>
                     <a href="{{ route('profesor.entregas.create') }}"
-                       class="mt-4 inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">
+                       class="mt-4 inline-flex items-center px-6 py-3 bg-blue-800 text-white font-semibold rounded-lg hover:bg-blue-900 transition">
                         Crear Primera Entrega
                     </a>
                 </div>
             @else
                 <div class="grid grid-cols-1 gap-6">
                     @foreach($entregas as $entrega)
-                        <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        <div class="bg-white rounded-lg shadow-md  transition-all duration-300 overflow-hidden">
                             <div class="p-6">
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
@@ -92,16 +83,16 @@
                                                 <div class="text-2xl font-bold text-amber-600">{{ $entrega['pendientes'] }}</div>
                                                 <div class="text-xs text-amber-700 font-medium">Pendientes</div>
                                             </div>
-                                            <div class="bg-purple-50 rounded-lg p-3 text-center">
-                                                <div class="text-2xl font-bold text-purple-600">{{ $entrega['calificados'] }}</div>
-                                                <div class="text-xs text-purple-700 font-medium">Calificados</div>
+                                            <div class="bg-blue-50 rounded-lg p-3 text-center">
+                                                <div class="text-2xl font-bold text-blue-700">{{ $entrega['calificados'] }}</div>
+                                                <div class="text-xs text-blue-800 font-medium">Calificados</div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="ml-4">
                                         <a href="{{ route('profesor.informes.show', $entrega['id']) }}"
-                                           class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                                           class="inline-flex items-center px-6 py-3 ui-btn-primary text-white font-bold rounded-lg shadow-lg  transform  transition-all duration-200">
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                       d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>

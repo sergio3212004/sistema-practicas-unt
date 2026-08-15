@@ -3,9 +3,9 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="text-2xl font-bold text-gray-900">
+                <h1 class="text-2xl font-bold text-gray-900">
                     Detalle de Entrega
-                </h2>
+                </h1>
                 <p class="text-sm text-gray-600 mt-1">
                     {{ $entrega->actividad->titulo }}
                 </p>
@@ -123,7 +123,7 @@
                                    rel="noopener noreferrer"
                                    class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
                                     @svg('heroicon-o-arrow-top-right-on-square', 'w-4 h-4 mr-1.5')
-                                    Abrir en Google Drive
+                                    Abrir en Google Drive <span class="sr-only">(se abre en una pestaña nueva)</span>
                                 </a>
                             @else
                                 {{-- Enlace directo al archivo en storage --}}
@@ -132,7 +132,7 @@
                                    rel="noopener noreferrer"
                                    class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium">
                                     @svg('heroicon-o-document-text', 'w-4 h-4 mr-1.5')
-                                    Ver archivo
+                                    Ver archivo <span class="sr-only">(se abre en una pestaña nueva)</span>
                                 </a>
                             @endif
                         </div>
@@ -168,7 +168,7 @@
                                         Puedes reenviar tu trabajo con las correcciones necesarias antes de la fecha límite.
                                     </p>
                                     <a href="{{ route('alumno.entregas.edit', $entrega) }}"
-                                       class="inline-flex items-center px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-medium rounded-lg transition-colors">
+                                       class="inline-flex items-center px-4 py-2 bg-amber-700 hover:bg-amber-800 text-white text-sm font-medium rounded-lg transition-colors">
                                         @svg('heroicon-o-arrow-path', 'w-4 h-4 mr-2')
                                         Reenviar Entrega
                                     </a>

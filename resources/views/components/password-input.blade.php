@@ -1,11 +1,23 @@
 @props(['disabled' => false])
 
+@php
+    $fieldName = $attributes->get('name');
+    $fieldId = $attributes->get('id');
+    $hasError = is_string($fieldName) && isset($errors) && $errors->has($fieldName);
+    $describedBy = trim(implode(' ', array_filter([
+        $attributes->get('aria-describedby'),
+        $hasError && $fieldId ? $fieldId.'-error' : null,
+    ])));
+@endphp
+
 <div x-data="{ passwordVisible: false }" class="relative">
     <input
         type="password"
         x-bind:type="passwordVisible ? 'text' : 'password'"
         @disabled($disabled)
-        {{ $attributes->except('type')->merge(['class' => 'ui-field pr-12']) }}
+        @if($hasError) aria-invalid="true" @endif
+        @if($describedBy) aria-describedby="{{ $describedBy }}" @endif
+        {{ $attributes->except(['type', 'aria-describedby'])->merge(['class' => 'ui-field pr-12']) }}
     >
 
     <button

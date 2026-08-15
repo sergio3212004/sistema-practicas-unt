@@ -16,7 +16,7 @@
 
     <div class="ui-page">
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <x-ui.stat-card label="Usuarios" :value="$users->total()" description="Total registrado" icon="heroicon-o-users" />
+            <x-ui.stat-card label="Usuarios" :value="$roleCounts->sum()" description="Total registrado" icon="heroicon-o-users" />
             <x-ui.stat-card label="Estudiantes" :value="$roleCounts->get('alumno', 0)" description="Cuentas académicas" icon="heroicon-o-academic-cap" />
             <x-ui.stat-card label="Docentes" :value="$roleCounts->get('profesor', 0)" description="Supervisión de aulas" icon="heroicon-o-user-group" />
             <x-ui.stat-card label="Empresas" :value="$roleCounts->get('empresa', 0)" description="Organizaciones vinculadas" icon="heroicon-o-building-office-2" tone="success" />
@@ -31,17 +31,48 @@
                 <span class="ui-badge-info">{{ $users->total() }} registros</span>
             </div>
 
+            <form method="GET" action="{{ route('admin.usuarios.index') }}" class="grid gap-3 border-b border-gray-200 bg-gray-50 p-5 sm:grid-cols-[minmax(0,1fr)_14rem_auto] sm:items-end sm:px-6" role="search">
+                <div>
+                    <label for="q" class="ui-label">Buscar usuario</label>
+                    <input id="q" type="search" name="q" value="{{ request('q') }}" class="ui-field" placeholder="Correo, nombre, código o RUC">
+                </div>
+                <div>
+                    <label for="rol" class="ui-label">Rol</label>
+                    <select id="rol" name="rol" class="ui-field">
+                        <option value="">Todos los roles</option>
+                        @foreach($roles as $role)
+                            <option value="{{ $role->id }}" @selected((string) request('rol') === (string) $role->id)>{{ ucfirst($role->nombre) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex gap-2">
+                    <button type="submit" class="ui-btn-primary flex-1">@svg('heroicon-o-magnifying-glass', 'h-4 w-4') Buscar</button>
+                    @if(request()->filled('q') || request()->filled('rol'))
+                        <a href="{{ route('admin.usuarios.index') }}" class="ui-btn-secondary px-3" aria-label="Limpiar filtros">@svg('heroicon-o-x-mark', 'h-5 w-5')</a>
+                    @endif
+                </div>
+            </form>
+
             @if($users->isEmpty())
                 <div class="p-6">
-                    <x-ui.empty-state title="No hay usuarios registrados" description="Crea la primera cuenta para empezar a gestionar el sistema." icon="heroicon-o-users">
+                    <x-ui.empty-state
+                        :title="request()->filled('q') || request()->filled('rol') ? 'No hay coincidencias' : 'No hay usuarios registrados'"
+                        :description="request()->filled('q') || request()->filled('rol') ? 'Prueba con otro término o elimina los filtros aplicados.' : 'Crea la primera cuenta para empezar a gestionar el sistema.'"
+                        icon="heroicon-o-users"
+                    >
                         <x-slot name="actions">
-                            <a href="{{ route('admin.usuarios.create') }}" class="ui-btn-primary">Crear usuario</a>
+                            @if(request()->filled('q') || request()->filled('rol'))
+                                <a href="{{ route('admin.usuarios.index') }}" class="ui-btn-primary">Limpiar filtros</a>
+                            @else
+                                <a href="{{ route('admin.usuarios.create') }}" class="ui-btn-primary">Crear usuario</a>
+                            @endif
                         </x-slot>
                     </x-ui.empty-state>
                 </div>
             @else
                 <div class="overflow-x-auto">
                     <table class="ui-table">
+                        <caption class="sr-only">Usuarios registrados</caption>
                         <thead>
                             <tr>
                                 <th scope="col">Usuario</th>

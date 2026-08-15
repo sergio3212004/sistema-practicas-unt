@@ -29,7 +29,7 @@
                 class="block w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
             />
 
-            <x-input-error :messages="$errors->get('email')" />
+            <x-input-error for="login-email" :messages="$errors->get('email')" />
         </div>
 
         {{-- Password --}}
@@ -44,7 +44,7 @@
                 class="block w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
             />
 
-            <x-input-error :messages="$errors->get('password')" />
+            <x-input-error for="login-password" :messages="$errors->get('password')" />
         </div>
 
         {{-- Remember + Forgot --}}

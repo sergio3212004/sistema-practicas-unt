@@ -6,9 +6,9 @@
                     @svg('heroicon-o-document-text', 'w-6 h-6 text-white')
                 </div>
                 <div>
-                    <h2 class="font-bold text-2xl text-gray-800 leading-tight">
+                    <h1 class="font-bold text-2xl text-gray-800 leading-tight">
                         Ficha de Registro - Vista Completa
-                    </h2>
+                    </h1>
                     <p class="text-sm text-gray-500 mt-0.5">Formato 01: Ficha de Registro de Prácticas Pre Profesionales</p>
                 </div>
             </div>
@@ -16,7 +16,7 @@
             <!-- Badge de estado -->
             <div>
                 @if($fichaRegistro->aceptado)
-                    <span class="inline-flex items-center px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-full shadow-lg">
+                    <span class="inline-flex items-center px-4 py-2 bg-green-100 text-green-900 text-sm font-semibold rounded-full shadow-lg">
                         @svg('heroicon-o-check-circle', 'w-5 h-5 mr-2')
                         Ficha Aceptada
                     </span>
@@ -49,15 +49,15 @@
                                 @svg('heroicon-o-academic-cap', 'w-12 h-12 text-blue-800')
                             </div>
                         </div>
-                        <h1 class="text-2xl font-bold text-white mb-2">
+                        <p class="text-2xl font-bold text-white mb-2">
                             FACULTAD DE CIENCIAS FÍSICAS Y MATEMÁTICAS
-                        </h1>
-                        <h2 class="text-xl font-semibold text-blue-100 mb-2">
+                        </p>
+                        <p class="text-xl font-semibold text-blue-100 mb-2">
                             PROGRAMA DE INFORMÁTICA
-                        </h2>
-                        <h3 class="text-lg font-medium text-blue-200 mb-1">
+                        </p>
+                        <p class="text-lg font-medium text-blue-200 mb-1">
                             MONITOREO DE PRÁCTICAS PRE PROFESIONALES
-                        </h3>
+                        </p>
                         <div class="inline-block bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-bold text-sm mt-3 shadow-lg">
                             FORMATO 01: FICHA DE REGISTRO
                         </div>
@@ -69,17 +69,17 @@
                     <!-- Sección 1: ESTUDIANTE -->
                     <div class="mb-8 border-2 border-blue-200 rounded-xl overflow-hidden">
                         <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                            <h3 class="text-lg font-bold text-white flex items-center">
+                            <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-user', 'w-5 h-5 mr-2')
                                 1. ESTUDIANTE
-                            </h3>
+                            </h2>
                         </div>
 
                         <div class="p-6 bg-blue-50">
                             <div class="mb-4">
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <p class="block text-sm font-semibold text-gray-700 mb-2">
                                     Apellidos y Nombres
-                                </label>
+                                </p>
                                 <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 font-medium">
                                     {{ $fichaRegistro->alumno->nombre_completo }}
                                 </div>
@@ -87,25 +87,25 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Nro. Matrícula
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->alumno->codigo_matricula }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Ciclo
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->ciclo }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Semestre
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->semestre->nombre }}
                                     </div>
@@ -114,18 +114,18 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Teléfono Celular
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 flex items-center">
                                         @svg('heroicon-o-phone', 'w-5 h-5 text-blue-800 mr-2')
                                         {{ $fichaRegistro->alumno->telefono }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Correo Electrónico
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 flex items-center">
                                         @svg('heroicon-o-envelope', 'w-5 h-5 text-blue-800 mr-2')
                                         {{ $fichaRegistro->alumno->user->email }}
@@ -138,26 +138,26 @@
                     <!-- Sección 2: EMPRESA O INSTITUCIÓN -->
                     <div class="mb-8 border-2 border-blue-200 rounded-xl overflow-hidden">
                         <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                            <h3 class="text-lg font-bold text-white flex items-center">
+                            <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-building-office', 'w-5 h-5 mr-2')
                                 2. EMPRESA O INSTITUCIÓN
-                            </h3>
+                            </h2>
                         </div>
 
                         <div class="p-6 bg-blue-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Razón Social
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 font-medium">
                                         {{ $fichaRegistro->razon_social }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         RUC
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->ruc }}
                                     </div>
@@ -166,17 +166,17 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Gerente General
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->nombre_gerente }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Jefe de RRHH
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->nombre_jefe_rrhh }}
                                     </div>
@@ -184,9 +184,9 @@
                             </div>
 
                             <div class="mb-4">
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <p class="block text-sm font-semibold text-gray-700 mb-2">
                                     Dirección
-                                </label>
+                                </p>
                                 <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 flex items-center">
                                     @svg('heroicon-o-map-pin', 'w-5 h-5 text-blue-800 mr-2')
                                     {{ $fichaRegistro->direccion }}
@@ -195,25 +195,25 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Teléfono Fijo
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->telefono_fijo ?? 'No especificado' }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Teléfono Móvil
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->telefono_movil ?? 'No especificado' }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Correo Empresa
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 text-sm">
                                         {{ $fichaRegistro->correo_empresa ?? 'No especificado' }}
                                     </div>
@@ -222,25 +222,25 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Departamento
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->departamento }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Provincia
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->provincia }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Distrito
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->distrito }}
                                     </div>
@@ -252,27 +252,27 @@
                     <!-- Sección 3: CARACTERÍSTICAS DE LA PRÁCTICA -->
                     <div class="mb-8 border-2 border-blue-200 rounded-xl overflow-hidden">
                         <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                            <h3 class="text-lg font-bold text-white flex items-center">
+                            <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-clipboard-document-list', 'w-5 h-5 mr-2')
                                 3. CARACTERÍSTICAS DE LA PRÁCTICA
-                            </h3>
+                            </h2>
                         </div>
 
                         <div class="p-6 bg-blue-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Fecha de Inicio
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 flex items-center">
                                         @svg('heroicon-o-calendar', 'w-5 h-5 text-blue-800 mr-2')
                                         {{ $fichaRegistro->fecha_inicio->format('d/m/Y') }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Fecha de Término
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 flex items-center">
                                         @svg('heroicon-o-calendar', 'w-5 h-5 text-blue-800 mr-2')
                                         {{ $fichaRegistro->fecha_termino->format('d/m/Y') }}
@@ -282,9 +282,10 @@
 
                             <!-- Días y Horarios en Tabla -->
                             <div class="mb-4">
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Días y Horarios</label>
+                                <p class="block text-sm font-semibold text-gray-700 mb-2">Días y Horarios</p>
 
                                 <table class="w-full border-collapse">
+                                    <caption class="sr-only">Días y horarios de práctica</caption>
                                     <thead>
                                     <tr class="bg-blue-100">
                                         <th class="border border-blue-300 p-2 text-center font-semibold">HORA</th>
@@ -319,9 +320,9 @@
                             </div>
 
                             <div class="mb-4">
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <p class="block text-sm font-semibold text-gray-700 mb-2">
                                     Descripción de la Práctica
-                                </label>
+                                </p>
                                 <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 min-h-[100px]">
                                     {{ $fichaRegistro->descripcion }}
                                 </div>
@@ -329,25 +330,25 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Área de Prácticas
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->area_practicas }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Cargo
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->cargo }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Jefe Directo
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->nombre_jefe_directo }}
                                     </div>
@@ -356,17 +357,17 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Celular de Jefe Directo
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800">
                                         {{ $fichaRegistro->telefono_jefe_directo }}
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">
                                         Correo de Jefe Directo
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg px-4 py-3 text-gray-800 text-sm">
                                         {{ $fichaRegistro->correo_jefe_directo }}
                                     </div>
@@ -378,10 +379,10 @@
                     <!-- Sección 4: FIRMAS -->
                     <div class="border-2 border-blue-200 rounded-xl overflow-hidden">
                         <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                            <h3 class="text-lg font-bold text-white flex items-center">
+                            <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-pencil-square', 'w-5 h-5 mr-2')
                                 4. FIRMAS Y APROBACIONES
-                            </h3>
+                            </h2>
                         </div>
 
                         <div class="p-6 bg-blue-50">
@@ -468,7 +469,7 @@
                         <div class="flex gap-3">
                             <!-- Botón de eliminar (solo si no está aceptado) -->
                             @if(!$fichaRegistro->aceptado)
-                                <button onclick="confirmarEliminacion()"
+                                <button type="button" onclick="confirmarEliminacion()"
                                         class="inline-flex items-center px-6 py-3 bg-red-600 border-2 border-red-600 rounded-xl text-white font-semibold hover:bg-red-700 hover:border-red-700 transition-all duration-200 shadow-lg group">
                                     @svg('heroicon-o-trash', 'w-5 h-5 mr-2 group-hover:scale-110 transition-transform')
                                     Eliminar Ficha

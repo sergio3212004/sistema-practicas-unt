@@ -20,5 +20,9 @@ it('provides a global collapsible navigation in the authenticated layout', funct
         ->toContain("Alpine.data('navigation'")
         ->toContain("window.localStorage.getItem('navigation.expanded')")
         ->toContain('toggleNavigation()')
-        ->toContain('closeNavigation()');
+        ->toContain('closeNavigation({ restoreFocus = false } = {})')
+        ->toContain('trapNavigationFocus(event)')
+        ->and($navigation)
+        ->toContain(':inert="!navigationVisible()"')
+        ->toContain('aria-current="page"');
 });

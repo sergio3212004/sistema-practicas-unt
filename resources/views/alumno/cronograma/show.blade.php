@@ -6,9 +6,9 @@
                     @svg('heroicon-o-clipboard-document-list', 'w-6 h-6 text-white')
                 </div>
                 <div>
-                    <h2 class="font-bold text-2xl text-gray-800 leading-tight">
+                    <h1 class="font-bold text-2xl text-gray-800 leading-tight">
                         Plan de Prácticas Pre Profesionales
-                    </h2>
+                    </h1>
                     <p class="text-sm text-gray-500 mt-0.5">Vista detallada de tu cronograma</p>
                 </div>
             </div>
@@ -38,15 +38,15 @@
                                 @svg('heroicon-o-academic-cap', 'w-12 h-12 text-blue-800')
                             </div>
                         </div>
-                        <h1 class="text-2xl font-bold text-white mb-2">
+                        <p class="text-2xl font-bold text-white mb-2">
                             FACULTAD DE CIENCIAS FÍSICAS Y MATEMÁTICAS
-                        </h1>
-                        <h2 class="text-xl font-semibold text-blue-100 mb-2">
+                        </p>
+                        <p class="text-xl font-semibold text-blue-100 mb-2">
                             PROGRAMA DE INFORMÁTICA
-                        </h2>
-                        <h3 class="text-lg font-medium text-blue-200 mb-1">
+                        </p>
+                        <p class="text-lg font-medium text-blue-200 mb-1">
                             MONITOREO DE PRÁCTICAS PRE PROFESIONALES
-                        </h3>
+                        </p>
                         <div class="flex flex-col items-center mt-4 space-y-4">
                             <div class="inline-block bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-bold text-sm shadow-lg">
                                 FORMATO 02: PLAN DE PRÁCTICAS
@@ -74,26 +74,26 @@
                     <!-- 1. ESTUDIANTE -->
                     <div class="border-2 border-blue-200 rounded-xl overflow-hidden mb-8">
                         <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                            <h3 class="text-lg font-bold text-white flex items-center">
+                            <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-user', 'w-5 h-5 mr-2') 1. ESTUDIANTE
-                            </h3>
+                            </h2>
                         </div>
                         <div class="p-6 bg-blue-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Apellidos y Nombre</label>
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">Apellidos y Nombre</p>
                                     <p class="px-4 py-3 bg-white border-2 border-blue-200 rounded-lg">{{ $cronograma->fichaRegistro->alumno->nombre_completo }}</p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nro. Matrícula</label>
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">Nro. Matrícula</p>
                                     <p class="px-4 py-3 bg-white border-2 border-blue-200 rounded-lg">{{ $cronograma->fichaRegistro->alumno->codigo_matricula }}</p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Ciclo</label>
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">Ciclo</p>
                                     <p class="px-4 py-3 bg-white border-2 border-blue-200 rounded-lg">{{ $cronograma->fichaRegistro->ciclo }}</p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Año y Semestre</label>
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">Año y Semestre</p>
                                     <p class="px-4 py-3 bg-white border-2 border-blue-200 rounded-lg">{{ $cronograma->fichaRegistro->semestre->nombre ?? 'N/A' }}</p>
                                 </div>
                             </div>
@@ -103,22 +103,22 @@
                     <!-- 2. EMPRESA -->
                     <div class="border-2 border-blue-200 rounded-xl overflow-hidden mb-8">
                         <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                            <h3 class="text-lg font-bold text-white flex items-center">
+                            <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-building-office', 'w-5 h-5 mr-2') 2. EMPRESA O INSTITUCIÓN
-                            </h3>
+                            </h2>
                         </div>
                         <div class="p-6 bg-blue-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Razón Social</label>
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">Razón Social</p>
                                     <p class="px-4 py-3 bg-white border-2 border-blue-200 rounded-lg">{{ $cronograma->fichaRegistro->razon_social }}</p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">RUC</label>
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">RUC</p>
                                     <p class="px-4 py-3 bg-white border-2 border-blue-200 rounded-lg">{{ $cronograma->fichaRegistro->ruc }}</p>
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Dirección</label>
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">Dirección</p>
                                     <p class="px-4 py-3 bg-white border-2 border-blue-200 rounded-lg">{{ $cronograma->fichaRegistro->direccion }}</p>
                                 </div>
                             </div>
@@ -128,27 +128,28 @@
                     <!-- 3. CARACTERÍSTICAS -->
                     <div class="border-2 border-blue-200 rounded-xl overflow-hidden mb-8">
                         <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                            <h3 class="text-lg font-bold text-white flex items-center">
+                            <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-clipboard-document-list', 'w-5 h-5 mr-2') 3. CARACTERÍSTICAS DE LA PRÁCTICA
-                            </h3>
+                            </h2>
                         </div>
                         <div class="p-6 bg-blue-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Fecha de Inicio</label>
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">Fecha de Inicio</p>
                                     <p class="px-4 py-3 bg-white border-2 border-blue-200 rounded-lg">{{ $cronograma->fichaRegistro->fecha_inicio->format('d/m/Y') }}</p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Fecha de Término</label>
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">Fecha de Término</p>
                                     <p class="px-4 py-3 bg-white border-2 border-blue-200 rounded-lg">{{ $cronograma->fichaRegistro->fecha_termino->format('d/m/Y') }}</p>
                                 </div>
                             </div>
 
                             <!-- Días y Horarios en Tabla -->
                             <div class="mb-4">
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Días y Horarios</label>
+                                <p class="block text-sm font-semibold text-gray-700 mb-2">Días y Horarios</p>
 
                                 <table class="w-full border-collapse">
+                                    <caption class="sr-only">Días y horarios de práctica</caption>
                                     <thead>
                                     <tr class="bg-blue-100">
                                         <th class="border border-blue-300 p-2 text-center font-semibold">HORA</th>
@@ -183,7 +184,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Área de Prácticas</label>
+                                <p class="block text-sm font-semibold text-gray-700 mb-2">Área de Prácticas</p>
                                 <p class="px-4 py-3 bg-white border-2 border-blue-200 rounded-lg">{{ $cronograma->fichaRegistro->area_practicas }}</p>
                             </div>
                         </div>
@@ -192,20 +193,21 @@
                     <!-- 4. ACTIVIDADES -->
                     <div class="border-2 border-blue-200 rounded-xl overflow-hidden mb-8">
                         <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                            <h3 class="text-lg font-bold text-white flex items-center">
+                            <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-list-bullet', 'w-5 h-5 mr-2') 4. ACTIVIDADES PRINCIPALES
-                            </h3>
+                            </h2>
                         </div>
                         <div class="p-6 bg-blue-50">
                             @foreach($cronograma->actividades as $index => $actividad)
                                 <div class="mb-6 p-4 border-2 border-blue-200 rounded-lg bg-white">
                                     <h4 class="font-semibold text-gray-800 mb-3">Actividad {{ $index + 1 }}</h4>
                                     <div class="mb-3">
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Descripción</label>
+                                        <p class="block text-sm font-semibold text-gray-700 mb-2">Descripción</p>
                                         <p class="px-4 py-3 bg-white border-2 border-blue-200 rounded-lg">{{ $actividad->actividad }}</p>
                                     </div>
                                     <div class="overflow-x-auto">
                                         <table class="min-w-full border border-blue-200 text-sm">
+                                            <caption class="sr-only">Actividades programadas</caption>
                                             <thead class="bg-blue-800 text-white">
                                             <tr>
                                                 @for($i = 1; $i <= 4; $i++)
@@ -244,9 +246,9 @@
 
                     <div class="mb-8 bg-blue-50 border-2 border-blue-200 rounded-xl overflow-hidden">
                         <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                            <h3 class="text-lg font-bold text-white flex items-center">
+                            <h2 class="text-lg font-bold text-white flex items-center">
                                 @svg('heroicon-o-pencil-square', 'w-5 h-5 mr-2') Estado de Firmas
-                            </h3>
+                            </h2>
                         </div>
                         <div class="p-6">
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -266,7 +268,7 @@
                                     @if($cronograma->firma_jefe_directo)
                                         <img src="{{ \Illuminate\Support\Facades\Storage::url($cronograma->firma_jefe_directo) }}" alt="Firma Jefe" class="mx-auto h-16 object-contain">
                                     @else
-                                        <span class="text-yellow-600 text-xs">Esperando firma</span>
+                                        <span class="text-amber-800 text-xs">Esperando firma</span>
                                     @endif
                                 </div>
 
@@ -276,7 +278,7 @@
                                     @if($cronograma->firma_profesor)
                                         <img src="{{ \Illuminate\Support\Facades\Storage::url($cronograma->firma_profesor) }}" alt="Firma Profesor" class="mx-auto h-16 object-contain">
                                     @else
-                                        <span class="text-yellow-600 text-xs">Esperando firma</span>
+                                        <span class="text-amber-800 text-xs">Esperando firma</span>
                                     @endif
                                 </div>
                             </div>

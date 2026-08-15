@@ -5,7 +5,7 @@
 
         <!-- Código de Profesor -->
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">
+            <label for="codigo_profesor" class="ui-label">
                 Código de Profesor
                 <span class="text-red-500">*</span>
             </label>
@@ -16,17 +16,18 @@
                     </svg>
                 </div>
                 <input type="text"
+                       id="codigo_profesor"
                        name="codigo_profesor"
                        value="{{ old('codigo_profesor', $profesor->codigo_profesor ?? '') }}"
                        placeholder="Ej: PROF2024001"
-                       class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                       class="ui-field pl-10">
             </div>
         </div>
 
         <!-- Datos personales -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="nombres_profesor" class="ui-label">
                     Nombres
                     <span class="text-red-500">*</span>
                 </label>
@@ -37,15 +38,17 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="nombres_profesor"
                            name="nombres_profesor"
+                           autocomplete="given-name"
                            value="{{ old('nombres_profesor', $profesor->nombres ?? '') }}"
                            placeholder="Nombres completos"
-                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                           class="ui-field pl-10">
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="apellido_paterno_profesor" class="ui-label">
                     Apellido Paterno
                     <span class="text-red-500">*</span>
                 </label>
@@ -56,15 +59,16 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="apellido_paterno_profesor"
                            name="apellido_paterno_profesor"
                            value="{{ old('apellido_paterno_profesor', $profesor->apellido_paterno ?? '') }}"
                            placeholder="Apellido paterno"
-                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                           class="ui-field pl-10">
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="apellido_materno_profesor" class="ui-label">
                     Apellido Materno
                     <span class="text-red-500">*</span>
                 </label>
@@ -75,15 +79,16 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="apellido_materno_profesor"
                            name="apellido_materno_profesor"
                            value="{{ old('apellido_materno_profesor', $profesor->apellido_materno ?? '') }}"
                            placeholder="Apellido materno"
-                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                           class="ui-field pl-10">
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="telefono_profesor" class="ui-label">
                     Teléfono
                     <span class="text-gray-400 text-xs">(opcional)</span>
                 </label>
@@ -94,16 +99,19 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="telefono_profesor"
                            name="telefono_profesor"
+                           inputmode="tel"
+                           autocomplete="tel"
                            value="{{ old('telefono_profesor', $profesor->telefono ?? '') }}"
                            placeholder="Ej: 987654321"
-                           class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                           class="ui-field pl-10">
                 </div>
             </div>
         </div>
 
         <!-- Información adicional -->
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div class="rounded-xl border border-blue-200 bg-blue-50 p-4">
             <div class="flex items-start">
                 <div class="flex-shrink-0">
                     <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,7 +119,7 @@
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm text-blue-800">
+                    <p class="text-sm leading-6 text-blue-800">
                         <span class="font-semibold">Nota:</span> El código de profesor es único y se utiliza para identificar al docente en el sistema de prácticas pre-profesionales.
                     </p>
                 </div>

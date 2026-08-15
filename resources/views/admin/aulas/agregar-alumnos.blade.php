@@ -1,66 +1,100 @@
-<x-app-layout>
-    <div class="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md">
+<x-app-layout :title="'Agregar estudiantes · Aula '.$aula->numero">
+    <x-slot name="header">
+        <x-ui.page-header
+            eyebrow="Administración académica"
+            :title="'Agregar estudiantes al aula '.$aula->numero"
+            description="Selecciona una o varias cuentas disponibles y asígnalas al grupo en una sola operación."
+            icon="heroicon-o-user-plus"
+        >
+            <x-slot name="actions">
+                <a href="{{ route('admin.aulas.show', $aula) }}" class="ui-btn-secondary">@svg('heroicon-o-arrow-left', 'h-4 w-4') Volver al aula</a>
+            </x-slot>
+        </x-ui.page-header>
+    </x-slot>
 
-        <h1 class="text-2xl font-bold text-gray-800 mb-4">
-            Agregar alumnos al Aula N° {{ $aula->numero }}
-        </h1>
+    <div class="ui-page max-w-6xl">
+        <x-ui.form-errors />
 
-        <a href="{{ route('admin.aulas.show', $aula->id) }}"
-           class="inline-block mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
-            ← Volver
-        </a>
-
-        @if (session('success'))
-            <div class="p-3 mb-4 text-green-800 bg-green-100 border border-green-300 rounded">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if ($alumnos->count() === 0)
-
-            <p class="text-gray-600">No hay alumnos disponibles para asignar.</p>
-
+        @if($alumnos->isEmpty())
+            <x-ui.empty-state
+                title="No hay estudiantes disponibles"
+                description="Todos los estudiantes ya pertenecen a un aula. Puedes volver al grupo o revisar el directorio de usuarios."
+                icon="heroicon-o-user-group"
+            >
+                <x-slot name="actions">
+                    <a href="{{ route('admin.aulas.show', $aula) }}" class="ui-btn-secondary">Volver al aula</a>
+                    <a href="{{ route('admin.usuarios.index') }}" class="ui-btn-primary">Revisar usuarios</a>
+                </x-slot>
+            </x-ui.empty-state>
         @else
-
-            <form action="{{ route('admin.aulas.asignar-alumnos', $aula->id) }}" method="POST">
+            <form
+                action="{{ route('admin.aulas.asignar-alumnos', $aula) }}"
+                method="POST"
+                class="ui-card overflow-hidden"
+                x-data="{ selected: @js(old('alumnos', [])) }"
+            >
                 @csrf
 
-                <table class="min-w-full bg-white border rounded-lg shadow mb-4">
-                    <thead class="bg-gray-100 border-b">
-                    <tr>
-                        <th class="px-4 py-2"></th>
-                        <th class="px-4 py-2 text-left text-gray-700">Código</th>
-                        <th class="px-4 py-2 text-left text-gray-700">Nombre Completo</th>
-                        <th class="px-4 py-2 text-left text-gray-700">Teléfono</th>
-                    </tr>
-                    </thead>
+                <div class="ui-card-header">
+                    <x-ui.section-heading
+                        title="Estudiantes disponibles"
+                        :description="$alumnos->count().' cuentas todavía no tienen un aula asignada.'"
+                        icon="heroicon-o-users"
+                    >
+                        <x-slot name="actions">
+                            <span class="ui-badge-info"><span x-text="selected.length">0</span> seleccionados</span>
+                        </x-slot>
+                    </x-ui.section-heading>
+                </div>
 
-                    <tbody>
-                    @foreach ($alumnos as $alumno)
-                        <tr class="border-b hover:bg-gray-50">
-                            <td class="px-4 py-2">
-                                <input type="checkbox" name="alumnos[]" value="{{ $alumno->id }}">
-                            </td>
-                            <td class="px-4 py-2">{{ $alumno->codigo_matricula }}</td>
-                            <td class="px-4 py-2">{{ $alumno->nombre_completo }}</td>
-                            <td class="px-4 py-2">{{ $alumno->telefono }}</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="ui-table">
+                        <caption class="sr-only">Estudiantes disponibles para asignar al aula {{ $aula->numero }}</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col" class="w-14">
+                                    <input
+                                        type="checkbox"
+                                        class="rounded border-gray-300 text-blue-700 focus:ring-blue-500"
+                                        aria-label="Seleccionar todos los estudiantes"
+                                        :checked="selected.length === {{ $alumnos->count() }}"
+                                        @change="selected = $event.target.checked ? @js($alumnos->pluck('id')->values()) : []"
+                                    >
+                                </th>
+                                <th scope="col">Estudiante</th>
+                                <th scope="col">Código</th>
+                                <th scope="col">Teléfono</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($alumnos as $alumno)
+                                <tr class="transition hover:bg-blue-50/40">
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            name="alumnos[]"
+                                            value="{{ $alumno->id }}"
+                                            x-model.number="selected"
+                                            class="rounded border-gray-300 text-blue-700 focus:ring-blue-500"
+                                            aria-label="Seleccionar a {{ $alumno->nombre_completo }}"
+                                        >
+                                    </td>
+                                    <td><span class="font-semibold text-gray-900">{{ $alumno->nombre_completo }}</span></td>
+                                    <td>{{ $alumno->codigo_matricula }}</td>
+                                    <td>{{ $alumno->telefono ?: 'No registrado' }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
-                @error('alumnos')
-                <p class="text-sm text-red-600 mb-2">{{ $message }}</p>
-                @enderror
-
-                <button type="submit"
-                        class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 shadow">
-                    Asignar seleccionados
-                </button>
-
+                <div class="flex flex-col gap-3 border-t border-gray-200 bg-gray-50 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                    <p class="text-sm text-gray-600">Solo se mostrarán estudiantes que aún no pertenecen a otro grupo.</p>
+                    <button type="submit" class="ui-btn-primary" :disabled="selected.length === 0">
+                        @svg('heroicon-o-check', 'h-4 w-4') Asignar seleccionados
+                    </button>
+                </div>
             </form>
-
         @endif
-
     </div>
 </x-app-layout>

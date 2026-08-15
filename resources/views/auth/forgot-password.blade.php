@@ -30,10 +30,12 @@
                 :value="old('email')"
                 required
                 autofocus
+                autocomplete="email"
                 placeholder="correo@ejemplo.com"
             />
 
             <x-input-error
+                for="email"
                 :messages="$errors->get('email')"
                 class="mt-2"
             />
