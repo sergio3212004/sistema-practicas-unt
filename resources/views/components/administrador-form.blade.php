@@ -6,7 +6,7 @@
         <!-- Datos personales -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="nombres_admin" class="block text-sm font-semibold text-gray-700 mb-2">
                     Nombres
                     <span class="text-red-500">*</span>
                 </label>
@@ -17,7 +17,9 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="nombres_admin"
                            name="nombres_admin"
+                           autocomplete="given-name"
                            value="{{ old('nombres_admin', $admin->nombres ?? '') }}"
                            placeholder="Nombres completos"
                            class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
@@ -25,7 +27,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="apellido_paterno_admin" class="block text-sm font-semibold text-gray-700 mb-2">
                     Apellido Paterno
                     <span class="text-red-500">*</span>
                 </label>
@@ -36,6 +38,7 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="apellido_paterno_admin"
                            name="apellido_paterno_admin"
                            value="{{ old('apellido_paterno_admin', $admin->apellido_paterno ?? '') }}"
                            placeholder="Apellido paterno"
@@ -44,7 +47,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="apellido_materno_admin" class="block text-sm font-semibold text-gray-700 mb-2">
                     Apellido Materno
                     <span class="text-red-500">*</span>
                 </label>
@@ -55,6 +58,7 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="apellido_materno_admin"
                            name="apellido_materno_admin"
                            value="{{ old('apellido_materno_admin', $admin->apellido_materno ?? '') }}"
                            placeholder="Apellido materno"
@@ -63,7 +67,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="telefono_admin" class="block text-sm font-semibold text-gray-700 mb-2">
                     Teléfono
                     <span class="text-gray-400 text-xs">(opcional)</span>
                 </label>
@@ -74,7 +78,10 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="telefono_admin"
                            name="telefono_admin"
+                           inputmode="tel"
+                           autocomplete="tel"
                            value="{{ old('telefono_admin', $admin->telefono ?? '') }}"
                            placeholder="Ej: 987654321"
                            class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">

@@ -27,7 +27,7 @@
 
         <div class="mb-6">
             <a href="{{ route('profesor.formato-once.create', $aula->id) }}"
-               class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded inline-flex items-center transition-colors duration-200">
+               class="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded inline-flex items-center transition-colors duration-200">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
@@ -37,6 +37,7 @@
 
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <table class="min-w-full divide-y divide-gray-200">
+                <caption class="sr-only">Formatos 11 registrados</caption>
                 <thead class="bg-gray-50">
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -84,7 +85,7 @@
                                     </svg>
                                 </a>
                                 <a href="{{ route('profesor.formato-once.edit', $formato) }}"
-                                   class="text-yellow-600 hover:text-yellow-900 inline-flex items-center"
+                                   class="text-amber-800 hover:text-amber-950 inline-flex items-center"
                                    title="Editar">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>

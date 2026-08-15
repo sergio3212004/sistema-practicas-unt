@@ -6,9 +6,9 @@
                     @svg('heroicon-o-document-plus', 'w-6 h-6 text-white')
                 </div>
                 <div>
-                    <h2 class="font-bold text-2xl text-gray-800 leading-tight">
+                    <h1 class="font-bold text-2xl text-gray-800 leading-tight">
                         Nueva Ficha de Registro
-                    </h2>
+                    </h1>
                     <p class="text-sm text-gray-500 mt-0.5">Completa el formulario para registrar tu práctica pre profesional</p>
                 </div>
             </div>
@@ -29,15 +29,15 @@
                                 @svg('heroicon-o-academic-cap', 'w-12 h-12 text-blue-800')
                             </div>
                         </div>
-                        <h1 class="text-2xl font-bold text-white mb-2">
+                        <p class="text-2xl font-bold text-white mb-2">
                             FACULTAD DE CIENCIAS FÍSICAS Y MATEMÁTICAS
-                        </h1>
-                        <h2 class="text-xl font-semibold text-blue-100 mb-2">
+                        </p>
+                        <p class="text-xl font-semibold text-blue-100 mb-2">
                             PROGRAMA DE INFORMÁTICA
-                        </h2>
-                        <h3 class="text-lg font-medium text-blue-200 mb-1">
+                        </p>
+                        <p class="text-lg font-medium text-blue-200 mb-1">
                             MONITOREO DE PRÁCTICAS PRE PROFESIONALES
-                        </h3>
+                        </p>
                         <div class="inline-block bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-bold text-sm mt-3 shadow-lg">
                             FORMATO 01: FICHA DE REGISTRO
                         </div>
@@ -48,13 +48,13 @@
 
                     <!-- Alerta de errores -->
                     @if ($errors->any())
-                        <div class="mb-6 bg-red-50 border-l-4 border-red-500 rounded-lg p-6 shadow-md">
+                        <div id="resumen-errores" class="mb-6 bg-red-50 border-l-4 border-red-500 rounded-lg p-6 shadow-md" role="alert" tabindex="-1">
                             <div class="flex items-start">
                                 <div class="flex-shrink-0">
                                     @svg('heroicon-o-exclamation-triangle', 'w-6 h-6 text-red-600')
                                 </div>
                                 <div class="ml-4">
-                                    <h4 class="text-sm font-bold text-red-800 mb-2">Por favor, corrija los siguientes errores:</h4>
+                                    <h2 class="text-sm font-bold text-red-800 mb-2">Por favor, corrija los siguientes errores:</h2>
                                     <ul class="text-sm text-red-700 list-disc list-inside space-y-1">
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
@@ -71,18 +71,19 @@
                         <!-- Sección 1: ESTUDIANTE -->
                         <div class="mb-8 border-2 border-blue-200 rounded-xl overflow-hidden">
                             <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                                <h3 class="text-lg font-bold text-white flex items-center">
+                                <h2 class="text-lg font-bold text-white flex items-center">
                                     @svg('heroicon-o-user', 'w-5 h-5 mr-2')
                                     1. ESTUDIANTE
-                                </h3>
+                                </h2>
                             </div>
 
                             <div class="p-6 bg-blue-50">
                                 <div class="mb-4">
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label for="alumno-nombre" class="block text-sm font-semibold text-gray-700 mb-2">
                                         Apellidos y Nombres
                                     </label>
                                     <input type="text"
+                                           id="alumno-nombre"
                                            value="{{ $alumno->nombre_completo }}"
                                            disabled
                                            class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700 font-medium">
@@ -90,19 +91,21 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="alumno-matricula" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Nro. Matrícula
                                         </label>
                                         <input type="text"
+                                               id="alumno-matricula"
                                                value="{{ $alumno->codigo_matricula }}"
                                                disabled
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="ciclo" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Ciclo <span class="text-red-500">*</span>
                                         </label>
                                         <input type="number"
+                                               id="ciclo"
                                                name="ciclo"
                                                min="1"
                                                max="10"
@@ -112,10 +115,11 @@
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="semestre" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Semestre
                                         </label>
                                         <input type="text"
+                                               id="semestre"
                                                value="{{ $semestreActual->nombre }}"
                                                disabled
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700">
@@ -125,19 +129,21 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="alumno-telefono" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Teléfono Celular
                                         </label>
                                         <input type="text"
+                                               id="alumno-telefono"
                                                value="{{ $alumno->telefono }}"
                                                disabled
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="alumno-correo" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Correo Electrónico
                                         </label>
                                         <input type="email"
+                                               id="alumno-correo"
                                                value="{{ $alumno->user->email }}"
                                                disabled
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700">
@@ -149,30 +155,33 @@
                         <!-- Sección 2: EMPRESA O INSTITUCIÓN -->
                         <div class="mb-8 border-2 border-blue-200 rounded-xl overflow-hidden">
                             <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                                <h3 class="text-lg font-bold text-white flex items-center">
+                                <h2 class="text-lg font-bold text-white flex items-center">
                                     @svg('heroicon-o-building-office', 'w-5 h-5 mr-2')
                                     2. EMPRESA O INSTITUCIÓN
-                                </h3>
+                                </h2>
                             </div>
 
                             <div class="p-6 bg-blue-50">
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                     <div class="md:col-span-2">
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="nombre_empresa" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Nombre de la Empresa <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text"
+                                               id="nombre_empresa"
                                                name="nombre_empresa"
+                                               autocomplete="organization"
                                                value="{{ old('nombre_empresa') }}"
                                                placeholder="Ejemplo: Empresa Comercial"
                                                required
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="razon_social_id" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Razón Social <span class="text-red-500">*</span>
                                         </label>
-                                        <select name="razon_social_id"
+                                        <select id="razon_social_id"
+                                                name="razon_social_id"
                                                 required
                                                 class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
                                             <option value="">Seleccione</option>
@@ -186,12 +195,13 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label for="correo_empresa" class="block text-sm font-semibold text-gray-700 mb-2">
                                         Correo Electrónico de la Empresa <span class="text-red-500">*</span>
                                     </label>
                                     <input type="email"
                                            name="correo_empresa"
                                            id="correo_empresa"
+                                           autocomplete="email"
                                            placeholder="empresa@ejemplo.com"
                                            value="{{ old('correo_empresa') }}"
                                            required
@@ -203,11 +213,13 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="ruc" class="block text-sm font-semibold text-gray-700 mb-2">
                                             RUC <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text"
+                                               id="ruc"
                                                name="ruc"
+                                               inputmode="numeric"
                                                maxlength="11"
                                                pattern="[0-9]{11}"
                                                placeholder="10258369871"
@@ -219,10 +231,11 @@
                                         @enderror
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="nombre_gerente" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Gerente General <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text"
+                                               id="nombre_gerente"
                                                name="nombre_gerente"
                                                value="{{ old('nombre_gerente') }}"
                                                placeholder="Nombre completo"
@@ -232,10 +245,11 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label for="nombre_jefe_rrhh" class="block text-sm font-semibold text-gray-700 mb-2">
                                         Jefe de RRHH <span class="text-red-500">*</span>
                                     </label>
                                     <input type="text"
+                                           id="nombre_jefe_rrhh"
                                            name="nombre_jefe_rrhh"
                                            value="{{ old('nombre_jefe_rrhh') }}"
                                            placeholder="Nombre completo del jefe de RRHH"
@@ -244,11 +258,13 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label for="direccion" class="block text-sm font-semibold text-gray-700 mb-2">
                                         Dirección <span class="text-red-500">*</span>
                                     </label>
                                     <input type="text"
+                                           id="direccion"
                                            name="direccion"
+                                           autocomplete="street-address"
                                            value="{{ old('direccion') }}"
                                            placeholder="Dirección completa de la empresa"
                                            required
@@ -257,22 +273,28 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="telefono_fijo" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Teléfono Fijo <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text"
+                                               id="telefono_fijo"
                                                name="telefono_fijo"
+                                               inputmode="tel"
+                                               autocomplete="tel"
                                                value="{{ old('telefono_fijo') }}"
                                                placeholder="044-123456"
                                                required
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="telefono_movil" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Teléfono Celular <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text"
+                                               id="telefono_movil"
                                                name="telefono_movil"
+                                               inputmode="tel"
+                                               autocomplete="tel"
                                                value="{{ old('telefono_movil') }}"
                                                placeholder="912345678"
                                                required
@@ -284,11 +306,12 @@
 
                                     <!-- Departamento fijo -->
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="departamento" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Departamento <span class="text-red-500">*</span>
                                         </label>
 
-                                        <select disabled
+                                        <select id="departamento" disabled
+                                                autocomplete="address-level1"
                                                 class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 cursor-not-allowed">
                                             <option value="La Libertad">La Libertad</option>
                                         </select>
@@ -299,11 +322,12 @@
 
                                     <!-- Provincia -->
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="provincia" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Provincia <span class="text-red-500">*</span>
                                         </label>
                                         <select name="provincia"
                                                 id="provincia"
+                                                autocomplete="address-level2"
                                                 required
                                                 class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500">
                                             <option value="">Seleccione</option>
@@ -312,11 +336,12 @@
 
                                     <!-- Distrito -->
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="distrito" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Distrito <span class="text-red-500">*</span>
                                         </label>
                                         <select name="distrito"
                                                 id="distrito"
+                                                autocomplete="address-level3"
                                                 required
                                                 disabled
                                                 class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100">
@@ -332,29 +357,31 @@
                         <!-- Sección 3: CARACTERÍSTICAS DE LA PRÁCTICA -->
                         <div class="mb-8 border-2 border-blue-200 rounded-xl overflow-hidden">
                             <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                                <h3 class="text-lg font-bold text-white flex items-center">
+                                <h2 class="text-lg font-bold text-white flex items-center">
                                     @svg('heroicon-o-clipboard-document-list', 'w-5 h-5 mr-2')
                                     3. CARACTERÍSTICAS DE LA PRÁCTICA
-                                </h3>
+                                </h2>
                             </div>
 
                             <div class="p-6 bg-blue-50">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="fecha_inicio" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Fecha de Inicio <span class="text-red-500">*</span>
                                         </label>
                                         <input type="date"
+                                               id="fecha_inicio"
                                                name="fecha_inicio"
                                                value="{{ old('fecha_inicio') }}"
                                                required
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="fecha_termino" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Fecha de Término <span class="text-red-500">*</span>
                                         </label>
                                         <input type="date"
+                                               id="fecha_termino"
                                                name="fecha_termino"
                                                value="{{ old('fecha_termino') }}"
                                                required
@@ -364,11 +391,12 @@
 
                                 <!-- Horarios -->
                                 <div class="mb-4">
-                                    <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                    <p class="block text-sm font-semibold text-gray-700 mb-3">
                                         Días y Horario <span class="text-red-500">*</span>
-                                    </label>
+                                    </p>
                                     <div class="bg-white border-2 border-blue-200 rounded-lg p-4 overflow-x-auto">
                                         <table class="min-w-full">
+                                            <caption class="sr-only">Días y horarios de práctica</caption>
                                             <thead class="bg-blue-800">
                                             <tr>
                                                 <th class="border border-blue-200 px-3 py-3 text-xs font-bold text-white uppercase">Lunes</th>
@@ -392,14 +420,16 @@
                                                         </div>
                                                         <div id="horario_{{ $dia }}" class="hidden space-y-2">
                                                             <div>
-                                                                <label class="block text-xs font-semibold text-gray-700 mb-1">De:</label>
+                                                                <label for="hora_inicio_{{ $dia }}" class="block text-xs font-semibold text-gray-700 mb-1">Desde:</label>
                                                                 <input type="time"
+                                                                       id="hora_inicio_{{ $dia }}"
                                                                        name="horarios[{{ $dia }}][hora_inicio]"
                                                                        class="w-full px-2 py-2 text-xs border-2 border-blue-200 rounded focus:ring-2 focus:ring-blue-500">
                                                             </div>
                                                             <div>
-                                                                <label class="block text-xs font-semibold text-gray-700 mb-1">A:</label>
+                                                                <label for="hora_fin_{{ $dia }}" class="block text-xs font-semibold text-gray-700 mb-1">Hasta:</label>
                                                                 <input type="time"
+                                                                       id="hora_fin_{{ $dia }}"
                                                                        name="horarios[{{ $dia }}][hora_fin]"
                                                                        class="w-full px-2 py-2 text-xs border-2 border-blue-200 rounded focus:ring-2 focus:ring-blue-500">
                                                             </div>
@@ -416,10 +446,11 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label for="descripcion" class="block text-sm font-semibold text-gray-700 mb-2">
                                         Descripción de la Práctica <span class="text-red-500">*</span>
                                     </label>
-                                    <textarea name="descripcion"
+                                    <textarea id="descripcion"
+                                              name="descripcion"
                                               rows="4"
                                               required
                                               placeholder="Describa brevemente las actividades y funciones que realizará el practicante"
@@ -428,10 +459,11 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="area_practicas" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Área de Prácticas <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text"
+                                               id="area_practicas"
                                                name="area_practicas"
                                                placeholder="Ej. Desarrollo de Software"
                                                value="{{ old('area_practicas') }}"
@@ -439,10 +471,11 @@
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="cargo" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Cargo <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text"
+                                               id="cargo"
                                                name="cargo"
                                                placeholder="Ej. Practicante de Desarrollo"
                                                value="{{ old('cargo') }}"
@@ -450,10 +483,11 @@
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="nombre_jefe_directo" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Jefe Directo <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text"
+                                               id="nombre_jefe_directo"
                                                name="nombre_jefe_directo"
                                                value="{{ old('nombre_jefe_directo') }}"
                                                placeholder="Nombre completo"
@@ -464,22 +498,27 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="telefono_jefe_directo" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Celular de Jefe Directo <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text"
+                                               id="telefono_jefe_directo"
                                                name="telefono_jefe_directo"
+                                               inputmode="tel"
+                                               autocomplete="tel"
                                                value="{{ old('telefono_jefe_directo') }}"
                                                required
                                                placeholder="912345678"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label for="correo_jefe_directo" class="block text-sm font-semibold text-gray-700 mb-2">
                                             Correo de Jefe Directo <span class="text-red-500">*</span>
                                         </label>
                                         <input type="email"
+                                               id="correo_jefe_directo"
                                                name="correo_jefe_directo"
+                                               autocomplete="email"
                                                placeholder="jefe@ejemplo.com"
                                                value="{{ old('correo_jefe_directo') }}"
                                                required
@@ -492,10 +531,10 @@
                         <!-- Sección 4: FIRMAS -->
                         <div class="mb-8 border-2 border-blue-200 rounded-xl overflow-hidden">
                             <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                                <h3 class="text-lg font-bold text-white flex items-center">
+                                <h2 class="text-lg font-bold text-white flex items-center">
                                     @svg('heroicon-o-pencil-square', 'w-5 h-5 mr-2')
                                     4. FIRMAS Y APROBACIONES
-                                </h3>
+                                </h2>
                             </div>
 
                             <div class="p-6 bg-blue-50">
@@ -526,11 +565,20 @@
                                         <canvas id="canvasFirma"
                                                 class="border-2 border-blue-300 rounded-lg cursor-crosshair mx-auto bg-white shadow-sm"
                                                 width="220"
-                                                height="96">
+                                                height="96"
+                                                role="img"
+                                                aria-label="Área de firma del practicante"
+                                                aria-describedby="firma-instrucciones">
                                         </canvas>
                                         <input type="hidden" name="firma_practicante" id="firmaPracticante">
+                                        <p id="firma-instrucciones" class="mt-3 text-xs text-gray-600">Dibuje con el puntero o cargue una imagen de firma.</p>
+                                        <label for="firmaArchivo" class="mt-3 block text-sm font-semibold text-gray-700">Cargar imagen de firma</label>
+                                        <input id="firmaArchivo" type="file" accept="image/png,image/jpeg" class="mt-2 block w-full text-xs" data-signature-upload data-canvas="canvasFirma" data-output="firmaPracticante" data-status="firma-estado">
+                                        <p id="firma-estado" class="mt-2 text-xs text-gray-600" role="status" aria-live="polite"></p>
                                         <button type="button"
                                                 onclick="limpiarFirma()"
+                                                data-signature-clear
+                                                data-status="firma-estado"
                                                 class="mt-3 inline-flex items-center px-4 py-2 bg-red-100 text-red-700 text-xs font-semibold rounded-lg hover:bg-red-200 transition-all">
                                             @svg('heroicon-o-arrow-path', 'w-4 h-4 mr-1')
                                             Limpiar firma
@@ -747,6 +795,8 @@
             // CARGA DE UBIGEO
             // ==========================================
             document.addEventListener('DOMContentLoaded', async function () {
+                document.getElementById('resumen-errores')?.focus();
+
 
             const provinciaSelect = document.getElementById("provincia");
             const distritoSelect = document.getElementById("distrito");

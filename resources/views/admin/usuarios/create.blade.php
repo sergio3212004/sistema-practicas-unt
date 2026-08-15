@@ -38,12 +38,12 @@
         <!-- Formulario Principal -->
         <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
 
-            <form action="{{ route('admin.usuarios.store') }}" method="POST" class="p-8">
+            <form action="{{ route('admin.usuarios.store') }}" method="POST" class="p-8" aria-describedby="nota-campos-obligatorios">
                 @csrf
 
                 <!-- Mensajes de Error -->
                 @if ($errors->any())
-                    <div class="mb-8 bg-red-50 border-l-4 border-red-500 rounded-lg p-5 shadow-sm">
+                    <div id="resumen-errores" class="mb-8 bg-red-50 border-l-4 border-red-500 rounded-lg p-5 shadow-sm" role="alert" tabindex="-1">
                         <div class="flex items-start">
                             <div class="flex-shrink-0">
                                 <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,7 +77,7 @@
                         <div class="space-y-5">
                             <!-- Email -->
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
                                     Email Institucional
                                     <span class="text-red-500">*</span>
                                 </label>
@@ -88,7 +88,9 @@
                                         </svg>
                                     </div>
                                     <input type="email"
+                                           id="email"
                                            name="email"
+                                           autocomplete="email"
                                            value="{{ old('email') }}"
                                            required
                                            placeholder="ejemplo@unitru.edu.pe"
@@ -99,7 +101,7 @@
                             <!-- Contraseñas -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
                                         Contraseña
                                         <span class="text-red-500">*</span>
                                     </label>
@@ -110,14 +112,16 @@
                                             </svg>
                                         </div>
                                         <input type="password"
+                                               id="password"
                                                name="password"
+                                               autocomplete="new-password"
                                                required
                                                placeholder="••••••••"
                                                class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2">
                                         Confirmar Contraseña
                                         <span class="text-red-500">*</span>
                                     </label>
@@ -128,7 +132,9 @@
                                             </svg>
                                         </div>
                                         <input type="password"
+                                               id="password_confirmation"
                                                name="password_confirmation"
+                                               autocomplete="new-password"
                                                required
                                                placeholder="••••••••"
                                                class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
@@ -138,7 +144,7 @@
 
                             <!-- Rol -->
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <label for="rol_id" class="block text-sm font-semibold text-gray-700 mb-2">
                                     Rol del Usuario
                                     <span class="text-red-500">*</span>
                                 </label>
@@ -150,6 +156,7 @@
                                     </div>
                                     <select name="rol_id"
                                             id="rol_id"
+                                            aria-describedby="rol-ayuda"
                                             required
                                             class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
                                         <option value="">Seleccione un Rol</option>
@@ -162,7 +169,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <p class="mt-2 text-xs text-gray-500">
+                                <p id="rol-ayuda" class="mt-2 text-xs text-gray-500">
                                     Seleccione el rol que determinará los permisos del usuario
                                 </p>
                             </div>
@@ -220,7 +227,7 @@
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm text-blue-800">
+                    <p id="nota-campos-obligatorios" class="text-sm text-blue-800">
                         <span class="font-semibold">Nota:</span> Los campos marcados con <span class="text-red-500">*</span> son obligatorios.
                         Asegúrese de completar toda la información antes de enviar el formulario.
                     </p>
@@ -233,6 +240,8 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
+
+        document.getElementById('resumen-errores')?.focus();
 
         /* ============================================================
            1) CONTROL DINÁMICO DE FORMULARIOS SEGÚN ROL

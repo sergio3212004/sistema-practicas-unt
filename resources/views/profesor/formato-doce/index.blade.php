@@ -48,6 +48,7 @@
                 @if($formatos->count() > 0)
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
+                            <caption class="sr-only">Formatos 12 registrados</caption>
                             <thead class="bg-blue-900">
                             <tr>
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">

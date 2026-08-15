@@ -52,6 +52,7 @@
         @if ($aula->alumnos->count() > 0)
             <div class="overflow-x-auto">
                 <table class="min-w-full bg-white border rounded-lg shadow">
+                    <caption class="sr-only">Estudiantes inscritos en el aula</caption>
                     <thead class="bg-gray-100 border-b">
                     <tr>
                         <th class="px-4 py-2 text-left text-gray-700">Código</th>

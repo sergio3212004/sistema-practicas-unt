@@ -6,9 +6,9 @@
                     @svg('heroicon-o-clipboard-document-list', 'w-6 h-6 text-white')
                 </div>
                 <div>
-                    <h2 class="font-bold text-2xl text-gray-800 leading-tight">
+                    <h1 class="font-bold text-2xl text-gray-800 leading-tight">
                         Plan de Prácticas Pre Profesionales
-                    </h2>
+                    </h1>
                     <p class="text-sm text-gray-500 mt-0.5">Completa el cronograma de tu práctica</p>
                 </div>
             </div>
@@ -27,15 +27,15 @@
                                 @svg('heroicon-o-academic-cap', 'w-12 h-12 text-blue-800')
                             </div>
                         </div>
-                        <h1 class="text-2xl font-bold text-white mb-2">
+                        <p class="text-2xl font-bold text-white mb-2">
                             FACULTAD DE CIENCIAS FÍSICAS Y MATEMÁTICAS
-                        </h1>
-                        <h2 class="text-xl font-semibold text-blue-100 mb-2">
+                        </p>
+                        <p class="text-xl font-semibold text-blue-100 mb-2">
                             PROGRAMA DE INFORMÁTICA
-                        </h2>
-                        <h3 class="text-lg font-medium text-blue-200 mb-1">
+                        </p>
+                        <p class="text-lg font-medium text-blue-200 mb-1">
                             MONITOREO DE PRÁCTICAS PRE PROFESIONALES
-                        </h3>
+                        </p>
                         <div class="inline-block bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-bold text-sm mt-3 shadow-lg">
                             FORMATO 02: PLAN DE PRÁCTICAS
                         </div>
@@ -44,13 +44,13 @@
 
                 <div class="p-8">
                     @if ($errors->any())
-                        <div class="mb-6 bg-red-50 border-l-4 border-red-500 rounded-lg p-6 shadow-md">
+                        <div id="resumen-errores" class="mb-6 bg-red-50 border-l-4 border-red-500 rounded-lg p-6 shadow-md" role="alert" tabindex="-1">
                             <div class="flex items-start">
                                 <div class="flex-shrink-0">
                                     @svg('heroicon-o-exclamation-triangle', 'w-6 h-6 text-red-600')
                                 </div>
                                 <div class="ml-4">
-                                    <h4 class="text-sm font-bold text-red-800 mb-2">Corrija los siguientes errores:</h4>
+                                    <h2 class="text-sm font-bold text-red-800 mb-2">Corrija los siguientes errores:</h2>
                                     <ul class="text-sm text-red-700 list-disc list-inside space-y-1">
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
@@ -61,46 +61,47 @@
                         </div>
                     @endif
 
-                    <form id="formCronograma" action="{{ route('alumno.cronograma.store', $fichaRegistro) }}" method="POST" class="space-y-8">
+                    <p id="campos-obligatorios" class="mb-4 text-sm text-gray-600">Los campos marcados con * son obligatorios.</p>
+                    <form id="formCronograma" action="{{ route('alumno.cronograma.store', $fichaRegistro) }}" method="POST" class="space-y-8" aria-describedby="campos-obligatorios">
                         @csrf
 
                         <!-- 1. ESTUDIANTE -->
                         <div class="border-2 border-blue-200 rounded-xl overflow-hidden">
                             <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                                <h3 class="text-lg font-bold text-white flex items-center">
+                                <h2 class="text-lg font-bold text-white flex items-center">
                                     @svg('heroicon-o-user', 'w-5 h-5 mr-2') 1. ESTUDIANTE
-                                </h3>
+                                </h2>
                             </div>
                             <div class="p-6 bg-blue-50">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Apellidos y Nombre</label>
-                                        <input type="text" value="{{ $fichaRegistro->alumno->nombre_completo }}"
+                                        <label for="datos-estudiante-nombre" class="block text-sm font-semibold text-gray-700 mb-2">Apellidos y nombre</label>
+                                        <input id="datos-estudiante-nombre" type="text" value="{{ $fichaRegistro->alumno->nombre_completo }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nro. Matrícula</label>
-                                        <input type="text" value="{{ $fichaRegistro->alumno->codigo_matricula }}"
+                                        <label for="datos-estudiante-matricula" class="block text-sm font-semibold text-gray-700 mb-2">N.º de matrícula</label>
+                                        <input id="datos-estudiante-matricula" type="text" value="{{ $fichaRegistro->alumno->codigo_matricula }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Ciclo</label>
-                                        <input type="text" value="{{ $fichaRegistro->ciclo }}"
+                                        <label for="datos-estudiante-ciclo" class="block text-sm font-semibold text-gray-700 mb-2">Ciclo</label>
+                                        <input id="datos-estudiante-ciclo" type="text" value="{{ $fichaRegistro->ciclo }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Año y Semestre</label>
-                                        <input type="text" value="{{ $fichaRegistro->semestre->nombre ?? 'N/A' }}"
+                                        <label for="datos-estudiante-semestre" class="block text-sm font-semibold text-gray-700 mb-2">Año y semestre</label>
+                                        <input id="datos-estudiante-semestre" type="text" value="{{ $fichaRegistro->semestre->nombre ?? 'N/A' }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Teléfono Celular</label>
-                                        <input type="text" value="{{ $fichaRegistro->alumno->telefono }}"
+                                        <label for="datos-estudiante-telefono" class="block text-sm font-semibold text-gray-700 mb-2">Teléfono celular</label>
+                                        <input id="datos-estudiante-telefono" type="text" value="{{ $fichaRegistro->alumno->telefono }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Correo Electrónico</label>
-                                        <input type="email" value="{{ $fichaRegistro->alumno->user->email }}"
+                                        <label for="datos-estudiante-correo" class="block text-sm font-semibold text-gray-700 mb-2">Correo electrónico</label>
+                                        <input id="datos-estudiante-correo" type="email" value="{{ $fichaRegistro->alumno->user->email }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                 </div>
@@ -110,60 +111,60 @@
                         <!-- 2. EMPRESA -->
                         <div class="border-2 border-blue-200 rounded-xl overflow-hidden">
                             <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                                <h3 class="text-lg font-bold text-white flex items-center">
+                                <h2 class="text-lg font-bold text-white flex items-center">
                                     @svg('heroicon-o-building-office', 'w-5 h-5 mr-2') 2. EMPRESA O INSTITUCIÓN
-                                </h3>
+                                </h2>
                             </div>
                             <div class="p-6 bg-blue-50">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Razón Social</label>
-                                        <input type="text" value="{{ $fichaRegistro->razon_social->acronimo ?? 'N/A' }}"
+                                        <label for="datos-empresa-razon-social" class="block text-sm font-semibold text-gray-700 mb-2">Razón social</label>
+                                        <input id="datos-empresa-razon-social" type="text" value="{{ $fichaRegistro->razon_social->acronimo ?? 'N/A' }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">RUC</label>
-                                        <input type="text" value="{{ $fichaRegistro->ruc }}"
+                                        <label for="datos-empresa-ruc" class="block text-sm font-semibold text-gray-700 mb-2">RUC</label>
+                                        <input id="datos-empresa-ruc" type="text" value="{{ $fichaRegistro->ruc }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Gerente General</label>
-                                        <input type="text" value="{{ $fichaRegistro->nombre_gerente }}"
+                                        <label for="datos-empresa-gerente" class="block text-sm font-semibold text-gray-700 mb-2">Gerente general</label>
+                                        <input id="datos-empresa-gerente" type="text" value="{{ $fichaRegistro->nombre_gerente }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Jefe de RRHH</label>
-                                        <input type="text" value="{{ $fichaRegistro->nombre_jefe_rrhh }}"
+                                        <label for="datos-empresa-jefe-rrhh" class="block text-sm font-semibold text-gray-700 mb-2">Jefe de RR. HH.</label>
+                                        <input id="datos-empresa-jefe-rrhh" type="text" value="{{ $fichaRegistro->nombre_jefe_rrhh }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div class="md:col-span-2">
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Dirección</label>
-                                        <input type="text" value="{{ $fichaRegistro->direccion }}"
+                                        <label for="datos-empresa-direccion" class="block text-sm font-semibold text-gray-700 mb-2">Dirección</label>
+                                        <input id="datos-empresa-direccion" type="text" value="{{ $fichaRegistro->direccion }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Teléfono Fijo</label>
-                                        <input type="text" value="{{ $fichaRegistro->telefono_fijo }}"
+                                        <label for="datos-empresa-telefono-fijo" class="block text-sm font-semibold text-gray-700 mb-2">Teléfono fijo</label>
+                                        <input id="datos-empresa-telefono-fijo" type="text" value="{{ $fichaRegistro->telefono_fijo }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Teléfono Móvil</label>
-                                        <input type="text" value="{{ $fichaRegistro->telefono_movil }}"
+                                        <label for="datos-empresa-telefono-movil" class="block text-sm font-semibold text-gray-700 mb-2">Teléfono móvil</label>
+                                        <input id="datos-empresa-telefono-movil" type="text" value="{{ $fichaRegistro->telefono_movil }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Departamento</label>
-                                        <input type="text" value="{{ $fichaRegistro->departamento }}"
+                                        <label for="datos-empresa-departamento" class="block text-sm font-semibold text-gray-700 mb-2">Departamento</label>
+                                        <input id="datos-empresa-departamento" type="text" value="{{ $fichaRegistro->departamento }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Provincia</label>
-                                        <input type="text" value="{{ $fichaRegistro->provincia }}"
+                                        <label for="datos-empresa-provincia" class="block text-sm font-semibold text-gray-700 mb-2">Provincia</label>
+                                        <input id="datos-empresa-provincia" type="text" value="{{ $fichaRegistro->provincia }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Distrito</label>
-                                        <input type="text" value="{{ $fichaRegistro->distrito }}"
+                                        <label for="datos-empresa-distrito" class="block text-sm font-semibold text-gray-700 mb-2">Distrito</label>
+                                        <input id="datos-empresa-distrito" type="text" value="{{ $fichaRegistro->distrito }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                 </div>
@@ -173,29 +174,30 @@
                         <!-- 3. CARACTERÍSTICAS DE LA PRÁCTICA -->
                         <div class="border-2 border-blue-200 rounded-xl overflow-hidden">
                             <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                                <h3 class="text-lg font-bold text-white flex items-center">
+                                <h2 class="text-lg font-bold text-white flex items-center">
                                     @svg('heroicon-o-clipboard-document-list', 'w-5 h-5 mr-2') 3. CARACTERÍSTICAS DE LA PRÁCTICA
-                                </h3>
+                                </h2>
                             </div>
                             <div class="p-6 bg-blue-50">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Fecha de Inicio</label>
-                                        <input type="text" value="{{ $fichaRegistro->fecha_inicio->format('d/m/Y') }}"
+                                        <label for="datos-practica-fecha-inicio" class="block text-sm font-semibold text-gray-700 mb-2">Fecha de inicio</label>
+                                        <input id="datos-practica-fecha-inicio" type="text" value="{{ $fichaRegistro->fecha_inicio->format('d/m/Y') }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Fecha de Término</label>
-                                        <input type="text" value="{{ $fichaRegistro->fecha_termino->format('d/m/Y') }}"
+                                        <label for="datos-practica-fecha-termino" class="block text-sm font-semibold text-gray-700 mb-2">Fecha de término</label>
+                                        <input id="datos-practica-fecha-termino" type="text" value="{{ $fichaRegistro->fecha_termino->format('d/m/Y') }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                 </div>
 
                                 <!-- Días y Horarios en Tabla -->
                                 <div class="mb-4">
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Días y Horarios</label>
+                                    <p class="block text-sm font-semibold text-gray-700 mb-2">Días y Horarios</p>
 
                                     <table class="w-full border-collapse">
+                                        <caption class="sr-only">Días y horarios de práctica</caption>
                                         <thead>
                                         <tr class="bg-blue-100">
                                             <th class="border border-blue-300 p-2 text-center font-semibold">HORA</th>
@@ -209,7 +211,7 @@
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td class="border border-blue-300 p-2 text-center font-semibold">De:</td>
+                                            <th scope="row" class="border border-blue-300 p-2 text-center font-semibold">Desde:</th>
                                             @for ($dia = 1; $dia <= 6; $dia++)
                                                 <td class="border border-blue-300 p-2 text-center">
                                                     {{ $fichaRegistro->horarios->firstWhere('dia_semana', $dia)?->hora_inicio ?? '____' }}
@@ -217,7 +219,7 @@
                                             @endfor
                                         </tr>
                                         <tr>
-                                            <td class="border border-blue-300 p-2 text-center font-semibold">A:</td>
+                                            <th scope="row" class="border border-blue-300 p-2 text-center font-semibold">Hasta:</th>
                                             @for ($dia = 1; $dia <= 6; $dia++)
                                                 <td class="border border-blue-300 p-2 text-center">
                                                     {{ $fichaRegistro->horarios->firstWhere('dia_semana', $dia)?->hora_fin ?? '____' }}
@@ -230,39 +232,39 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Descripción de la Práctica</label>
-                                    <textarea rows="4"
+                                    <label for="datos-practica-descripcion" class="block text-sm font-semibold text-gray-700 mb-2">Descripción de la práctica</label>
+                                    <textarea id="datos-practica-descripcion" rows="4"
                                               class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700"
                                               readonly>{{ $fichaRegistro->descripcion }}</textarea>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Área de Prácticas</label>
-                                        <input type="text" value="{{ $fichaRegistro->area_practicas }}"
+                                        <label for="datos-practica-area" class="block text-sm font-semibold text-gray-700 mb-2">Área de prácticas</label>
+                                        <input id="datos-practica-area" type="text" value="{{ $fichaRegistro->area_practicas }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Cargo</label>
-                                        <input type="text" value="{{ $fichaRegistro->cargo }}"
+                                        <label for="datos-practica-cargo" class="block text-sm font-semibold text-gray-700 mb-2">Cargo</label>
+                                        <input id="datos-practica-cargo" type="text" value="{{ $fichaRegistro->cargo }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre del Jefe Directo</label>
-                                        <input type="text" value="{{ $fichaRegistro->nombre_jefe_directo }}"
+                                        <label for="datos-practica-jefe" class="block text-sm font-semibold text-gray-700 mb-2">Nombre del jefe directo</label>
+                                        <input id="datos-practica-jefe" type="text" value="{{ $fichaRegistro->nombre_jefe_directo }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Celular del Jefe</label>
-                                        <input type="text" value="{{ $fichaRegistro->telefono_jefe_directo }}"
+                                        <label for="datos-practica-jefe-telefono" class="block text-sm font-semibold text-gray-700 mb-2">Celular del jefe</label>
+                                        <input id="datos-practica-jefe-telefono" type="text" value="{{ $fichaRegistro->telefono_jefe_directo }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Correo del Jefe</label>
-                                        <input type="email" value="{{ $fichaRegistro->correo_jefe_directo }}"
+                                        <label for="datos-practica-jefe-correo" class="block text-sm font-semibold text-gray-700 mb-2">Correo del jefe</label>
+                                        <input id="datos-practica-jefe-correo" type="email" value="{{ $fichaRegistro->correo_jefe_directo }}"
                                                class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg bg-gray-100 text-gray-700" readonly>
                                     </div>
                                 </div>
@@ -272,30 +274,32 @@
                         <!-- 4. ACTIVIDADES PRINCIPALES -->
                         <div class="border-2 border-blue-200 rounded-xl overflow-hidden">
                             <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                                <h3 class="text-lg font-bold text-white flex items-center">
+                                <h2 class="text-lg font-bold text-white flex items-center">
                                     @svg('heroicon-o-list-bullet', 'w-5 h-5 mr-2') 4. ACTIVIDADES PRINCIPALES
-                                </h3>
+                                </h2>
                             </div>
                             <div class="p-6 bg-blue-50">
                                 <div id="contenedorActividades">
                                     <div class="actividad-item mb-6 p-4 border-2 border-blue-200 rounded-lg bg-white" data-index="0">
                                         <div class="flex justify-between items-start mb-3">
-                                            <h4 class="font-semibold text-gray-800">Actividad 1</h4>
+                                            <h3 class="font-semibold text-gray-800">Actividad 1</h3>
                                             <button type="button" onclick="eliminarActividad(0)"
+                                                    aria-label="Eliminar actividad 1"
                                                     class="text-red-600 hover:text-red-800 text-sm font-medium hidden">
                                                 Eliminar
                                             </button>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                            <label for="actividad_0_nombre" class="block text-sm font-semibold text-gray-700 mb-2">
                                                 Descripción de la actividad <span class="text-red-500">*</span>
                                             </label>
-                                            <textarea name="actividades[0][nombre]" rows="2" required
+                                            <textarea id="actividad_0_nombre" name="actividades[0][nombre]" rows="2" required
                                                       class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                                       placeholder="Describe la actividad a realizar...">{{ old('actividades.0.nombre') }}</textarea>
                                         </div>
                                         <div class="overflow-x-auto">
                                             <table class="min-w-full border border-blue-200 text-sm">
+                                                <caption class="sr-only">Actividades programadas</caption>
                                                 <thead class="bg-blue-800 text-white">
                                                 <tr>
                                                     <th class="border border-blue-200 px-2 py-2" colspan="4">Mes 1</th>
@@ -319,6 +323,7 @@
                                                                 <input type="checkbox"
                                                                        name="actividades[0][semanas][]"
                                                                        value="m{{ $mes }}_s{{ $sem }}"
+                                                                       aria-label="Actividad 1, mes {{ $mes }}, semana {{ $sem }}"
                                                                        class="w-4 h-4 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
                                                                     {{ in_array("m{$mes}_s{$sem}", old('actividades.0.semanas', [])) ? 'checked' : '' }}>
                                                             </td>
@@ -332,7 +337,7 @@
                                 </div>
 
                                 <button type="button" onclick="agregarActividad()"
-                                        class="mt-4 inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-all">
+                                        class="mt-4 inline-flex items-center px-4 py-2 bg-green-700 text-white text-sm font-semibold rounded-lg hover:bg-green-800 transition-all">
                                     @svg('heroicon-o-plus', 'w-4 h-4 mr-1') Agregar Actividad
                                 </button>
                                 <p class="text-xs text-gray-600 mt-2">Máximo 20 actividades</p>
@@ -343,9 +348,9 @@
                         <!-- Sección 5: FIRMAS Y APROBACIONES -->
                         <div class="border-2 border-blue-200 rounded-xl overflow-hidden">
                             <div class="bg-gradient-to-r from-blue-800 to-blue-900 px-6 py-3">
-                                <h3 class="text-lg font-bold text-white flex items-center">
+                                <h2 class="text-lg font-bold text-white flex items-center">
                                     @svg('heroicon-o-pencil-square', 'w-5 h-5 mr-2') 5. FIRMAS Y APROBACIONES
-                                </h3>
+                                </h2>
                             </div>
 
                             <div class="p-6 bg-blue-50">
@@ -359,11 +364,20 @@
                                         <canvas id="canvasFirma"
                                                 class="border-2 border-blue-300 rounded-lg cursor-crosshair mx-auto bg-white shadow-sm"
                                                 width="220"
-                                                height="96">
+                                                height="96"
+                                                role="img"
+                                                aria-label="Área de firma del practicante"
+                                                aria-describedby="firma-instrucciones">
                                         </canvas>
                                         <input type="hidden" name="firma_practicante" id="firmaPracticante">
+                                        <p id="firma-instrucciones" class="mt-3 text-xs text-gray-600">Dibuje con el puntero o cargue una imagen de firma.</p>
+                                        <label for="firmaArchivo" class="mt-3 block text-sm font-semibold text-gray-700">Cargar imagen de firma</label>
+                                        <input id="firmaArchivo" type="file" accept="image/png,image/jpeg" class="mt-2 block w-full text-xs" data-signature-upload data-canvas="canvasFirma" data-output="firmaPracticante" data-status="firma-estado">
+                                        <p id="firma-estado" class="mt-2 text-xs text-gray-600" role="status" aria-live="polite"></p>
                                         <button type="button"
                                                 onclick="limpiarFirma()"
+                                                data-signature-clear
+                                                data-status="firma-estado"
                                                 class="mt-3 inline-flex items-center px-4 py-2 bg-red-100 text-red-700 text-xs font-semibold rounded-lg hover:bg-red-200 transition-all">
                                             @svg('heroicon-o-arrow-path', 'w-4 h-4 mr-1')
                                             Limpiar firma
@@ -464,6 +478,8 @@
 
     @push('scripts')
         <script>
+            document.getElementById('resumen-errores')?.focus();
+
             let contadorActividades = 1;
             const maxActividades = 20;
 
@@ -544,22 +560,24 @@
                 const html = `
             <div class="actividad-item mb-6 p-4 border-2 border-blue-200 rounded-lg bg-white" data-index="${index}">
                 <div class="flex justify-between items-start mb-3">
-                    <h4 class="font-semibold text-gray-800">Actividad ${index + 1}</h4>
+                    <h3 class="font-semibold text-gray-800">Actividad ${index + 1}</h3>
                     <button type="button" onclick="eliminarActividad(${index})"
+                        aria-label="Eliminar actividad ${index + 1}"
                         class="text-red-600 hover:text-red-800 text-sm font-medium">
                         Eliminar
                     </button>
                 </div>
                 <div class="mb-3">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    <label for="actividad_${index}_nombre" class="block text-sm font-semibold text-gray-700 mb-2">
                         Descripción de la actividad <span class="text-red-500">*</span>
                     </label>
-                    <textarea name="actividades[${index}][nombre]" rows="2" required
+                    <textarea id="actividad_${index}_nombre" name="actividades[${index}][nombre]" rows="2" required
                         class="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Describe la actividad a realizar..."></textarea>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full border border-blue-200 text-sm">
+                        <caption class="sr-only">Vista previa de actividades programadas</caption>
                         <thead class="bg-blue-800 text-white">
                             <tr>
                                 <th class="border border-blue-200 px-2 py-2" colspan="4">Mes 1</th>
@@ -579,6 +597,7 @@
                                             <input type="checkbox"
                                                 name="actividades[${index}][semanas][]"
                                                 value="m${mes + 1}_s${sem + 1}"
+                                                aria-label="Actividad ${index + 1}, mes ${mes + 1}, semana ${sem + 1}"
                                                 class="w-4 h-4 text-blue-600 focus:ring-blue-500 border-blue-300 rounded">
                                         </td>`
                     ).join('')
@@ -604,7 +623,7 @@
 
             function actualizarNumeracion() {
                 document.querySelectorAll('.actividad-item').forEach((item, idx) => {
-                    item.querySelector('h4').textContent = `Actividad ${idx + 1}`;
+                    item.querySelector('h3').textContent = `Actividad ${idx + 1}`;
                 });
             }
 

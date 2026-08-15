@@ -45,20 +45,20 @@
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">
+                            <label for="fecha_monitoreo_visible" class="block text-sm font-bold text-gray-700 mb-2">
                                 FECHA DE MONITOREO:
                             </label>
-                            <input type="text"
+                            <input id="fecha_monitoreo_visible" type="text"
                                    value="{{ date('d/m/Y') }}"
                                    readonly
                                    class="w-full px-4 py-2 border-b-2 border-gray-400 bg-transparent text-gray-700 font-medium focus:outline-none">
                         </div>
 
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">
+                            <label for="docente_monitoreo_visible" class="block text-sm font-bold text-gray-700 mb-2">
                                 DOCENTE RESPONSABLE DEL MONITOREO:
                             </label>
-                            <input type="text"
+                            <input id="docente_monitoreo_visible" type="text"
                                    value="{{ $nombreProfesor }}"
                                    readonly
                                    class="w-full px-4 py-2 border-b-2 border-gray-400 bg-transparent text-gray-700 font-medium focus:outline-none">
@@ -87,6 +87,7 @@
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-300" id="alumnosTable">
+                            <caption class="sr-only">Estudiantes monitoreados</caption>
                             <thead class="bg-blue-900">
                             <tr>
                                 <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase">N°</th>
@@ -123,18 +124,28 @@
                 <!-- Firma Digital -->
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
                     <div class="max-w-md">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">
+                        <p id="firma-instrucciones" class="block text-sm font-bold text-gray-700 mb-2">
                             FIRMA DEL DOCENTE RESPONSABLE DEL MONITOREO: <span class="text-red-500">*</span>
-                        </label>
+                        </p>
                         <div class="border-2 border-gray-400 rounded-lg overflow-hidden bg-white">
                             <canvas id="signaturePad"
                                     width="500"
                                     height="200"
-                                    class="cursor-crosshair w-full"></canvas>
+                                    class="cursor-crosshair w-full"
+                                    role="img"
+                                    aria-label="Área de firma del docente responsable"
+                                    aria-describedby="firma-instrucciones"></canvas>
+                        </div>
+                        <div class="mt-3">
+                            <label for="firmaArchivo" class="block text-sm font-semibold text-gray-700">Cargar imagen de firma (alternativa al dibujo)</label>
+                            <input id="firmaArchivo" type="file" accept="image/png,image/jpeg" class="mt-2 block w-full text-sm" data-signature-upload data-canvas="signaturePad" data-output="firmaData" data-status="firma-estado">
+                            <p id="firma-estado" class="mt-2 text-sm text-gray-600" role="status" aria-live="polite"></p>
                         </div>
                         <div class="mt-3 flex gap-2">
                             <button type="button"
                                     id="clearSignature"
+                                    data-signature-clear
+                                    data-status="firma-estado"
                                     class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
                                 Limpiar Firma
                             </button>

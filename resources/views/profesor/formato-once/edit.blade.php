@@ -23,6 +23,7 @@
 
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
+                        <caption class="sr-only">Datos de estudiantes del Formato 11</caption>
                         <thead class="bg-gray-50">
                         <tr>
                             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="min-width: 180px;">
@@ -176,13 +177,20 @@
                 <div id="nuevaFirmaSection" class="space-y-4" style="{{ $formatoOnce->firma_coordinador ? 'display: none;' : '' }}">
                     <!-- Canvas para la firma -->
                     <div class="border-2 border-gray-300 rounded-lg overflow-hidden bg-white">
-                        <canvas id="signatureCanvas" width="600" height="200" class="cursor-crosshair"></canvas>
+                        <canvas id="signatureCanvas" width="600" height="200" class="cursor-crosshair" role="img" aria-label="Área para reemplazar la firma del coordinador" aria-describedby="firma-instrucciones"></canvas>
+                    </div>
+
+                    <p id="firma-instrucciones" class="text-sm text-gray-600">Dibuje con el puntero o cargue una imagen mediante el campo accesible con teclado.</p>
+                    <div>
+                        <label for="firmaArchivo" class="block text-sm font-semibold text-gray-700">Cargar imagen de firma (alternativa al dibujo)</label>
+                        <input id="firmaArchivo" type="file" accept="image/png,image/jpeg" class="mt-2 block w-full text-sm" data-signature-upload data-canvas="signatureCanvas" data-output="firmaCoordinadorInput" data-status="firma-estado">
+                        <p id="firma-estado" class="mt-2 text-sm text-gray-600" role="status" aria-live="polite"></p>
                     </div>
 
                     <!-- Controles de la firma -->
                     <div class="flex gap-4 items-center">
-                        <button type="button" id="clearSignature"
-                                class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-200 flex items-center gap-2">
+                        <button type="button" id="clearSignature" data-signature-clear data-status="firma-estado"
+                                class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-200 flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                             </svg>
@@ -203,8 +211,8 @@
                         </div>
                     </div>
 
-                    <div id="signatureError" class="text-red-600 text-sm hidden">
-                        Por favor, dibuje su firma antes de enviar el formulario.
+                    <div id="signatureError" class="text-red-700 text-sm hidden" role="alert">
+                        Dibuje o cargue una imagen de su firma antes de enviar el formulario.
                     </div>
                 </div>
 
@@ -246,6 +254,11 @@
         let lastX = 0;
         let lastY = 0;
         let hasDrawn = false;
+
+        canvas.addEventListener('signature:loaded', () => {
+            hasDrawn = true;
+            signatureError.classList.add('hidden');
+        });
 
         // Configuración inicial del canvas
         ctx.strokeStyle = brushColorInput.value;
@@ -367,7 +380,7 @@
             if (!mantenerFirma && !hasDrawn) {
                 e.preventDefault();
                 signatureError.classList.remove('hidden');
-                canvas.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                document.getElementById('firmaArchivo').focus();
                 return false;
             }
 

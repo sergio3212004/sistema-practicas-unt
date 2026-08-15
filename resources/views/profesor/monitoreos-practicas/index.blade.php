@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
+                <h1 class="font-semibold text-2xl text-gray-800 leading-tight">
                     Monitoreo de Prácticas Pre-Profesionales
-                </h2>
+                </h1>
                 <p class="text-sm text-gray-600 mt-1">
                     {{ $alumno->user->nombre }} - {{ $alumno->codigo_matricula }}
                 </p>

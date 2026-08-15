@@ -105,6 +105,7 @@
                 @csrf
                 @method('DELETE')
                 <button
+                    type="submit"
                     class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white font-semibold rounded-xl shadow hover:bg-red-700 transition">
                     @svg('heroicon-o-trash', 'w-5 h-5')
                     Eliminar

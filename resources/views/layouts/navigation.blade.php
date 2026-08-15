@@ -2,13 +2,20 @@
     x-cloak
     x-show="navigationOpen"
     x-transition.opacity
-    @click="closeNavigation()"
+    @click="closeNavigation({ restoreFocus: true })"
     class="fixed inset-0 z-40 bg-gray-950/55 backdrop-blur-sm lg:hidden"
     aria-hidden="true"
 ></div>
 
 <aside
     id="primary-navigation"
+    x-cloak
+    x-ref="navigationPanel"
+    :inert="!navigationVisible()"
+    :aria-hidden="(!navigationVisible()).toString()"
+    :role="!desktop && navigationOpen ? 'dialog' : null"
+    :aria-modal="!desktop && navigationOpen ? 'true' : null"
+    @keydown.tab="trapNavigationFocus($event)"
     :class="{
         'translate-x-0': navigationOpen,
         '-translate-x-full': ! navigationOpen,
@@ -16,20 +23,20 @@
         'lg:-translate-x-full': ! navigationExpanded,
     }"
     class="fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-blue-950/40 bg-blue-950 text-white shadow-2xl transition-transform duration-200 ease-out lg:shadow-none"
-    aria-label="Navegación principal"
+    aria-label="Menú principal"
 >
     <div class="tech-grid relative border-b border-white/10 px-5 py-6">
         <div class="absolute inset-x-0 bottom-0 h-1 bg-gold-500"></div>
         <button
             type="button"
-            @click="closeNavigation()"
-            class="absolute right-3 top-3 rounded-lg p-2 text-blue-200 transition hover:bg-white/10 hover:text-white"
+            @click="closeNavigation({ restoreFocus: true })"
+            class="absolute right-3 top-3 rounded-lg p-2 text-blue-200 transition hover:bg-white/10 hover:text-white lg:hidden"
             aria-label="Cerrar menú principal"
         >
             @svg('heroicon-o-x-mark', 'h-5 w-5')
         </button>
 
-        <a href="{{ route('dashboard') }}" class="flex items-center gap-4 rounded-xl focus:outline-none">
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-4 rounded-xl">
             <span class="theme-logo-surface flex h-[72px] w-[88px] shrink-0 items-center justify-center rounded-xl bg-white p-2 shadow-sm">
                 <img
                     src="{{ asset('logo-informatica.png') }}"
@@ -45,12 +52,13 @@
         </a>
     </div>
 
-    <nav class="flex-1 overflow-y-auto px-4 py-5">
+    <nav class="flex-1 overflow-y-auto px-4 py-5" aria-label="Secciones del sistema">
         <p class="mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.16em] text-blue-300">Espacio de {{ strtolower($layout->roleLabel) }}</p>
 
         <div class="space-y-1">
             <a
                 href="{{ route('dashboard') }}"
+                @if($layout->dashboardActive) aria-current="page" @endif
                 @class([
                     'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
                     'bg-white text-blue-950 shadow-sm' => $layout->dashboardActive,
@@ -73,6 +81,7 @@
             @foreach($layout->menuItems as $item)
                 <a
                     href="{{ route($item['route']) }}"
+                    @if($item['active']) aria-current="page" @endif
                     @class([
                         'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
                         'bg-white text-blue-950 shadow-sm' => $item['active'],

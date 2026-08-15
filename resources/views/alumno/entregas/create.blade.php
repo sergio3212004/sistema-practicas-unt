@@ -3,9 +3,9 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="text-2xl font-bold text-gray-900">
+                <h1 class="text-2xl font-bold text-gray-900">
                     Nueva Entrega
-                </h2>
+                </h1>
                 <p class="text-sm text-gray-600 mt-1">
                     {{ $actividad->titulo }}
                 </p>
@@ -99,24 +99,29 @@
                                            name="archivo"
                                            id="archivo"
                                            accept=".pdf,.doc,.docx,.zip,.rar"
-                                           class="hidden"
+                                           required
+                                           @error('archivo')
+                                               aria-invalid="true" aria-describedby="archivo-ayuda archivo-error"
+                                           @else
+                                               aria-describedby="archivo-ayuda"
+                                           @enderror
+                                           class="peer sr-only"
                                            onchange="mostrarNombreArchivo(this)">
 
-                                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-indigo-400 transition-colors cursor-pointer"
-                                         onclick="document.getElementById('archivo').click()">
+                                    <label for="archivo" class="block border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-indigo-400 peer-focus-visible:outline peer-focus-visible:outline-4 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-blue-700 transition-colors cursor-pointer">
                                         <div class="flex flex-col items-center">
                                             @svg('heroicon-o-cloud-arrow-up', 'w-12 h-12 text-gray-400 mb-3')
                                             <p class="text-sm font-medium text-gray-700 mb-1">
                                                 Haz clic para seleccionar un archivo
                                             </p>
-                                            <p class="text-xs text-gray-500">
+                                            <p id="archivo-ayuda" class="text-xs text-gray-500">
                                                 PDF, DOC, DOCX, ZIP o RAR (máx. 10MB)
                                             </p>
                                         </div>
-                                    </div>
+                                    </label>
 
                                     {{-- Mostrar nombre del archivo seleccionado --}}
-                                    <div id="archivoSeleccionado" class="hidden mt-3">
+                                    <div id="archivoSeleccionado" class="hidden mt-3" role="status" aria-live="polite">
                                         <div class="flex items-center justify-between p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
                                             <div class="flex items-center space-x-3">
                                                 @svg('heroicon-o-document', 'w-5 h-5 text-indigo-600')
@@ -127,6 +132,7 @@
                                             </div>
                                             <button type="button"
                                                     onclick="removerArchivo()"
+                                                    aria-label="Quitar archivo seleccionado"
                                                     class="text-red-600 hover:text-red-800">
                                                 @svg('heroicon-o-x-circle', 'w-5 h-5')
                                             </button>
@@ -135,7 +141,7 @@
                                 </div>
 
                                 @error('archivo')
-                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                <p id="archivo-error" class="mt-2 text-sm text-red-700" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -172,9 +178,9 @@
                             @else
                                 {{-- Está conectado - Mostrar Google Picker --}}
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <p class="block text-sm font-medium text-gray-700 mb-2">
                                         Archivo de Google Drive <span class="text-red-500">*</span>
-                                    </label>
+                                    </p>
 
                                     <input type="hidden" name="drive_file_id" id="driveFileId">
                                     <input type="hidden" name="drive_file_name" id="driveFileName">
@@ -182,6 +188,7 @@
                                     <div id="drivePickerContainer">
                                         <button type="button"
                                                 onclick="abrirDrivePicker()"
+                                                aria-controls="driveArchivoSeleccionado"
                                                 class="w-full border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-indigo-400 transition-colors">
                                             <div class="flex flex-col items-center">
                                                 <svg class="w-12 h-12 text-gray-400 mb-3" viewBox="0 0 24 24">
@@ -198,7 +205,7 @@
                                     </div>
 
                                     {{-- Mostrar archivo seleccionado de Drive --}}
-                                    <div id="driveArchivoSeleccionado" class="hidden mt-3">
+                                    <div id="driveArchivoSeleccionado" class="hidden mt-3" role="status" aria-live="polite">
                                         <div class="flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-lg">
                                             <div class="flex items-center space-x-3">
                                                 <svg class="w-5 h-5 text-blue-600" viewBox="0 0 24 24">
@@ -211,6 +218,7 @@
                                             </div>
                                             <button type="button"
                                                     onclick="removerDriveArchivo()"
+                                                    aria-label="Quitar archivo de Google Drive seleccionado"
                                                     class="text-red-600 hover:text-red-800">
                                                 @svg('heroicon-o-x-circle', 'w-5 h-5')
                                             </button>

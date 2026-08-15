@@ -6,9 +6,9 @@
                     @svg('heroicon-o-document-text', 'w-6 h-6 text-white')
                 </div>
                 <div>
-                    <h2 class="font-bold text-2xl text-gray-800 leading-tight">
+                    <h1 class="font-bold text-2xl text-gray-800 leading-tight">
                         Ficha de Registro
-                    </h2>
+                    </h1>
                     <p class="text-sm text-gray-500 mt-0.5">Gestiona tu ficha de prácticas pre profesionales</p>
                 </div>
             </div>
@@ -107,7 +107,7 @@
 
                                 <div>
                                     @if($ficha->aceptado === true)
-                                        <span class="inline-flex items-center px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-full shadow-lg">
+                                        <span class="inline-flex items-center px-4 py-2 bg-green-100 text-green-900 text-sm font-semibold rounded-full shadow-lg">
                                             @svg('heroicon-o-check-circle', 'w-5 h-5 mr-2')
                                             Ficha Aceptada
                                         </span>

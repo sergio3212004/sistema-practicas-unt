@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h1 class="font-semibold text-xl text-gray-800 leading-tight">
                 Detalle de Solicitud
-            </h2>
+            </h1>
             <a href="{{ route('admin.aprobaciones.index') }}"
                class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition">
                 @svg('heroicon-o-arrow-left', 'w-4 h-4 mr-2')
@@ -35,7 +35,7 @@
                     <div class="pt-12">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div>
-                                <h1 class="text-2xl font-bold text-gray-900">{{ $solicitud->nombre }}</h1>
+                                <h2 class="text-2xl font-bold text-gray-900">{{ $solicitud->nombre }}</h2>
                                 <p class="text-gray-500 mt-1">Solicitud de registro de empresa</p>
                             </div>
 
@@ -166,7 +166,7 @@
                             @csrf
                             <button type="submit"
                                     onclick="return confirm('¿Aprobar esta solicitud? Se creará la cuenta de usuario.')"
-                                    class="w-full inline-flex justify-center items-center px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
+                                    class="w-full inline-flex justify-center items-center px-6 py-3 bg-green-700 text-white font-semibold rounded-lg hover:bg-green-800 transition">
                                 @svg('heroicon-o-check', 'w-5 h-5 mr-2')
                                 Aprobar Solicitud
                             </button>

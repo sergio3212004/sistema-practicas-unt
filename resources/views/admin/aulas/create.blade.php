@@ -16,8 +16,9 @@
 
             <!-- Semestre -->
             <div>
-                <label class="block text-sm font-semibold text-gray-700">Semestre</label>
-                <select name="semestre_id"
+                <label for="semestre_id" class="block text-sm font-semibold text-gray-700">Semestre</label>
+                <select id="semestre_id" name="semestre_id"
+                        @error('semestre_id') aria-invalid="true" aria-describedby="semestre-error" @enderror
                         class="mt-1 w-full max-w-sm p-2 border border-gray-300 rounded-md shadow-sm mx-auto block"
                         required>
                     <option value="">Seleccione un semestre</option>
@@ -28,14 +29,15 @@
                     @endforeach
                 </select>
                 @error('semestre_id')
-                <p class="text-sm text-red-600 text-center">{{ $message }}</p>
+                <p id="semestre-error" class="text-sm text-red-700 text-center" role="alert">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Profesor -->
             <div>
-                <label class="block text-sm font-semibold text-gray-700">Profesor</label>
-                <select name="profesor_id"
+                <label for="profesor_id" class="block text-sm font-semibold text-gray-700">Profesor</label>
+                <select id="profesor_id" name="profesor_id"
+                        @error('profesor_id') aria-invalid="true" aria-describedby="profesor-error" @enderror
                         class="mt-1 w-full max-w-sm p-2 border border-gray-300 rounded-md shadow-sm mx-auto block">
                     <option value="">Sin profesor asignado</option>
                     @foreach ($profesores as $profesor)
@@ -45,13 +47,14 @@
                     @endforeach
                 </select>
                 @error('profesor_id')
-                <p class="text-sm text-red-600 text-center">{{ $message }}</p>
+                <p id="profesor-error" class="text-sm text-red-700 text-center" role="alert">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Botones -->
             <div class="flex justify-center gap-4 pt-4">
                 <button
+                    type="submit"
                     class="px-6 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition">
                     Guardar
                 </button>

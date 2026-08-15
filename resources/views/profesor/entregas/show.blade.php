@@ -12,6 +12,7 @@
 
         <div class="bg-white rounded-lg shadow overflow-hidden">
             <table class="w-full text-sm">
+                <caption class="sr-only">Detalle de la entrega</caption>
                 <thead class="bg-gray-100">
                 <tr>
                     <th class="px-4 py-2">Alumno</th>
@@ -50,9 +51,9 @@
                         <td class="px-4 py-2">
                             @if($entregaAlumno)
                                 <a href="{{ $entregaAlumno->link_entrega }}"
-                                   target="_blank"
+                                   target="_blank" rel="noopener noreferrer"
                                    class="text-blue-600 underline">
-                                    Ver entrega
+                                    Ver entrega <span class="sr-only">(se abre en una pestaña nueva)</span>
                                 </a>
                             @else
                                 —

@@ -62,3 +62,7 @@ Se mantiene el archivo `public/logo-informatica.png` sin modificar su forma ni s
 - El azul sigue siendo el color de acción principal, el dorado se mantiene como acento y verde/rojo conservan su uso semántico.
 - El logotipo siempre permanece sin alteraciones sobre una superficie blanca, también en modo oscuro.
 - El selector de tema debe estar disponible en los layouts autenticado y público, ser operable con teclado y exponer una etiqueta accesible.
+
+## Accesibilidad
+
+El objetivo institucional es WCAG 2.2 nivel AA. Las decisiones, correcciones realizadas y validaciones manuales pendientes se mantienen en [la auditoría de accesibilidad](accessibility-audit.md).

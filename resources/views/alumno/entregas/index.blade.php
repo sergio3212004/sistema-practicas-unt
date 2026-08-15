@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h1 class="font-semibold text-xl text-gray-800 leading-tight">
                 Mis Entregas
-            </h2>
+            </h1>
             <a href="{{ route('dashboard') }}"
                class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition">
                 @svg('heroicon-o-arrow-left', 'w-4 h-4 mr-2')
@@ -130,7 +130,7 @@
                                         @if($entrega['link_entrega'])
                                             <div class="bg-blue-50 rounded-lg p-4 mb-3">
                                                 <p class="text-sm font-semibold text-blue-900 mb-2">Tu entrega:</p>
-                                                <a href="{{ $entrega['link_entrega'] }}" target="_blank"
+                                                <a href="{{ $entrega['link_entrega'] }}" target="_blank" rel="noopener noreferrer"
                                                    class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
                                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
                                                          viewBox="0 0 24 24">
@@ -138,7 +138,7 @@
                                                               stroke-width="2"
                                                               d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
                                                     </svg>
-                                                    Ver mi trabajo
+                                                    Ver mi trabajo <span class="sr-only">(se abre en una pestaña nueva)</span>
                                                 </a>
                                                 @if($entrega['fecha_subida'])
                                                     <p class="text-xs text-blue-700 mt-1">
@@ -165,7 +165,7 @@
 
                                     <div class="ml-4">
                                         @if(!$entrega['link_entrega'] && $entrega['estado'] != 'Vencido')
-                                            <button onclick="abrirModalSubir({{ $entrega['id'] }})"
+                                            <button type="button" onclick="abrirModalSubir({{ $entrega['id'] }})"
                                                     class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
                                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
                                                      viewBox="0 0 24 24">
@@ -175,8 +175,8 @@
                                                 Entregar
                                             </button>
                                         @elseif($entrega['link_entrega'] && $entrega['estado'] != 'Vencido' && !$entrega['nota'])
-                                            <button onclick="abrirModalSubir({{ $entrega['id'] }}, '{{ $entrega['link_entrega'] }}')"
-                                                    class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                                            <button type="button" onclick="abrirModalSubir({{ $entrega['id'] }}, '{{ $entrega['link_entrega'] }}')"
+                                                    class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-amber-700 to-yellow-800 hover:from-amber-800 hover:to-yellow-900 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
                                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
                                                      viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -196,14 +196,15 @@
     </div>
 
     {{-- Modal para subir link --}}
-    <div id="modalSubir" class="hidden fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto z-50">
+    <div id="modalSubir" class="hidden fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto z-50"
+         role="dialog" aria-modal="true" aria-labelledby="modalSubirTitulo" aria-describedby="modalSubirDescripcion">
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full">
                 <form id="formSubir" method="POST">
                     @csrf
                     <div class="px-8 py-6 bg-gradient-to-r from-blue-500 to-cyan-600">
-                        <h3 class="text-2xl font-bold text-white">Subir Entrega</h3>
-                        <p class="text-blue-100 mt-1">Proporciona el link de tu trabajo</p>
+                        <h2 id="modalSubirTitulo" class="text-2xl font-bold text-white">Subir entrega</h2>
+                        <p id="modalSubirDescripcion" class="text-blue-100 mt-1">Proporciona el enlace de tu trabajo.</p>
                     </div>
 
                     <div class="p-8 space-y-6">
@@ -211,10 +212,10 @@
                             <label for="link_entrega" class="block text-sm font-semibold text-gray-700 mb-2">
                                 Link del Trabajo (Google Drive, GitHub, etc.) <span class="text-red-500">*</span>
                             </label>
-                            <input type="url" name="link_entrega" id="link_entrega" required
+                            <input type="url" name="link_entrega" id="link_entrega" required aria-describedby="ayuda-link-entrega"
                                    placeholder="https://drive.google.com/..."
                                    class="w-full px-4 py-3 border-2 border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 rounded-lg shadow-sm transition-all duration-200">
-                            <p class="text-xs text-gray-500 mt-2">Asegúrate de que el link sea accesible para el
+                            <p id="ayuda-link-entrega" class="text-xs text-gray-500 mt-2">Asegúrate de que el enlace sea accesible para el
                                 profesor</p>
                         </div>
                     </div>
@@ -235,6 +236,8 @@
     </div>
 
     <script>
+        let modalSubirTrigger = null;
+
         function abrirModalSubir(entregaId, linkActual = '') {
             const modal = document.getElementById('modalSubir');
             const form = document.getElementById('formSubir');
@@ -243,17 +246,45 @@
             form.action = `/alumno/mis-entregas/${entregaId}/guardar-link`;
             linkInput.value = linkActual;
 
+            modalSubirTrigger = document.activeElement;
             modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            requestAnimationFrame(() => linkInput.focus());
         }
 
         function cerrarModalSubir() {
             const modal = document.getElementById('modalSubir');
             modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            modalSubirTrigger?.focus();
         }
 
         document.getElementById('modalSubir').addEventListener('click', function (e) {
             if (e.target === this) {
                 cerrarModalSubir();
+            }
+        });
+
+        document.getElementById('modalSubir').addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                cerrarModalSubir();
+                return;
+            }
+
+            if (e.key !== 'Tab') return;
+
+            const focusable = [...this.querySelectorAll('button, input')]
+                .filter(element => !element.disabled && element.offsetParent !== null);
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
             }
         });
     </script>

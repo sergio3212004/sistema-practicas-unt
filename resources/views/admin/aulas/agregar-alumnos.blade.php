@@ -11,7 +11,7 @@
         </a>
 
         @if (session('success'))
-            <div class="p-3 mb-4 text-green-800 bg-green-100 border border-green-300 rounded">
+            <div class="p-3 mb-4 text-green-800 bg-green-100 border border-green-300 rounded" role="status" aria-atomic="true">
                 {{ session('success') }}
             </div>
         @endif
@@ -25,10 +25,12 @@
             <form action="{{ route('admin.aulas.asignar-alumnos', $aula->id) }}" method="POST">
                 @csrf
 
-                <table class="min-w-full bg-white border rounded-lg shadow mb-4">
+                <div class="overflow-x-auto mb-4">
+                <table class="min-w-full bg-white border rounded-lg shadow">
+                    <caption class="sr-only">Estudiantes disponibles para asignar</caption>
                     <thead class="bg-gray-100 border-b">
                     <tr>
-                        <th class="px-4 py-2"></th>
+                        <th class="px-4 py-2"><span class="sr-only">Seleccionar</span></th>
                         <th class="px-4 py-2 text-left text-gray-700">Código</th>
                         <th class="px-4 py-2 text-left text-gray-700">Nombre Completo</th>
                         <th class="px-4 py-2 text-left text-gray-700">Teléfono</th>
@@ -39,7 +41,7 @@
                     @foreach ($alumnos as $alumno)
                         <tr class="border-b hover:bg-gray-50">
                             <td class="px-4 py-2">
-                                <input type="checkbox" name="alumnos[]" value="{{ $alumno->id }}">
+                                <input type="checkbox" name="alumnos[]" value="{{ $alumno->id }}" aria-label="Seleccionar a {{ $alumno->nombre_completo }}">
                             </td>
                             <td class="px-4 py-2">{{ $alumno->codigo_matricula }}</td>
                             <td class="px-4 py-2">{{ $alumno->nombre_completo }}</td>
@@ -48,6 +50,7 @@
                     @endforeach
                     </tbody>
                 </table>
+                </div>
 
                 @error('alumnos')
                 <p class="text-sm text-red-600 mb-2">{{ $message }}</p>

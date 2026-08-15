@@ -34,8 +34,14 @@
     }
 
     :focus-visible {
-        outline: 3px solid rgb(var(--unt-gold) / 0.72);
-        outline-offset: 2px;
+        outline: 3px solid rgb(var(--unt-blue));
+        outline-offset: 3px;
+        box-shadow: 0 0 0 2px white;
+    }
+
+    .dark :focus-visible {
+        outline-color: rgb(var(--unt-gold));
+        box-shadow: 0 0 0 2px rgb(30 26 23);
     }
 
     ::-webkit-scrollbar {
@@ -57,6 +63,10 @@
 }
 
 @layer components {
+    .ui-skip-link {
+        @apply fixed left-4 top-4 z-[100] -translate-y-24 rounded-lg bg-blue-950 px-4 py-3 font-bold text-white shadow-raised transition-transform focus:translate-y-0;
+    }
+
     .ui-page {
         @apply mx-auto w-full max-w-screen-2xl space-y-6;
     }
@@ -226,6 +236,17 @@
     .dark .text-yellow-900, .dark .text-yellow-800, .dark .text-yellow-700 { @apply text-yellow-200; }
     .dark .border-yellow-100, .dark .border-yellow-200 { @apply border-yellow-800; }
     .dark .theme-logo-surface { background-color: #fff; }
+}
+
+@media (forced-colors: active) {
+    :focus-visible {
+        outline: 3px solid CanvasText;
+        box-shadow: none;
+    }
+
+    .ui-skip-link {
+        border: 2px solid CanvasText;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -41,45 +41,56 @@
 
                     {{-- Título --}}
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">
+                        <label for="nombre" class="block text-sm font-semibold text-gray-700 mb-1">
                             Título de la publicación
                         </label>
                         <input type="text"
+                               id="nombre"
                                name="nombre"
+                               @error('nombre') aria-invalid="true" aria-describedby="nombre-error" @enderror
                                value="{{ old('nombre', $publicacion->nombre) }}"
                                required
                                class="w-full rounded-xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                        @error('nombre')<p id="nombre-error" class="mt-1 text-sm text-red-700" role="alert">{{ $message }}</p>@enderror
                     </div>
 
                     {{-- Cargo --}}
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">
+                        <label for="cargo" class="block text-sm font-semibold text-gray-700 mb-1">
                             Cargo solicitado
                         </label>
                         <input type="text"
+                               id="cargo"
                                name="cargo"
+                               @error('cargo') aria-invalid="true" aria-describedby="cargo-error" @enderror
                                value="{{ old('cargo', $publicacion->cargo) }}"
                                required
                                class="w-full rounded-xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+                        @error('cargo')<p id="cargo-error" class="mt-1 text-sm text-red-700" role="alert">{{ $message }}</p>@enderror
                     </div>
 
                     {{-- Descripción --}}
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">
+                        <label for="descripcion" class="block text-sm font-semibold text-gray-700 mb-1">
                             Descripción de la vacante
                         </label>
-                        <textarea name="descripcion"
+                        <textarea id="descripcion"
+                                  name="descripcion"
+                                  @error('descripcion') aria-invalid="true" aria-describedby="descripcion-error" @enderror
                                   rows="5"
                                   required
                                   class="w-full rounded-xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">{{ old('descripcion', $publicacion->descripcion) }}</textarea>
+                        @error('descripcion')<p id="descripcion-error" class="mt-1 text-sm text-red-700" role="alert">{{ $message }}</p>@enderror
                     </div>
 
                     {{-- Estado --}}
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">
+                        <label for="estado" class="block text-sm font-semibold text-gray-700 mb-1">
                             Estado de la vacante
                         </label>
-                        <select name="estado"
+                        <select id="estado"
+                                name="estado"
+                                @error('estado') aria-invalid="true" aria-describedby="estado-error" @enderror
                                 required
                                 class="w-full rounded-xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
                             <option value="Disponible" @selected(old('estado', $publicacion->estado) === 'Disponible')>
@@ -89,17 +100,18 @@
                                 Cubierta
                             </option>
                         </select>
+                        @error('estado')<p id="estado-error" class="mt-1 text-sm text-red-700" role="alert">{{ $message }}</p>@enderror
                     </div>
 
                     {{-- Imagen actual --}}
                     @if($publicacion->imagen)
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <p class="block text-sm font-semibold text-gray-700 mb-2">
                                 Imagen actual
-                            </label>
+                            </p>
                             <div class="rounded-xl overflow-hidden border">
                                 <img src="{{ asset('storage/' . $publicacion->imagen) }}"
-                                     alt="Imagen actual"
+                                     alt="Imagen actual de la publicación {{ $publicacion->nombre }}"
                                      class="w-full max-h-64 object-cover">
                             </div>
                         </div>
@@ -107,17 +119,20 @@
 
                     {{-- Nueva imagen --}}
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="imagen" class="block text-sm font-semibold text-gray-700 mb-2">
                             Reemplazar imagen (opcional)
                         </label>
                         <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-indigo-400 transition">
                             <input type="file"
+                                   id="imagen"
                                    name="imagen"
                                    accept="image/*"
+                                   aria-describedby="imagen-ayuda"
                                    class="w-full text-sm text-gray-600">
-                            <p class="mt-2 text-xs text-gray-500">
+                            <p id="imagen-ayuda" class="mt-2 text-xs text-gray-500">
                                 PNG o JPG — Máx. 2MB
                             </p>
+                            @error('imagen')<p class="mt-1 text-sm text-red-700" role="alert">{{ $message }}</p>@enderror
                         </div>
                     </div>
 

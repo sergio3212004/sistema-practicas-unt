@@ -42,6 +42,7 @@
             @else
                 <div class="overflow-x-auto">
                     <table class="ui-table">
+                        <caption class="sr-only">Usuarios registrados</caption>
                         <thead>
                             <tr>
                                 <th scope="col">Usuario</th>

@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
+                <h1 class="font-semibold text-2xl text-gray-800 leading-tight">
                     Nueva Actividad - Aula {{ $aula->numero }}
-                </h2>
+                </h1>
                 <p class="text-sm text-gray-600 mt-1">
                     {{ $aula->semestre?->nombre ?? 'Sin semestre asignado' }}
                 </p>

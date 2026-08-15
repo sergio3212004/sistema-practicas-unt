@@ -8,12 +8,14 @@
 @endphp
 
 @if($notifications->isNotEmpty())
-    <div class="pointer-events-none fixed inset-x-4 top-20 z-[60] flex flex-col items-end gap-3 sm:left-auto sm:right-6 sm:w-full sm:max-w-sm">
+    <section
+        class="pointer-events-none fixed inset-x-4 top-20 z-[60] flex flex-col items-end gap-3 sm:left-auto sm:right-6 sm:w-full sm:max-w-sm"
+        aria-label="Notificaciones del sistema"
+    >
         @foreach($notifications as $key => $settings)
             <div
                 x-data="{ visible: true }"
                 x-show="visible"
-                x-init="setTimeout(() => visible = false, 5000)"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="translate-y-2 opacity-0 sm:translate-x-4 sm:translate-y-0"
                 x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
@@ -21,7 +23,8 @@
                 x-transition:leave-start="opacity-100"
                 x-transition:leave-end="translate-x-4 opacity-0"
                 class="pointer-events-auto w-full rounded-2xl border-l-4 bg-white p-4 shadow-raised {{ $settings['classes'] }}"
-                role="status"
+                role="{{ in_array($key, ['error', 'warning'], true) ? 'alert' : 'status' }}"
+                aria-atomic="true"
             >
                 <div class="flex items-start gap-3">
                     @svg($settings['icon'], 'mt-0.5 h-5 w-5 shrink-0')
@@ -35,5 +38,5 @@
                 </div>
             </div>
         @endforeach
-    </div>
+    </section>
 @endif

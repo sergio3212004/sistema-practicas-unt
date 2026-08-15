@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h1 class="font-semibold text-xl text-gray-800 leading-tight">
                 Crear Nueva Entrega
-            </h2>
+            </h1>
             <a href="{{ route('dashboard') }}"
                class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition">
                 @svg('heroicon-o-arrow-left', 'w-4 h-4 mr-2')
@@ -34,7 +34,7 @@
             <div class="bg-white overflow-hidden shadow-lg rounded-lg">
 
                 {{-- Header con gradiente --}}
-                <div class="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 px-8 py-10">
+                <div class="bg-gradient-to-r from-amber-700 via-yellow-800 to-amber-900 px-8 py-10">
                     <div>
                         <h3 class="text-4xl font-black text-white drop-shadow-lg">Nueva Entrega</h3>
                         <p class="text-amber-50 mt-2 text-lg font-medium">Asigna una tarea a tus estudiantes</p>
@@ -48,12 +48,13 @@
 
                         {{-- Título de la entrega con selector de semana --}}
                         <div>
-                            <label class="block font-semibold text-gray-700 mb-3 text-base">
+                            <label for="semanaSel" class="block font-semibold text-gray-700 mb-3 text-base">
                                 Título de la Entrega <span class="text-red-500">*</span>
                             </label>
                             <div class="flex items-center gap-3">
                                 <span class="text-gray-700 font-medium">Entrega de trabajo - Semana</span>
                                 <select name="semana" id="semanaSel" required
+                                        @error('titulo') aria-invalid="true" aria-describedby="titulo-error" @enderror
                                         class="w-24 px-4 py-3 border-2 border-amber-300 focus:border-amber-500 focus:ring-4 focus:ring-amber-100 rounded-xl shadow-sm transition-all duration-200 font-bold text-lg text-gray-700 hover:border-amber-400">
                                     @for ($i = 1; $i <= 14; $i++)
                                         <option value="{{ $i }}" {{ $i == $semanaSugerida ? 'selected' : '' }}>{{ $i }}
@@ -64,7 +65,7 @@
                             <input type="hidden" name="titulo" id="tituloCompleto"
                                    value="Entrega de trabajo - Semana {{ $semanaSugerida }}">
                             @error('titulo')
-                            <p class="text-red-500 text-sm mt-2 flex items-center">
+                            <p id="titulo-error" class="text-red-700 text-sm mt-2 flex items-center" role="alert">
                                 <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                           d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
@@ -77,14 +78,15 @@
 
                         {{-- Descripción --}}
                         <div>
-                            <label class="block font-semibold text-gray-700 mb-3 text-base">
+                            <label for="descripcion" class="block font-semibold text-gray-700 mb-3 text-base">
                                 Descripción
                             </label>
-                            <textarea name="descripcion" rows="4"
+                            <textarea id="descripcion" name="descripcion" rows="4"
+                                      @error('descripcion') aria-invalid="true" aria-describedby="descripcion-error" @enderror
                                       placeholder="Instrucciones adicionales para los alumnos (opcional)..."
                                       class="w-full px-4 py-3 border-2 border-gray-300 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 rounded-xl shadow-sm transition-all duration-200 resize-none hover:border-gray-400">{{ old('descripcion') }}</textarea>
                             @error('descripcion')
-                            <p class="text-red-500 text-sm mt-2 flex items-center">
+                            <p id="descripcion-error" class="text-red-700 text-sm mt-2 flex items-center" role="alert">
                                 <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                           d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
@@ -98,14 +100,15 @@
                         {{-- Fechas de entrega --}}
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block font-semibold text-gray-700 mb-3 text-base">
+                                <label for="fechaInicio" class="block font-semibold text-gray-700 mb-3 text-base">
                                     Fecha de Inicio <span class="text-red-500">*</span>
                                 </label>
                                 <input type="date" name="fecha_inicio" id="fechaInicio"
+                                       @error('fecha_inicio') aria-invalid="true" aria-describedby="fecha-inicio-error" @enderror
                                        value="{{ old('fecha_inicio', date('Y-m-d')) }}" min="{{ date('Y-m-d') }}" required
                                        class="w-full px-4 py-3 border-2 border-green-300 focus:border-green-500 focus:ring-4 focus:ring-green-100 rounded-xl shadow-sm transition-all duration-200 font-medium hover:border-green-400">
                                 @error('fecha_inicio')
-                                <p class="text-red-500 text-sm mt-2 flex items-center">
+                                <p id="fecha-inicio-error" class="text-red-700 text-sm mt-2 flex items-center" role="alert">
                                     <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                               d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
@@ -117,18 +120,20 @@
                             </div>
 
                             <div>
-                                <label class="block font-semibold text-gray-700 mb-3 text-base">
+                                <label for="fechaFin" class="block font-semibold text-gray-700 mb-3 text-base">
                                     Fecha de Fin <span class="text-red-500">*</span>
                                 </label>
                                 <input type="date" name="fecha_fin" id="fechaFin"
+                                       aria-describedby="fecha-fin-ayuda @error('fecha_fin') fecha-fin-error @enderror"
+                                       @error('fecha_fin') aria-invalid="true" @enderror
                                        value="{{ old('fecha_fin', date('Y-m-d', strtotime('+7 days'))) }}"
                                        min="{{ date('Y-m-d', strtotime('+1 day')) }}" required
                                        class="w-full px-4 py-3 border-2 border-purple-300 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 rounded-xl shadow-sm transition-all duration-200 font-medium hover:border-purple-400">
-                                <p class="text-xs text-gray-500 mt-2">
+                                <p id="fecha-fin-ayuda" class="text-xs text-gray-500 mt-2">
                                     Sugerimos 7 días (1 semana)
                                 </p>
                                 @error('fecha_fin')
-                                <p class="text-red-500 text-sm mt-2 flex items-center">
+                                <p id="fecha-fin-error" class="text-red-700 text-sm mt-2 flex items-center" role="alert">
                                     <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                               d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
@@ -151,7 +156,7 @@
                                 Cancelar
                             </a>
                             <button type="submit"
-                                    class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                                    class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-amber-700 to-yellow-800 hover:from-amber-800 hover:to-yellow-900 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
                                 @svg('heroicon-o-check-circle', 'w-5 h-5 mr-2')
                                 Crear Entrega
                             </button>

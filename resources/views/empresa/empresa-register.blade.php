@@ -15,13 +15,15 @@
             },
         })"
     >
-        <form method="POST" action="{{ route('empresa.register') }}" class="space-y-8">
+        <form method="POST" action="{{ route('empresa.register') }}" class="space-y-8" aria-describedby="campos-obligatorios">
             @csrf
 
-            <section class="space-y-4">
+            <p id="campos-obligatorios" class="text-sm text-gray-600">Los campos marcados con * son obligatorios.</p>
+
+            <section class="space-y-4" aria-labelledby="titulo-consulta-ruc">
                 <div>
                     <p class="ui-eyebrow">Paso 1</p>
-                    <h3 class="mt-1 text-lg font-bold text-gray-950">Consulta de empresa</h3>
+                    <h2 id="titulo-consulta-ruc" class="mt-1 text-lg font-bold text-gray-950">Consulta de empresa</h2>
                     <p class="mt-1 text-sm leading-6 text-gray-600">
                         Ingresa el RUC de 11 dígitos para obtener los datos registrados en SUNAT.
                     </p>
@@ -49,6 +51,8 @@
                             type="button"
                             x-on:click="lookupRuc"
                             x-bind:disabled="lookupState === 'loading'"
+                            x-bind:aria-busy="lookupState === 'loading'"
+                            aria-controls="datos-empresa estado-consulta-ruc"
                             class="ui-btn-primary shrink-0 px-5 py-3"
                         >
                             <svg
@@ -65,25 +69,27 @@
                         </button>
                     </div>
 
-                    <x-input-error :messages="$errors->get('ruc')" />
+                    <x-input-error for="ruc" :messages="$errors->get('ruc')" />
 
                     <div
+                        id="estado-consulta-ruc"
                         x-show="lookupMessage"
                         x-cloak
                         class="mt-3 rounded-xl border px-4 py-3 text-sm leading-6"
                         x-bind:class="statusClasses"
                         role="status"
                         aria-live="polite"
+                        aria-atomic="true"
                     >
                         <p x-text="lookupMessage"></p>
                     </div>
                 </div>
             </section>
 
-            <section x-show="detailsVisible" x-cloak class="space-y-6 border-t pt-8">
+            <section id="datos-empresa" x-show="detailsVisible" x-cloak class="space-y-6 border-t pt-8" aria-labelledby="titulo-datos-empresa">
                 <div>
                     <p class="ui-eyebrow">Datos de SUNAT</p>
-                    <h3 class="mt-1 text-lg font-bold text-gray-950">Información de la empresa</h3>
+                    <h2 id="titulo-datos-empresa" class="mt-1 text-lg font-bold text-gray-950">Información de la empresa</h2>
                     <p class="mt-1 text-sm leading-6 text-gray-600">
                         Los datos encontrados están protegidos. Si falta información, completa los campos habilitados.
                     </p>
@@ -99,9 +105,10 @@
                             x-model="company.nombre"
                             x-bind:readonly="isReadonly('nombre')"
                             x-bind:class="fieldClasses('nombre')"
+                            autocomplete="organization"
                             required
                         />
-                        <x-input-error :messages="$errors->get('nombre')" />
+                        <x-input-error for="nombre" :messages="$errors->get('nombre')" />
                     </div>
 
                     <div>
@@ -120,7 +127,7 @@
                                 <option value="{{ $razon->id }}">{{ $razon->acronimo }}</option>
                             @endforeach
                         </select>
-                        <x-input-error :messages="$errors->get('razon_social_id')" />
+                        <x-input-error for="razon_social_id" :messages="$errors->get('razon_social_id')" />
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -133,8 +140,9 @@
                                 x-model="company.departamento"
                                 x-bind:readonly="isReadonly('departamento')"
                                 x-bind:class="fieldClasses('departamento')"
+                                autocomplete="address-level1"
                             />
-                            <x-input-error :messages="$errors->get('departamento')" />
+                            <x-input-error for="departamento" :messages="$errors->get('departamento')" />
                         </div>
 
                         <div>
@@ -146,8 +154,9 @@
                                 x-model="company.provincia"
                                 x-bind:readonly="isReadonly('provincia')"
                                 x-bind:class="fieldClasses('provincia')"
+                                autocomplete="address-level2"
                             />
-                            <x-input-error :messages="$errors->get('provincia')" />
+                            <x-input-error for="provincia" :messages="$errors->get('provincia')" />
                         </div>
 
                         <div>
@@ -159,8 +168,9 @@
                                 x-model="company.distrito"
                                 x-bind:readonly="isReadonly('distrito')"
                                 x-bind:class="fieldClasses('distrito')"
+                                autocomplete="address-level3"
                             />
-                            <x-input-error :messages="$errors->get('distrito')" />
+                            <x-input-error for="distrito" :messages="$errors->get('distrito')" />
                         </div>
                     </div>
 
@@ -173,8 +183,9 @@
                             x-model="company.direccion"
                             x-bind:readonly="isReadonly('direccion')"
                             x-bind:class="fieldClasses('direccion')"
+                            autocomplete="street-address"
                         />
-                        <x-input-error :messages="$errors->get('direccion')" />
+                        <x-input-error for="direccion" :messages="$errors->get('direccion')" />
                     </div>
 
                     <div x-show="company.estado || company.condicion" class="flex flex-wrap gap-2">
@@ -188,10 +199,10 @@
                 </div>
             </section>
 
-            <section class="space-y-6 border-t pt-8">
+            <section class="space-y-6 border-t pt-8" aria-labelledby="titulo-credenciales">
                 <div>
                     <p class="ui-eyebrow">Paso 2</p>
-                    <h3 class="mt-1 text-lg font-bold text-gray-950">Credenciales y contacto</h3>
+                    <h2 id="titulo-credenciales" class="mt-1 text-lg font-bold text-gray-950">Credenciales y contacto</h2>
                 </div>
 
                 <div>
@@ -205,7 +216,7 @@
                         autocomplete="email"
                         class="block w-full px-4 py-3"
                     />
-                    <x-input-error :messages="$errors->get('email')" />
+                    <x-input-error for="register-email" :messages="$errors->get('email')" />
                 </div>
 
                 <div>
@@ -217,7 +228,7 @@
                         autocomplete="new-password"
                         class="block w-full px-4 py-3"
                     />
-                    <x-input-error :messages="$errors->get('password')" />
+                    <x-input-error for="register-password" :messages="$errors->get('password')" />
                 </div>
 
                 <div>
@@ -239,12 +250,13 @@
                         type="text"
                         :value="old('telefono')"
                         inputmode="numeric"
+                        autocomplete="tel"
                         maxlength="9"
                         pattern="[0-9]{9}"
                         placeholder="9 dígitos"
                         class="block w-full px-4 py-3"
                     />
-                    <x-input-error :messages="$errors->get('telefono')" />
+                    <x-input-error for="telefono" :messages="$errors->get('telefono')" />
                 </div>
             </section>
 

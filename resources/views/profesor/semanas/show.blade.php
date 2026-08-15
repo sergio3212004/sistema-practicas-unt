@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
+                <h1 class="font-semibold text-2xl text-gray-800 leading-tight">
                     Semana {{ $semana->numero }}
                     @if($semana->nombre)
                         - {{ $semana->nombre }}
                     @endif
-                </h2>
+                </h1>
                 <p class="text-sm text-gray-600 mt-1">
                     Aula {{ $semana->aula->numero }} • {{ $semana->aula->semestre->nombre }}
                 </p>

@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
+                <h1 class="font-semibold text-2xl text-gray-800 leading-tight">
                     {{ $actividad->titulo }}
-                </h2>
+                </h1>
                 <p class="text-sm text-gray-600 mt-1">
                     {{ $actividad->aula->semestre?->nombre ?? 'Sin semestre' }} ·
                     {{ $actividad->tipoActividad->nombre }}
@@ -26,7 +26,7 @@
         <!-- Detalles de la actividad -->
         <div class="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200 mb-8">
             <div class="bg-gradient-to-r from-blue-700 to-blue-800 px-6 py-5">
-                <h3 class="text-xl font-bold text-white">Detalles de la Actividad</h3>
+                <h2 class="text-xl font-bold text-white">Detalles de la actividad</h2>
                 <p class="text-blue-200 text-sm mt-1">Información clave sobre esta tarea</p>
             </div>
 
@@ -68,9 +68,9 @@
 
         <!-- Entregas -->
         <div class="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200">
-            <div class="bg-gradient-to-r from-green-600 to-emerald-700 px-6 py-5">
-                <h3 class="text-xl font-bold text-white">Entregas de Alumnos</h3>
-                <p class="text-emerald-200 text-sm mt-1">
+            <div class="bg-gradient-to-r from-green-700 to-emerald-800 px-6 py-5">
+                <h2 class="text-xl font-bold text-white">Entregas de alumnos</h2>
+                <p class="text-green-100 text-sm mt-1">
                     {{ $actividad->entregas->count() }} entrega(s) registrada(s)
                 </p>
             </div>
@@ -81,12 +81,13 @@
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
-                        <h4 class="mt-4 text-lg font-medium text-gray-700">Aún no hay entregas</h4>
+                        <h3 class="mt-4 text-lg font-medium text-gray-700">Aún no hay entregas</h3>
                         <p class="text-gray-500">Los alumnos aún no han enviado trabajos para esta actividad.</p>
                     </div>
                 @else
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
+                            <caption class="sr-only">Entregas de estudiantes</caption>
                             <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alumno</th>
@@ -141,14 +142,14 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <!-- Ver archivo -->
                                         @if($entrega->actividad->tipoActividad->modo_entrega === "pdf")
-                                            <a href="{{ asset('storage/' . $entrega->ruta) }}" target="_blank"
+                                            <a href="{{ asset('storage/' . $entrega->ruta) }}" target="_blank" rel="noopener noreferrer"
                                                class="text-blue-600 hover:text-blue-900 mr-3">
-                                                Ver archivo
+                                                Ver archivo <span class="sr-only">(se abre en una pestaña nueva)</span>
                                             </a>
                                         @elseif($entrega->actividad->tipoActividad->modo_entrega === "drive")
-                                            <a href="{{ $entrega->ruta }}" target="_blank"
+                                            <a href="{{ $entrega->ruta }}" target="_blank" rel="noopener noreferrer"
                                                class="text-blue-600 hover:text-blue-900 mr-3">
-                                                Ver archivo
+                                                Ver archivo <span class="sr-only">(se abre en una pestaña nueva)</span>
                                             </a>
                                         @endif
 
@@ -170,10 +171,10 @@
     </div>
 
     <!-- Modal de Calificación (dinámico con JS simple) -->
-    <div id="modal-calificar" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4">
+    <div id="modal-calificar" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="modal-calificar-titulo" aria-describedby="modal-alumno">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-md">
             <div class="px-6 py-5 border-b border-gray-200">
-                <h3 class="text-lg font-bold text-gray-800">Calificar entrega</h3>
+                <h2 id="modal-calificar-titulo" class="text-lg font-bold text-gray-800">Calificar entrega</h2>
                 <p id="modal-alumno" class="text-sm text-gray-500"></p>
             </div>
             <form id="form-calificar" method="POST" class="p-6">
@@ -182,15 +183,15 @@
                 <input type="hidden" name="entrega_id" id="entrega_id">
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Nota (0–20)</label>
-                    <input type="number" name="nota" min="0" max="20" step="0.1"
+                    <label for="modal-nota" class="block text-sm font-medium text-gray-700 mb-2">Nota (0–20)</label>
+                    <input id="modal-nota" type="number" name="nota" min="0" max="20" step="0.1"
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                            required>
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones (opcional)</label>
-                    <textarea name="observaciones" rows="3"
+                    <label for="modal-observaciones" class="block text-sm font-medium text-gray-700 mb-2">Observaciones (opcional)</label>
+                    <textarea id="modal-observaciones" name="observaciones" rows="3"
                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
                 </div>
 
@@ -206,20 +207,51 @@
 
     @push('scripts')
         <script>
+            const modalCalificar = document.getElementById('modal-calificar');
+            let modalCalificarTrigger = null;
+
             function openCalificarModal(entregaId, nombreAlumno) {
+                modalCalificarTrigger = document.activeElement;
                 document.getElementById('entrega_id').value = entregaId;
                 document.getElementById('modal-alumno').textContent = 'Alumno: ' + nombreAlumno;
                 document.getElementById('form-calificar').action = `/profesor/entregas/${entregaId}/calificar`;
-                document.getElementById('modal-calificar').classList.remove('hidden');
+                modalCalificar.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+                requestAnimationFrame(() => document.getElementById('modal-nota').focus());
             }
 
             function closeModal() {
-                document.getElementById('modal-calificar').classList.add('hidden');
+                modalCalificar.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+                modalCalificarTrigger?.focus();
             }
 
             // Cerrar modal al hacer clic fuera
-            document.getElementById('modal-calificar').addEventListener('click', function(e) {
+            modalCalificar.addEventListener('click', function(e) {
                 if (e.target === this) closeModal();
+            });
+
+            modalCalificar.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closeModal();
+                    return;
+                }
+
+                if (e.key !== 'Tab') return;
+
+                const focusable = [...this.querySelectorAll('button, input:not([type="hidden"]), textarea, [href]')]
+                    .filter(element => !element.disabled);
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
             });
         </script>
     @endpush

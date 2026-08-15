@@ -8,7 +8,7 @@
 <div {{ $attributes->merge(['class' => 'flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between']) }}>
     <div class="flex min-w-0 items-start gap-4">
         @if($icon)
-            <span class="ui-icon-box mt-0.5 hidden sm:flex">
+            <span class="ui-icon-box mt-0.5 hidden sm:flex" aria-hidden="true">
                 @svg($icon, 'h-5 w-5')
             </span>
         @endif

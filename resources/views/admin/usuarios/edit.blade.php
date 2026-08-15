@@ -9,7 +9,7 @@
 
             <!-- Errores -->
             @if ($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                <div id="resumen-errores" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert" tabindex="-1">
                     <strong class="font-bold">¡Ocurrió un error!</strong>
                     <ul class="mt-2 list-disc list-inside">
                         @foreach ($errors->all() as $error)
@@ -24,13 +24,13 @@
                 <h2 class="text-xl font-semibold text-indigo-700 border-b pb-2">Datos de Acceso</h2>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" name="email" value="{{ old('email', $usuario->email) }}"
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input id="email" type="email" name="email" autocomplete="email" value="{{ old('email', $usuario->email) }}"
                            class="mt-1 block w-full rounded-md border-gray-300 p-2 border shadow-sm">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Rol del Usuario</label>
+                    <label for="rol_id" class="block text-sm font-medium text-gray-700">Rol del Usuario</label>
                     <select name="rol_id" id="rol_id"
                             class="mt-1 block w-full rounded-md border-gray-300 p-2 border shadow-sm">
                         @foreach ($roles as $rol)
@@ -68,6 +68,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
+        document.getElementById('resumen-errores')?.focus();
         const rolSelect = document.getElementById("rol_id");
         const perfilData = document.getElementById("perfil-data");
 

@@ -67,7 +67,7 @@
 
                             @if($aula->alumnos->count() > 0)
                                 <a href="{{ route('profesor.formato-once.create', $aula->id) }}"
-                                   class="flex-1 bg-green-500 hover:bg-green-600 text-white text-center py-2 px-4 rounded transition-colors duration-200 text-sm font-medium">
+                                   class="flex-1 bg-green-700 hover:bg-green-800 text-white text-center py-2 px-4 rounded transition-colors duration-200 text-sm font-medium">
                                     Crear Formato
                                 </a>
                             @else

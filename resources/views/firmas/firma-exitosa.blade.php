@@ -2,12 +2,14 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Firma registrada</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<a href="#contenido-principal" class="ui-skip-link">Saltar al contenido principal</a>
 
-<div class="bg-white shadow-lg rounded-lg max-w-md w-full p-8 text-center">
+<main id="contenido-principal" tabindex="-1" class="bg-white shadow-lg rounded-lg max-w-md w-full p-8 text-center">
 
     <!-- Ícono -->
     <div class="flex justify-center mb-4">
@@ -37,7 +39,7 @@
         No es necesario realizar ninguna otra acción.
     </div>
 
-</div>
+</main>
 
 </body>
 </html>

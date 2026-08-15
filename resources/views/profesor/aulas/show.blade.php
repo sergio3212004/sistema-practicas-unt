@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
+                <h1 class="font-semibold text-2xl text-gray-800 leading-tight">
                     Aula {{ $aula->numero }} - {{ $aula->semestre->nombre }}
-                </h2>
+                </h1>
                 <p class="text-sm text-gray-600 mt-1">
                     Gestión de estudiantes, semanas y actividades
                 </p>
@@ -90,8 +90,9 @@
 
                 <!-- Pestañas de navegación -->
                 <div class="border-b border-gray-200">
-                    <nav class="flex -mb-px">
-                        <button @click="tab = 'estudiantes'"
+                    <nav class="flex -mb-px" aria-label="Secciones del aula">
+                        <button type="button" id="control-estudiantes" aria-controls="panel-estudiantes"
+                                :aria-pressed="(tab === 'estudiantes').toString()" @click="tab = 'estudiantes'"
                                 :class="tab === 'estudiantes' ? 'border-blue-800 text-blue-800' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
                                 class="px-6 py-4 text-sm font-medium border-b-2 transition-colors duration-200">
                             <div class="flex items-center">
@@ -101,7 +102,8 @@
                                 Estudiantes
                             </div>
                         </button>
-                        <button @click="tab = 'semanas'"
+                        <button type="button" id="control-semanas" aria-controls="panel-semanas"
+                                :aria-pressed="(tab === 'semanas').toString()" @click="tab = 'semanas'"
                                 :class="tab === 'semanas' ? 'border-blue-800 text-blue-800' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
                                 class="px-6 py-4 text-sm font-medium border-b-2 transition-colors duration-200">
                             <div class="flex items-center">
@@ -111,7 +113,8 @@
                                 Semanas y Actividades
                             </div>
                         </button>
-                        <button @click="tab = 'documentos'"
+                        <button type="button" id="control-documentos" aria-controls="panel-documentos"
+                                :aria-pressed="(tab === 'documentos').toString()" @click="tab = 'documentos'"
                                 :class="tab === 'documentos' ? 'border-blue-800 text-blue-800' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
                                 class="px-6 py-4 text-sm font-medium border-b-2 transition-colors duration-200">
                             <div class="flex items-center">
@@ -128,7 +131,7 @@
                 <div class="p-6">
 
                     <!-- Pestaña de Estudiantes -->
-                    <div x-show="tab === 'estudiantes'" x-transition>
+                    <div id="panel-estudiantes" role="region" aria-labelledby="control-estudiantes" x-show="tab === 'estudiantes'" x-transition>
                         <div class="mb-4">
                             <input type="text"
                                    id="searchEstudiantes"
@@ -138,6 +141,7 @@
 
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
+                                <caption class="sr-only">Estudiantes del aula</caption>
                                 <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -201,7 +205,7 @@
                     </div>
 
                     <!-- Pestaña de Semanas y Actividades -->
-                    <div x-show="tab === 'semanas'" x-transition>
+                    <div id="panel-semanas" role="region" aria-labelledby="control-semanas" x-show="tab === 'semanas'" x-transition>
                         <div class="space-y-4">
                             @forelse($aula->semanas as $semana)
                                 <div class="border border-gray-200 rounded-lg overflow-hidden">
@@ -357,10 +361,10 @@
                     </div>
 
                     <!-- Pestaña de Documentos -->
-                    <div x-show="tab === 'documentos'" x-transition>
+                    <div id="panel-documentos" role="region" aria-labelledby="control-documentos" x-show="tab === 'documentos'" x-transition>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Filtrar por estudiante</label>
+                                <label for="filtroAlumno" class="block text-sm font-medium text-gray-700 mb-2">Filtrar por estudiante</label>
                                 <select id="filtroAlumno" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                     <option value="">Todos los estudiantes</option>
                                     @foreach($aula->alumnos as $alumno)
@@ -369,7 +373,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de documento</label>
+                                <label for="filtroDocumento" class="block text-sm font-medium text-gray-700 mb-2">Tipo de documento</label>
                                 <select id="filtroDocumento" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                     <option value="">Todos los documentos</option>
                                     <option value="ficha">Ficha de Registro</option>

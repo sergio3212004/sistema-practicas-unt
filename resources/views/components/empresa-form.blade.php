@@ -6,7 +6,7 @@
         <!-- RUC y Razón Social -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="empresa-ruc" class="block text-sm font-semibold text-gray-700 mb-2">
                     RUC
                     <span class="text-red-500">*</span>
                 </label>
@@ -17,17 +17,20 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="empresa-ruc"
                            name="ruc"
+                           inputmode="numeric"
+                           aria-describedby="empresa-ruc-ayuda"
                            value="{{ old('ruc', $empresa->ruc ?? '') }}"
                            placeholder="Ej: 20123456789"
                            maxlength="11"
                            class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
                 </div>
-                <p class="mt-1 text-xs text-gray-500">Registro Único de Contribuyentes (11 dígitos)</p>
+                <p id="empresa-ruc-ayuda" class="mt-1 text-xs text-gray-500">Registro Único de Contribuyentes (11 dígitos).</p>
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="empresa-razon-social" class="block text-sm font-semibold text-gray-700 mb-2">
                     Razón Social
                     <span class="text-red-500">*</span>
                 </label>
@@ -37,7 +40,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                         </svg>
                     </div>
-                    <select name="razon_social_id"
+                    <select id="empresa-razon-social"
+                            name="razon_social_id"
                             class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
                         <option value="">Seleccione una razón social</option>
                         @foreach ($razonesSociales as $rz)
@@ -53,7 +57,7 @@
 
         <!-- Nombre Comercial -->
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">
+            <label for="empresa-nombre" class="block text-sm font-semibold text-gray-700 mb-2">
                 Nombre Comercial
                 <span class="text-red-500">*</span>
             </label>
@@ -64,7 +68,9 @@
                     </svg>
                 </div>
                 <input type="text"
+                       id="empresa-nombre"
                        name="nombre"
+                       autocomplete="organization"
                        value="{{ old('nombre', $empresa->nombre ?? '') }}"
                        placeholder="Nombre comercial de la empresa"
                        class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
@@ -72,14 +78,14 @@
         </div>
 
         <!-- Ubicación: Departamento, Provincia, Distrito -->
-        <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-3">
+        <fieldset>
+            <legend class="block text-sm font-semibold text-gray-700 mb-3">
                 Ubicación
                 <span class="text-red-500">*</span>
-            </label>
+            </legend>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                    <label class="block text-xs font-medium text-gray-600 mb-1">Departamento</label>
+                    <label for="departamento" class="block text-xs font-medium text-gray-600 mb-1">Departamento</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,6 +95,7 @@
                         </div>
                         <select id="departamento"
                                 name="departamento"
+                                autocomplete="address-level1"
                                 class="pl-9 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 text-sm">
                             <option value="">Seleccione</option>
                         </select>
@@ -96,7 +103,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-gray-600 mb-1">Provincia</label>
+                    <label for="provincia" class="block text-xs font-medium text-gray-600 mb-1">Provincia</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,6 +113,7 @@
                         </div>
                         <select id="provincia"
                                 name="provincia"
+                                autocomplete="address-level2"
                                 disabled
                                 class="pl-9 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
                             <option value="">Seleccione</option>
@@ -114,7 +122,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-gray-600 mb-1">Distrito</label>
+                    <label for="distrito" class="block text-xs font-medium text-gray-600 mb-1">Distrito</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,6 +132,7 @@
                         </div>
                         <select id="distrito"
                                 name="distrito"
+                                autocomplete="address-level3"
                                 disabled
                                 class="pl-9 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed">
                             <option value="">Seleccione</option>
@@ -134,11 +143,11 @@
             <p class="mt-2 text-xs text-gray-500">
                 Seleccione el departamento, provincia y distrito donde se ubica la empresa
             </p>
-        </div>
+        </fieldset>
 
         <!-- Dirección -->
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">
+            <label for="empresa-direccion" class="block text-sm font-semibold text-gray-700 mb-2">
                 Dirección
                 <span class="text-red-500">*</span>
             </label>
@@ -149,7 +158,9 @@
                     </svg>
                 </div>
                 <input type="text"
+                       id="empresa-direccion"
                        name="direccion"
+                       autocomplete="street-address"
                        value="{{ old('direccion', $empresa->direccion ?? '') }}"
                        placeholder="Ej: Av. Juan Pablo II 123"
                        class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
@@ -158,7 +169,7 @@
 
         <!-- Teléfono -->
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">
+            <label for="empresa-telefono" class="block text-sm font-semibold text-gray-700 mb-2">
                 Teléfono de Contacto
                 <span class="text-red-500">*</span>
             </label>
@@ -169,7 +180,10 @@
                     </svg>
                 </div>
                 <input type="text"
+                       id="empresa-telefono"
                        name="telefono"
+                       inputmode="tel"
+                       autocomplete="tel"
                        value="{{ old('telefono', $empresa->telefono ?? '') }}"
                        placeholder="Ej: 044-123456 o 987654321"
                        class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">

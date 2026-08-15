@@ -28,6 +28,8 @@ Alpine.data('themeToggle', () => ({
 Alpine.data('navigation', () => ({
     navigationOpen: false,
     navigationExpanded: true,
+    desktop: window.matchMedia('(min-width: 1024px)').matches,
+    returnFocusTo: null,
 
     init() {
         try {
@@ -51,10 +53,12 @@ Alpine.data('navigation', () => ({
         this.$watch('navigationOpen', (open) => {
             document.body.classList.toggle('overflow-hidden', open);
         });
+
+        this.syncNavigation();
     },
 
     isDesktop() {
-        return window.matchMedia('(min-width: 1024px)').matches;
+        return this.desktop;
     },
 
     navigationVisible() {
@@ -67,21 +71,69 @@ Alpine.data('navigation', () => ({
             return;
         }
 
-        this.navigationOpen = ! this.navigationOpen;
+        if (this.navigationOpen) {
+            this.closeNavigation({ restoreFocus: true });
+            return;
+        }
+
+        this.returnFocusTo = document.activeElement;
+        this.navigationOpen = true;
+        this.$nextTick(() => {
+            this.$refs.navigationPanel?.querySelector('a, button')?.focus();
+        });
     },
 
-    closeNavigation() {
+    closeNavigation({ restoreFocus = false } = {}) {
         if (this.isDesktop()) {
-            this.navigationExpanded = false;
+            return;
+        }
+
+        if (! this.navigationOpen) {
             return;
         }
 
         this.navigationOpen = false;
+
+        if (restoreFocus) {
+            this.$nextTick(() => {
+                (this.returnFocusTo ?? this.$refs.navigationButton)?.focus();
+                this.returnFocusTo = null;
+            });
+        }
     },
 
     syncNavigation() {
+        this.desktop = window.matchMedia('(min-width: 1024px)').matches;
+
         if (this.isDesktop()) {
             this.navigationOpen = false;
+            document.body.classList.remove('overflow-hidden');
+        }
+    },
+
+    trapNavigationFocus(event) {
+        if (this.isDesktop() || ! this.navigationOpen) {
+            return;
+        }
+
+        const focusable = [...this.$refs.navigationPanel.querySelectorAll(
+            'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        )].filter((element) => ! element.hasAttribute('inert'));
+
+        if (focusable.length === 0) {
+            event.preventDefault();
+            return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (! event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
         }
     },
 }));
@@ -220,5 +272,134 @@ Alpine.data('companyRegistration', (config) => ({
         this.detailsVisible = true;
     },
 }));
+
+document.querySelectorAll('[data-signature-upload]').forEach((input) => {
+    const canvas = document.getElementById(input.dataset.canvas);
+    const output = document.getElementById(input.dataset.output);
+    const status = document.getElementById(input.dataset.status);
+
+    if (! canvas || ! output) {
+        return;
+    }
+
+    input.addEventListener('change', () => {
+        const [file] = input.files;
+
+        if (! file) {
+            return;
+        }
+
+        if (! file.type.startsWith('image/')) {
+            input.value = '';
+            if (status) status.textContent = 'El archivo seleccionado no es una imagen válida.';
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.addEventListener('load', () => {
+            const image = new Image();
+
+            image.addEventListener('load', () => {
+                const context = canvas.getContext('2d');
+                const scale = Math.min(canvas.width / image.width, canvas.height / image.height);
+                const width = image.width * scale;
+                const height = image.height * scale;
+
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.drawImage(
+                    image,
+                    (canvas.width - width) / 2,
+                    (canvas.height - height) / 2,
+                    width,
+                    height,
+                );
+                output.value = canvas.toDataURL('image/png');
+                canvas.dispatchEvent(new CustomEvent('signature:loaded'));
+                if (status) status.textContent = `Firma cargada: ${file.name}.`;
+            });
+
+            image.addEventListener('error', () => {
+                input.value = '';
+                if (status) status.textContent = 'No se pudo leer la imagen seleccionada.';
+            });
+
+            image.src = reader.result;
+        });
+
+        reader.readAsDataURL(file);
+    });
+});
+
+document.querySelectorAll('[data-signature-clear]').forEach((button) => {
+    button.addEventListener('click', () => {
+        const status = document.getElementById(button.dataset.status);
+        if (status) status.textContent = 'Se borró la firma. Dibuja o carga una nueva antes de continuar.';
+    });
+});
+
+let accessibleTableSequence = 0;
+
+const enhanceDataTable = (table) => {
+    if (table.dataset.accessibilityEnhanced === 'true') {
+        return;
+    }
+
+    table.dataset.accessibilityEnhanced = 'true';
+    table.querySelectorAll('thead th:not([scope])').forEach((header) => {
+        header.scope = header.colSpan > 1 ? 'colgroup' : 'col';
+    });
+    table.querySelectorAll('tbody th:not([scope])').forEach((header) => {
+        header.scope = 'row';
+    });
+
+    const caption = table.querySelector('caption');
+    const scrollContainer = table.closest('.overflow-x-auto, .ui-table-wrap');
+
+    if (! caption || ! scrollContainer) {
+        return;
+    }
+
+    accessibleTableSequence += 1;
+    caption.id ||= `tabla-caption-${accessibleTableSequence}`;
+
+    const updateScrollableRegion = () => {
+        const overflows = table.scrollWidth > scrollContainer.clientWidth + 1;
+
+        if (overflows) {
+            scrollContainer.tabIndex = 0;
+            scrollContainer.setAttribute('role', 'region');
+            scrollContainer.setAttribute('aria-labelledby', caption.id);
+        } else if (scrollContainer.getAttribute('aria-labelledby') === caption.id) {
+            scrollContainer.removeAttribute('tabindex');
+            scrollContainer.removeAttribute('role');
+            scrollContainer.removeAttribute('aria-labelledby');
+        }
+    };
+
+    updateScrollableRegion();
+
+    if ('ResizeObserver' in window) {
+        new ResizeObserver(updateScrollableRegion).observe(scrollContainer);
+    }
+};
+
+document.querySelectorAll('table').forEach(enhanceDataTable);
+
+new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+            if (! (node instanceof Element)) {
+                return;
+            }
+
+            if (node.matches('table')) {
+                enhanceDataTable(node);
+            }
+
+            node.querySelectorAll('table').forEach(enhanceDataTable);
+        });
+    });
+}).observe(document.body, { childList: true, subtree: true });
 
 Alpine.start();

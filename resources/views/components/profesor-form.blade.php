@@ -5,7 +5,7 @@
 
         <!-- Código de Profesor -->
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">
+            <label for="codigo_profesor" class="block text-sm font-semibold text-gray-700 mb-2">
                 Código de Profesor
                 <span class="text-red-500">*</span>
             </label>
@@ -16,6 +16,7 @@
                     </svg>
                 </div>
                 <input type="text"
+                       id="codigo_profesor"
                        name="codigo_profesor"
                        value="{{ old('codigo_profesor', $profesor->codigo_profesor ?? '') }}"
                        placeholder="Ej: PROF2024001"
@@ -26,7 +27,7 @@
         <!-- Datos personales -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="nombres_profesor" class="block text-sm font-semibold text-gray-700 mb-2">
                     Nombres
                     <span class="text-red-500">*</span>
                 </label>
@@ -37,7 +38,9 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="nombres_profesor"
                            name="nombres_profesor"
+                           autocomplete="given-name"
                            value="{{ old('nombres_profesor', $profesor->nombres ?? '') }}"
                            placeholder="Nombres completos"
                            class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
@@ -45,7 +48,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="apellido_paterno_profesor" class="block text-sm font-semibold text-gray-700 mb-2">
                     Apellido Paterno
                     <span class="text-red-500">*</span>
                 </label>
@@ -56,6 +59,7 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="apellido_paterno_profesor"
                            name="apellido_paterno_profesor"
                            value="{{ old('apellido_paterno_profesor', $profesor->apellido_paterno ?? '') }}"
                            placeholder="Apellido paterno"
@@ -64,7 +68,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="apellido_materno_profesor" class="block text-sm font-semibold text-gray-700 mb-2">
                     Apellido Materno
                     <span class="text-red-500">*</span>
                 </label>
@@ -75,6 +79,7 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="apellido_materno_profesor"
                            name="apellido_materno_profesor"
                            value="{{ old('apellido_materno_profesor', $profesor->apellido_materno ?? '') }}"
                            placeholder="Apellido materno"
@@ -83,7 +88,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                <label for="telefono_profesor" class="block text-sm font-semibold text-gray-700 mb-2">
                     Teléfono
                     <span class="text-gray-400 text-xs">(opcional)</span>
                 </label>
@@ -94,7 +99,10 @@
                         </svg>
                     </div>
                     <input type="text"
+                           id="telefono_profesor"
                            name="telefono_profesor"
+                           inputmode="tel"
+                           autocomplete="tel"
                            value="{{ old('telefono_profesor', $profesor->telefono ?? '') }}"
                            placeholder="Ej: 987654321"
                            class="pl-10 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">

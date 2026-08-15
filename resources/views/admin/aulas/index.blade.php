@@ -27,6 +27,7 @@
                 </div>
                 <div class="overflow-x-auto">
                     <table class="ui-table">
+                        <caption class="sr-only">Aulas registradas</caption>
                         <thead>
                             <tr>
                                 <th scope="col">Aula</th>

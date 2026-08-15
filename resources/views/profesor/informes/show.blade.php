@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h1 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ $entrega->titulo }}
-            </h2>
+            </h1>
             <a href="{{ route('profesor.informes.index') }}"
                class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition">
                 @svg('heroicon-o-arrow-left', 'w-4 h-4 mr-2')
@@ -64,6 +64,7 @@
 
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
+                        <caption class="sr-only">Estado de entregas de estudiantes</caption>
                         <thead class="bg-gray-100">
                         <tr>
                             <th
@@ -106,13 +107,13 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     @if($alumno['link_entrega'])
-                                        <a href="{{ $alumno['link_entrega'] }}" target="_blank"
+                                        <a href="{{ $alumno['link_entrega'] }}" target="_blank" rel="noopener noreferrer"
                                            class="inline-flex items-center text-indigo-600 hover:text-indigo-800 text-sm font-medium">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                       d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                             </svg>
-                                            Ver trabajo
+                                            Ver trabajo <span class="sr-only">(se abre en una pestaña nueva)</span>
                                         </a>
                                     @else
                                         <span class="text-sm text-gray-400">Sin entregar</span>
@@ -138,7 +139,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                                     @if($alumno['entrega_alumno_id'])
-                                        <button onclick="abrirModalCalificar({{ json_encode($alumno) }})"
+                                        <button type="button" onclick="abrirModalCalificar({{ json_encode($alumno) }})"
                                                 class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -160,27 +161,29 @@
     </div>
 
     {{-- Modal de Calificación --}}
-    <div id="modalCalificar" class="hidden fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto z-50">
+    <div id="modalCalificar" class="hidden fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto z-50"
+         role="dialog" aria-modal="true" aria-labelledby="modalCalificarTitulo" aria-describedby="modalAlumnoNombre">
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full">
                 <form id="formCalificar" method="POST">
                     @csrf
                     <div class="px-8 py-6 bg-gradient-to-r from-indigo-500 to-purple-600">
-                        <h3 class="text-2xl font-bold text-white">Calificar Entrega</h3>
+                        <h2 id="modalCalificarTitulo" class="text-2xl font-bold text-white">Calificar entrega</h2>
                         <p class="text-indigo-100 mt-1" id="modalAlumnoNombre"></p>
                     </div>
 
                     <div class="p-8 space-y-6">
                         {{-- Link de Entrega --}}
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Link de Entrega</label>
-                            <a id="modalLinkEntrega" href="#" target="_blank"
+                            <p class="block text-sm font-semibold text-gray-700 mb-2">Enlace de entrega</p>
+                            <a id="modalLinkEntrega" target="_blank" rel="noopener noreferrer"
                                class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                           d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                 </svg>
                                 <span id="modalLinkTexto">Ver trabajo del alumno</span>
+                                <span class="sr-only">(se abre en una pestaña nueva)</span>
                             </a>
                         </div>
 
@@ -220,6 +223,8 @@
     </div>
 
     <script>
+        let modalCalificarTrigger = null;
+
         function abrirModalCalificar(alumno) {
             const modal = document.getElementById('modalCalificar');
             const form = document.getElementById('formCalificar');
@@ -242,18 +247,46 @@
             comentarioInput.value = alumno.comentario_profesor || '';
 
             // Mostrar modal
+            modalCalificarTrigger = document.activeElement;
             modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            requestAnimationFrame(() => notaInput.focus());
         }
 
         function cerrarModalCalificar() {
             const modal = document.getElementById('modalCalificar');
             modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            modalCalificarTrigger?.focus();
         }
 
         // Cerrar modal al hacer clic fuera de él
         document.getElementById('modalCalificar').addEventListener('click', function (e) {
             if (e.target === this) {
                 cerrarModalCalificar();
+            }
+        });
+
+        document.getElementById('modalCalificar').addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                cerrarModalCalificar();
+                return;
+            }
+
+            if (e.key !== 'Tab') return;
+
+            const focusable = [...this.querySelectorAll('a[href], button, input, textarea')]
+                .filter(element => !element.disabled && element.offsetParent !== null);
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
             }
         });
     </script>

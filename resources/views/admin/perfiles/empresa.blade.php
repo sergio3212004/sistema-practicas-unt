@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h1 class="font-semibold text-xl text-gray-800 leading-tight">
                 Perfil de Empresa
-            </h2>
+            </h1>
             <a href="{{ url()->previous() }}"
                class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition">
                 @svg('heroicon-o-arrow-left', 'w-4 h-4 mr-2')
@@ -35,7 +35,7 @@
                     <div class="pt-14">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div>
-                                <h1 class="text-2xl font-bold text-gray-900">{{ $empresa->nombre }}</h1>
+                                <h2 class="text-2xl font-bold text-gray-900">{{ $empresa->nombre }}</h2>
                                 <p class="text-gray-500 flex items-center mt-1">
                                     @svg('heroicon-o-identification', 'w-4 h-4 mr-1')
                                     RUC: {{ $empresa->ruc }}
