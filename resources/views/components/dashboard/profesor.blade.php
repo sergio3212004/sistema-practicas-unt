@@ -17,7 +17,7 @@
 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
     <x-ui.stat-card label="Aulas asignadas" :value="$data->aulas->count()" description="Grupos bajo supervisión" icon="heroicon-o-academic-cap" />
     <x-ui.stat-card label="Estudiantes" :value="$data->totalEstudiantes" description="En todas tus aulas" icon="heroicon-o-users" />
-    <x-ui.stat-card label="Actividades activas" :value="$data->actividadesActivas" description="Dentro del plazo" icon="heroicon-o-clipboard-document-check" tone="warning" />
+    <x-ui.stat-card label="Tareas activas" :value="$data->actividadesActivas" description="Dentro del plazo" icon="heroicon-o-clipboard-document-check" tone="warning" />
     <x-ui.stat-card label="Entregas recibidas" :value="$data->totalEntregas" description="Trabajos registrados" icon="heroicon-o-inbox-arrow-down" tone="success" />
 </div>
 
@@ -26,7 +26,7 @@
         <div>
             <p class="ui-eyebrow">Periodo {{ $data->semestreActivo?->nombre ?? 'sin activar' }}</p>
             <h3 class="mt-1 text-xl font-bold text-gray-950">Mis aulas</h3>
-            <p class="mt-1 text-sm text-gray-600">Selecciona un grupo para revisar estudiantes, semanas y actividades.</p>
+            <p class="mt-1 text-sm text-gray-600">Selecciona un grupo para revisar estudiantes, semanas y tareas.</p>
         </div>
     </div>
 
@@ -54,7 +54,7 @@
                                 <dd class="mt-1 text-lg font-bold text-gray-950">{{ $resumen['semanas'] }}</dd>
                             </div>
                             <div>
-                                <dt class="text-xs font-medium text-gray-500">Actividades</dt>
+                                <dt class="text-xs font-medium text-gray-500">Tareas</dt>
                                 <dd class="mt-1 text-lg font-bold text-gray-950">{{ $resumen['actividades'] }}</dd>
                             </div>
                             <div>
@@ -73,7 +73,7 @@
     @else
         <x-ui.empty-state
             title="No tienes aulas asignadas"
-            description="Cuando administración asigne un grupo, aparecerá aquí con sus estudiantes, actividades y entregas."
+            description="Cuando administración asigne un grupo, aparecerá aquí con sus estudiantes, tareas y entregas."
             icon="heroicon-o-academic-cap"
         />
     @endif

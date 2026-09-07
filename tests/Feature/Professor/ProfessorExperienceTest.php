@@ -112,3 +112,104 @@ it('shows a professor only final reports from their own classrooms', function ()
         ->assertDontSee('informe-ajeno.pdf')
         ->assertSee('value="UNT-PROF-001"', false);
 });
+
+it('lets a professor create the first task without preparing a week beforehand', function () {
+    $context = professorExperienceContext();
+    $type = TipoActividad::query()->create(['nombre' => 'Tarea', 'modo_entrega' => 'pdf']);
+
+    $this->actingAs($context['professorUser'])
+        ->get(route('profesor.actividades.create', $context['classroom']))
+        ->assertOk()
+        ->assertSee('Crearemos automáticamente la semana 1')
+        ->assertSee('Crear tarea')
+        ->assertDontSee('Primero crea una semana');
+
+    $response = $this->actingAs($context['professorUser'])
+        ->post(route('profesor.actividades.store', $context['classroom']), [
+            'semana_mode' => 'new',
+            'nueva_semana_nombre' => 'Inicio de prácticas',
+            'tipo_actividad_id' => $type->id,
+            'titulo' => 'Presentar plan de trabajo',
+            'descripcion' => 'Adjuntar el documento en PDF.',
+            'fecha_inicio' => now()->format('Y-m-d H:i:s'),
+            'fecha_limite' => now()->addWeek()->format('Y-m-d H:i:s'),
+        ]);
+
+    $week = Semana::query()
+        ->where('aula_id', $context['classroom']->id)
+        ->sole();
+
+    $response
+        ->assertRedirect(route('profesor.aulas.show', [
+            'aula' => $context['classroom'],
+            'tab' => 'planificacion',
+        ]))
+        ->assertSessionHas('success', 'Tarea creada y organizada en la semana 1.');
+
+    expect($week->numero)->toBe(1)
+        ->and($week->nombre)->toBe('Inicio de prácticas');
+
+    $this->assertDatabaseHas('actividades', [
+        'aula_id' => $context['classroom']->id,
+        'semana_id' => $week->id,
+        'tipo_actividad_id' => $type->id,
+        'titulo' => 'Presentar plan de trabajo',
+    ]);
+});
+
+it('organizes a new task in an existing week without creating another one', function () {
+    $context = professorExperienceContext();
+    $week = Semana::query()->create([
+        'aula_id' => $context['classroom']->id,
+        'numero' => 3,
+        'nombre' => 'Seguimiento',
+    ]);
+    $type = TipoActividad::query()->create(['nombre' => 'Enlace', 'modo_entrega' => 'link']);
+
+    $this->actingAs($context['professorUser'])
+        ->post(route('profesor.actividades.store', $context['classroom']), [
+            'semana_mode' => 'existing',
+            'semana_id' => $week->id,
+            'tipo_actividad_id' => $type->id,
+            'titulo' => 'Compartir avance del proyecto',
+            'fecha_inicio' => now()->format('Y-m-d H:i:s'),
+            'fecha_limite' => now()->addDays(3)->format('Y-m-d H:i:s'),
+        ])
+        ->assertRedirect(route('profesor.aulas.show', [
+            'aula' => $context['classroom'],
+            'tab' => 'planificacion',
+        ]));
+
+    expect($context['classroom']->semanas()->count())->toBe(1);
+
+    $this->assertDatabaseHas('actividades', [
+        'aula_id' => $context['classroom']->id,
+        'semana_id' => $week->id,
+        'titulo' => 'Compartir avance del proyecto',
+    ]);
+});
+
+it('does not allow a professor task to use a week from another classroom', function () {
+    $owner = professorExperienceContext('1');
+    $other = professorExperienceContext('2');
+    $foreignWeek = Semana::query()->create([
+        'aula_id' => $other['classroom']->id,
+        'numero' => 1,
+    ]);
+    $type = TipoActividad::query()->create(['nombre' => 'Informe', 'modo_entrega' => 'pdf']);
+
+    $this->actingAs($owner['professorUser'])
+        ->from(route('profesor.actividades.create', $owner['classroom']))
+        ->post(route('profesor.actividades.store', $owner['classroom']), [
+            'semana_mode' => 'existing',
+            'semana_id' => $foreignWeek->id,
+            'tipo_actividad_id' => $type->id,
+            'titulo' => 'Intento inválido',
+            'fecha_inicio' => now()->format('Y-m-d H:i:s'),
+            'fecha_limite' => now()->addDay()->format('Y-m-d H:i:s'),
+        ])
+        ->assertRedirect(route('profesor.actividades.create', $owner['classroom']))
+        ->assertSessionHasErrors('semana_id');
+
+    $this->assertDatabaseMissing('actividades', ['titulo' => 'Intento inválido']);
+});

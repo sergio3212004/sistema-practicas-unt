@@ -11,7 +11,7 @@
 
             @if($semanas->isEmpty())
                 <div class="p-5 sm:p-6">
-                    <x-ui.empty-state title="Todavía no hay semanas" description="Abre una de tus aulas y crea su primera semana para organizar las actividades." icon="heroicon-o-calendar" />
+                    <x-ui.empty-state title="Todavía no hay semanas" description="Abre una de tus aulas y crea una tarea; el sistema preparará la primera semana automáticamente." icon="heroicon-o-calendar" />
                 </div>
             @else
                 <div class="grid gap-4 p-5 sm:grid-cols-2 sm:p-6 xl:grid-cols-3">

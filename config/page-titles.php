@@ -48,8 +48,8 @@ return [
 
         'profesor.aula.index' => 'Detalle del aula',
         'profesor.aulas.show' => 'Detalle del aula',
-        'profesor.actividades.create' => 'Crear actividad',
-        'profesor.actividades.show' => 'Detalle de actividad',
+        'profesor.actividades.create' => 'Crear tarea',
+        'profesor.actividades.show' => 'Detalle de tarea',
         'profesor.cronogramas.show' => 'Revisión de cronograma',
         'profesor.fichas.show' => 'Revisión de ficha de registro',
         'profesor.formato-once.index' => 'Formato 11',

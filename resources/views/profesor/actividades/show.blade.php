@@ -43,7 +43,7 @@
             @endif
         </section>
 
-        <section class="rounded-xl border border-red-200 bg-red-50 p-5"><div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><h2 class="font-bold text-red-900">Eliminar actividad</h2><p class="mt-1 text-sm text-red-800">Se eliminarán también todas las entregas asociadas.</p></div><form action="{{ route('profesor.actividades.destroy', $actividad) }}" method="POST" onsubmit="return confirm('¿Eliminar esta actividad y sus entregas? Esta acción no se puede deshacer.');">@csrf @method('DELETE')<button type="submit" class="ui-btn-danger">@svg('heroicon-o-trash', 'h-4 w-4') Eliminar</button></form></div></section>
+        <section class="rounded-xl border border-red-200 bg-red-50 p-5"><div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><h2 class="font-bold text-red-900">Eliminar tarea</h2><p class="mt-1 text-sm text-red-800">Se eliminarán también todas las entregas asociadas.</p></div><form action="{{ route('profesor.actividades.destroy', $actividad) }}" method="POST" onsubmit="return confirm('¿Eliminar esta tarea y sus entregas? Esta acción no se puede deshacer.');">@csrf @method('DELETE')<button type="submit" class="ui-btn-danger">@svg('heroicon-o-trash', 'h-4 w-4') Eliminar</button></form></div></section>
     </div>
 
     <div id="modal-calificar" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" aria-labelledby="modal-calificar-titulo" aria-describedby="modal-alumno">

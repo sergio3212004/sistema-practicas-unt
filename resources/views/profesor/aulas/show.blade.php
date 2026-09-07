@@ -2,18 +2,18 @@
     <x-slot name="header">
         <x-ui.page-header eyebrow="Espacio docente" :title="'Aula '.$aula->numero" :description="($aula->semestre?->nombre ?? 'Sin semestre').' · estudiantes, planificación y documentación en un solo lugar.'" icon="heroicon-o-academic-cap">
             <x-slot name="actions">
-                <a href="{{ route('profesor.actividades.create', $aula) }}" class="ui-btn-secondary">@svg('heroicon-o-clipboard-document-list', 'h-4 w-4') Nueva actividad</a>
-                <a href="{{ route('profesor.semanas.create', $aula) }}" class="ui-btn-primary">@svg('heroicon-o-plus', 'h-4 w-4') Nueva semana</a>
+                <a href="{{ route('profesor.semanas.create', $aula) }}" class="ui-btn-secondary">@svg('heroicon-o-calendar-days', 'h-4 w-4') Planificar semana</a>
+                <a href="{{ route('profesor.actividades.create', $aula) }}" class="ui-btn-primary">@svg('heroicon-o-plus', 'h-4 w-4') Crear tarea</a>
             </x-slot>
         </x-ui.page-header>
     </x-slot>
 
-    <div class="ui-page" x-data="{ tab: 'estudiantes', studentSearch: '', studentFilter: '', documentFilter: '' }">
+    <div class="ui-page" x-data="{ tab: @js(in_array(request('tab'), ['estudiantes', 'planificacion', 'documentos'], true) ? request('tab') : 'estudiantes'), studentSearch: '', studentFilter: '', documentFilter: '' }">
         <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <x-ui.stat-card label="Estudiantes" :value="$metricas['estudiantes']" description="Matriculados en el aula" icon="heroicon-o-user-group" />
             <x-ui.stat-card label="Semanas" :value="$metricas['semanas']" description="Bloques planificados" icon="heroicon-o-calendar-days" />
-            <x-ui.stat-card label="Actividades activas" :value="$metricas['actividadesActivas']" description="Disponibles actualmente" icon="heroicon-o-bolt" tone="success" />
-            <x-ui.stat-card label="Actividades" :value="$metricas['actividades']" description="Total del semestre" icon="heroicon-o-clipboard-document-list" />
+            <x-ui.stat-card label="Tareas activas" :value="$metricas['actividadesActivas']" description="Disponibles actualmente" icon="heroicon-o-bolt" tone="success" />
+            <x-ui.stat-card label="Tareas" :value="$metricas['actividades']" description="Total del semestre" icon="heroicon-o-clipboard-document-list" />
         </div>
 
         <section class="ui-card overflow-hidden">
@@ -56,16 +56,23 @@
             </div>
 
             <div x-show="tab === 'planificacion'" role="tabpanel" x-cloak>
-                <div class="ui-card-header"><x-ui.section-heading title="Semanas y actividades" :description="$aula->semanas->count().' semanas planificadas.'" icon="heroicon-o-calendar-days"><x-slot name="actions"><a href="{{ route('profesor.semanas.create', $aula) }}" class="ui-btn-primary">Nueva semana</a></x-slot></x-ui.section-heading></div>
+                <div class="ui-card-header">
+                    <x-ui.section-heading title="Semanas y tareas" :description="$aula->semanas->count().' semanas planificadas.'" icon="heroicon-o-calendar-days">
+                        <x-slot name="actions">
+                            <a href="{{ route('profesor.semanas.create', $aula) }}" class="ui-btn-secondary">Nueva semana</a>
+                            <a href="{{ route('profesor.actividades.create', $aula) }}" class="ui-btn-primary">Crear tarea</a>
+                        </x-slot>
+                    </x-ui.section-heading>
+                </div>
                 @if($aula->semanas->isEmpty())
-                    <div class="p-5 sm:p-6"><x-ui.empty-state title="Aún no existe una planificación" description="Crea la primera semana y luego añade sus actividades." icon="heroicon-o-calendar-days"><x-slot name="actions"><a href="{{ route('profesor.semanas.create', $aula) }}" class="ui-btn-primary">Crear primera semana</a></x-slot></x-ui.empty-state></div>
+                    <div class="p-5 sm:p-6"><x-ui.empty-state title="Empieza con la primera tarea" description="No necesitas preparar una semana antes: la crearemos automáticamente al guardar la tarea." icon="heroicon-o-clipboard-document-list"><x-slot name="actions"><a href="{{ route('profesor.actividades.create', $aula) }}" class="ui-btn-primary">Crear primera tarea</a></x-slot></x-ui.empty-state></div>
                 @else
                     <div class="divide-y divide-gray-200">
                         @foreach($aula->semanas as $semana)
                             <article class="p-5 sm:p-6">
                                 <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                                    <div><div class="flex flex-wrap items-center gap-2"><h3 class="font-bold text-gray-950">Semana {{ $semana->numero }}{{ $semana->nombre ? ' · '.$semana->nombre : '' }}</h3><span class="ui-badge-info">{{ $semana->actividades->count() }} actividades</span></div><p class="mt-2 text-sm text-gray-600">Gestiona plazos, entregas y calificaciones de este bloque.</p></div>
-                                    <div class="flex flex-wrap gap-2"><a href="{{ route('profesor.actividades.create', ['aula' => $aula, 'semana' => $semana]) }}" class="ui-btn-secondary">Añadir actividad</a><a href="{{ route('profesor.semanas.show', $semana) }}" class="ui-btn-primary">Abrir semana</a></div>
+                                    <div><div class="flex flex-wrap items-center gap-2"><h3 class="font-bold text-gray-950">Semana {{ $semana->numero }}{{ $semana->nombre ? ' · '.$semana->nombre : '' }}</h3><span class="ui-badge-info">{{ $semana->actividades->count() }} tareas</span></div><p class="mt-2 text-sm text-gray-600">Gestiona plazos, entregas y calificaciones de este bloque.</p></div>
+                                    <div class="flex flex-wrap gap-2"><a href="{{ route('profesor.semanas.show', $semana) }}" class="ui-btn-secondary">Abrir semana</a><a href="{{ route('profesor.actividades.create', ['aula' => $aula, 'semana' => $semana]) }}" class="ui-btn-primary">Añadir tarea</a></div>
                                 </div>
                                 @if($semana->actividades->isNotEmpty())
                                     <div class="mt-4 grid gap-3 lg:grid-cols-2">
