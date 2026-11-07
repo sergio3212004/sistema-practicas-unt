@@ -4,13 +4,17 @@ namespace App\View\Composers;
 
 use App\Enums\UserRole;
 use App\View\Layout\AuthenticatedLayoutViewModel;
+use App\View\Profesor\ProfesorNavigationFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 final class AuthenticatedLayoutComposer
 {
-    public function __construct(private readonly Request $request) {}
+    public function __construct(
+        private readonly Request $request,
+        private readonly ProfesorNavigationFactory $profesorNavigation,
+    ) {}
 
     public function compose(View $view): void
     {
@@ -37,12 +41,17 @@ final class AuthenticatedLayoutComposer
             ])
             ->all();
 
+        if ($role === UserRole::PROFESOR) {
+            $menuItems = $this->profesorNavigation->make($user, $menuItems);
+        }
+
         $view->with('layout', new AuthenticatedLayoutViewModel(
             userName: $userName,
             roleLabel: $role?->label() ?? 'Usuario',
             initial: Str::of($userName)->substr(0, 1)->upper()->toString(),
             dashboardActive: $this->request->routeIs('dashboard'),
             menuItems: $menuItems,
+            treeNavigation: $role === UserRole::PROFESOR,
         ));
     }
 }

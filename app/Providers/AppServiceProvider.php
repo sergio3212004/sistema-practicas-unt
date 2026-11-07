@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        View::composer('components.dashboard.admin', fn ($view) => $view->with('calendarios', \App\Models\Semestre::orderByDesc('id')->get()));
         View::composer('layouts.app', AuthenticatedLayoutComposer::class);
     }
 }

@@ -22,6 +22,7 @@ test('every navigable layout route has a configured title', function () {
         'alumno.drive.callback',
         'alumno.drive.conectar',
         'alumno.entregas.download',
+        'profesor.entregas.download',
         'alumno.ficha.download-pdf',
         'alumno.informe-final.download',
         'firma.cronograma.jefe',

@@ -20,6 +20,27 @@ class StoreActividadRequest extends FormRequest
         return $this->user()?->can('manage', $this->route('aula')) === true;
     }
 
+    public function after(): array
+    {
+        return [function ($validator) {
+            if ($validator->errors()->isNotEmpty()) return;
+            $aula = $this->route('aula');
+            $semestre = $aula->semestre;
+            if (! $semestre?->fecha_inicio || ! $semestre?->fecha_fin) {
+                $validator->errors()->add('semana_id', 'El administrador debe configurar las fechas del semestre antes de planificar.');
+                return;
+            }
+            $numero = $this->input('semana_mode') === 'new'
+                ? ((int) $aula->semanas()->max('numero')) + 1
+                : $aula->semanas()->findOrFail($this->input('semana_id'))->numero;
+            $inicio = $semestre->fecha_inicio->copy()->addWeeks($numero - 1);
+            $fin = $inicio->copy()->addDays(6)->min($semestre->fecha_fin)->endOfDay();
+            if ($numero > $semestre->totalSemanas() || \Carbon\Carbon::parse($this->fecha_inicio)->lt($inicio) || \Carbon\Carbon::parse($this->fecha_limite)->gt($fin)) {
+                $validator->errors()->add('fecha_limite', 'Las fechas deben estar dentro de la semana seleccionada y del semestre.');
+            }
+        }];
+    }
+
     /**
      * @return array<string, array<mixed>>
      */

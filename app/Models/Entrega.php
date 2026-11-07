@@ -11,6 +11,8 @@ class Entrega extends Model
         'actividad_id',
         'alumno_id',
         'ruta',
+        'disco',
+        'resumen',
         'estado',
         'nota',
         'observaciones',

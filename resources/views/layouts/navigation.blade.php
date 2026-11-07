@@ -78,6 +78,9 @@
                 <span>Resumen</span>
             </a>
 
+            @if($layout->treeNavigation)
+                @include('layouts.partials.navigation-tree', ['items' => $layout->menuItems])
+            @else
             @foreach($layout->menuItems as $item)
                 <a
                     href="{{ route($item['route']) }}"
@@ -101,6 +104,7 @@
                     <span>{{ $item['label'] }}</span>
                 </a>
             @endforeach
+            @endif
         </div>
     </nav>
 

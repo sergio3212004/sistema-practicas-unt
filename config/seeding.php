@@ -10,7 +10,7 @@ return [
     | Sus credenciales pueden sobrescribirse sin editar el código fuente.
     |
     */
-    'demo_enabled' => env('SEED_DEMO_DATA', false),
+    'demo_enabled' => env('SEED_DEMO_DATA', true),
 
     'semester' => env('SEED_SEMESTER', '2026-II'),
 

@@ -26,9 +26,11 @@ class StoreSemanaRequest extends FormRequest
                 'required',
                 'integer',
                 'min:1',
+                'max:'.($aula->semestre->totalSemanas() ?: 1),
                 Rule::unique('semanas', 'numero')->where('aula_id', $aula->getKey()),
             ],
             'nombre' => ['nullable', 'string', 'max:255'],
+            'planificacion' => ['nullable', 'string', 'max:50000'],
         ];
     }
 

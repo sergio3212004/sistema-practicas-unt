@@ -116,25 +116,7 @@
                             </h3>
                         </div>
                         <div class="p-6">
-                            @if($entrega->actividad->tipoActividad->modo_entrega === 'drive')
-                                {{-- Enlace directo a Google Drive --}}
-                                <a href="{{ $entrega->ruta }}"
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
-                                    @svg('heroicon-o-arrow-top-right-on-square', 'w-4 h-4 mr-1.5')
-                                    Abrir en Google Drive <span class="sr-only">(se abre en una pestaña nueva)</span>
-                                </a>
-                            @else
-                                {{-- Enlace directo al archivo en storage --}}
-                                <a href="{{ asset('storage/entregas/' . basename($entrega->ruta)) }}"
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium">
-                                    @svg('heroicon-o-document-text', 'w-4 h-4 mr-1.5')
-                                    Ver archivo <span class="sr-only">(se abre en una pestaña nueva)</span>
-                                </a>
-                            @endif
+<a class="ui-btn-secondary" href="{{ route('alumno.entregas.download', $entrega) }}">Descargar archivo</a>
                         </div>
                     </div>
 
@@ -223,15 +205,7 @@
                             <div>
                                 <p class="text-xs font-medium text-gray-500 uppercase mb-1">Modo de Entrega</p>
                                 <div class="flex items-center space-x-2">
-                                    @if($entrega->actividad->tipoActividad->modo_entrega === 'drive')
-                                        <svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24">
-                                            <path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
-                                        </svg>
-                                        <span class="text-sm font-medium text-gray-900">Google Drive</span>
-                                    @else
-                                        @svg('heroicon-o-document-arrow-up', 'w-4 h-4 text-indigo-600')
-                                        <span class="text-sm font-medium text-gray-900">Archivo PDF</span>
-                                    @endif
+Archivo adjunto
                                 </div>
                             </div>
                         </div>
@@ -304,4 +278,5 @@
             </div>
         </div>
     </div>
+@if($entrega->resumen)<div class="prose max-w-none">{!! \Illuminate\Support\Str::markdown($entrega->resumen, ['html_input' => 'strip', 'allow_unsafe_links' => false]) !!}</div>@endif
 </x-app-layout>

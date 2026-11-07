@@ -12,15 +12,7 @@
                 @csrf
                 <div class="ui-card-header"><x-ui.section-heading title="Datos de la semana" description="El número debe ser único dentro del aula." icon="heroicon-o-pencil-square" /></div>
                 <div class="ui-card-body space-y-5">
-                    <div>
-                        <label for="numero" class="ui-label">Número de semana <span class="text-red-600" aria-hidden="true">*</span></label>
-                        <input id="numero" name="numero" type="number" min="1" max="15" value="{{ old('numero', $siguienteNumero) }}" class="ui-field" required aria-describedby="numero-ayuda">
-                        <p id="numero-ayuda" class="mt-2 text-xs text-gray-500">Siguiente número sugerido: {{ $siguienteNumero }}.</p>
-                    </div>
-                    <div>
-                        <label for="nombre" class="ui-label">Nombre descriptivo <span class="text-xs font-normal text-gray-500">(opcional)</span></label>
-                        <input id="nombre" name="nombre" type="text" maxlength="255" value="{{ old('nombre') }}" class="ui-field" placeholder="Ej. Desarrollo de la propuesta">
-                    </div>
+                <x-profesor.semanas.fields :numero="$siguienteNumero" />
                 </div>
                 <div class="flex flex-col-reverse gap-2 border-t border-gray-200 bg-gray-50 p-5 sm:flex-row sm:justify-end">
                     <a href="{{ route('profesor.aulas.show', $aula) }}" class="ui-btn-secondary">Cancelar</a>

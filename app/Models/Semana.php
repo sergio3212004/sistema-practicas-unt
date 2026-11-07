@@ -12,6 +12,7 @@ class Semana extends Model
         'aula_id',
         'numero',
         'nombre',
+        'planificacion',
     ];
 
     // Relación con Aula

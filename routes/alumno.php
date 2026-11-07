@@ -7,7 +7,6 @@ use App\Http\Controllers\Alumno\FichaRegistroController;
 use App\Http\Controllers\Alumno\InformeFinalController;
 use App\Http\Controllers\Alumno\PostulacionController;
 use App\Http\Controllers\Alumno\VerPracticaController;
-use App\Http\Controllers\GoogleDriveController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:alumno'])
@@ -19,8 +18,6 @@ Route::middleware(['auth', 'role:alumno'])
         Route::post('practicas/{practica}/postular', [PostulacionController::class, 'store'])
             ->name('practicas.postular');
 
-        Route::get('drive/conectar', [GoogleDriveController::class, 'redirectToGoogle'])->name('drive.conectar');
-        Route::get('drive/callback', [GoogleDriveController::class, 'handleGoogleCallback'])->name('drive.callback');
 
         Route::get('fichas', [FichaRegistroController::class, 'index'])->name('ficha.index');
         Route::get('fichas/create', [FichaRegistroController::class, 'create'])->name('ficha.create');
@@ -53,8 +50,8 @@ Route::middleware(['auth', 'role:alumno'])
             ->name('entregas.download');
         Route::delete('entregas/{entrega}', [EntregaController::class, 'destroy'])->name('entregas.destroy');
 
-        Route::get('informe-final', [InformeFinalController::class, 'index'])->name('informe-final.index');
-        Route::post('informe-final', [InformeFinalController::class, 'store'])->name('informe-final.store');
+        Route::get('informe-final', fn () => redirect()->route('dashboard')->with('status', 'Entrega tu informe final en la última semana de tu aula.'))->name('informe-final.index');
+        Route::post('informe-final', fn () => abort(410, 'Entrega el informe final en la última semana de tu aula.'))->name('informe-final.store');
         Route::get('informe-final/download', [InformeFinalController::class, 'download'])
             ->name('informe-final.download');
     });

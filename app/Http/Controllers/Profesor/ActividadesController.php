@@ -54,7 +54,7 @@ class ActividadesController extends Controller
             $aula->actividades()->create([
                 'semana_id' => $semana->getKey(),
                 'tipo_actividad_id' => $data['tipo_actividad_id'],
-                'titulo' => $data['titulo'],
+                'titulo' => $semana->numero === $aula->semestre->totalSemanas() ? 'Informe final: '.$data['titulo'] : $data['titulo'],
                 'descripcion' => $data['descripcion'] ?? null,
                 'fecha_inicio' => $data['fecha_inicio'],
                 'fecha_limite' => $data['fecha_limite'],

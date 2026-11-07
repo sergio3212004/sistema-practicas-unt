@@ -11,16 +11,10 @@ abstract class EntregaRequest extends FormRequest
      */
     protected function deliveryRules(string $mode, bool $includeObservations = false): array
     {
-        $rules = match ($mode) {
-            'pdf' => [
-                'archivo' => ['required', 'file', 'mimes:pdf,doc,docx,zip,rar', 'max:10240'],
-            ],
-            'drive' => [
-                'drive_file_id' => ['required', 'string'],
-                'drive_file_name' => ['required', 'string'],
-            ],
-            default => [],
-        };
+        $rules = [
+            'archivo' => ['required', 'file', 'mimes:pdf,doc,docx,zip,rar', 'max:10240'],
+            'resumen' => ['nullable', 'string', 'max:50000'],
+        ];
 
         if ($includeObservations) {
             $rules['observaciones'] = ['nullable', 'string', 'max:500'];

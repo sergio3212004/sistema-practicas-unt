@@ -115,6 +115,7 @@ it('shows a professor only final reports from their own classrooms', function ()
 
 it('lets a professor create the first task without preparing a week beforehand', function () {
     $context = professorExperienceContext();
+    $context['classroom']->semestre->update(['fecha_inicio' => now()->startOfDay(), 'fecha_fin' => now()->addWeeks(16)]);
     $type = TipoActividad::query()->create(['nombre' => 'Tarea', 'modo_entrega' => 'pdf']);
 
     $this->actingAs($context['professorUser'])
@@ -132,7 +133,7 @@ it('lets a professor create the first task without preparing a week beforehand',
             'titulo' => 'Presentar plan de trabajo',
             'descripcion' => 'Adjuntar el documento en PDF.',
             'fecha_inicio' => now()->format('Y-m-d H:i:s'),
-            'fecha_limite' => now()->addWeek()->format('Y-m-d H:i:s'),
+            'fecha_limite' => now()->addDays(6)->format('Y-m-d H:i:s'),
         ]);
 
     $week = Semana::query()
@@ -164,7 +165,8 @@ it('organizes a new task in an existing week without creating another one', func
         'numero' => 3,
         'nombre' => 'Seguimiento',
     ]);
-    $type = TipoActividad::query()->create(['nombre' => 'Enlace', 'modo_entrega' => 'link']);
+    $context['classroom']->semestre->update(['fecha_inicio' => now()->subWeeks(2)->startOfDay(), 'fecha_fin' => now()->addWeeks(14)]);
+    $type = TipoActividad::query()->create(['nombre' => 'Enlace', 'modo_entrega' => 'pdf']);
 
     $this->actingAs($context['professorUser'])
         ->post(route('profesor.actividades.store', $context['classroom']), [
@@ -212,4 +214,15 @@ it('does not allow a professor task to use a week from another classroom', funct
         ->assertSessionHasErrors('semana_id');
 
     $this->assertDatabaseMissing('actividades', ['titulo' => 'Intento inválido']);
+});
+
+it('rejects activity planning outside the semester week', function () {
+    $context = professorExperienceContext();
+    $context['classroom']->semestre->update(['fecha_inicio' => now()->startOfDay(), 'fecha_fin' => now()->addWeeks(16)]);
+    $type = TipoActividad::create(['nombre' => 'Tarea', 'modo_entrega' => 'pdf']);
+    $this->actingAs($context['professorUser'])->post(route('profesor.actividades.store', $context['classroom']), [
+        'semana_mode' => 'new', 'tipo_actividad_id' => $type->id, 'titulo' => 'Fuera de semana',
+        'fecha_inicio' => now()->format('Y-m-d H:i:s'), 'fecha_limite' => now()->addWeeks(2)->format('Y-m-d H:i:s'),
+    ])->assertSessionHasErrors('fecha_limite');
+    expect($context['classroom']->actividades()->count())->toBe(0);
 });

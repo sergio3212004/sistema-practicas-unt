@@ -19,6 +19,7 @@ Route::middleware(['auth', 'role:profesor'])
         Route::get('aula/{aula}', [AulaController::class, 'show'])->name('aula.index');
         Route::get('aulas/{aula}', [AulaController::class, 'show'])->name('aulas.show');
 
+        Route::get('entregas/{entrega}/archivo', [EntregasController::class, 'download'])->name('entregas.download');
         Route::get('semanas', [SemanaController::class, 'index'])->name('semanas.index');
         Route::get('aulas/{aula}/semanas/create', [SemanaController::class, 'create'])->name('semanas.create');
         Route::post('aulas/{aula}/semanas', [SemanaController::class, 'store'])->name('semanas.store');

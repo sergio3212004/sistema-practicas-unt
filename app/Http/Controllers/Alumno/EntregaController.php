@@ -7,7 +7,6 @@ use App\Http\Requests\Alumno\StoreEntregaRequest;
 use App\Http\Requests\Alumno\UpdateEntregaRequest;
 use App\Models\Actividad;
 use App\Models\Entrega;
-use App\Services\GoogleDriveService;
 use App\View\Presenters\EntregaPresenter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -15,10 +14,6 @@ use Illuminate\Support\Facades\Storage;
 
 class EntregaController extends Controller
 {
-    public function __construct(
-        private readonly GoogleDriveService $drive,
-    ) {}
-
     /**
      * Mostrar el formulario para crear una nueva entrega
      */
@@ -45,13 +40,7 @@ class EntregaController extends Controller
         // Cargar relaciones necesarias
         $actividad->load(['tipoActividad', 'semana', 'aula']);
 
-        // Si es modo drive, verificar conexión
-        $driveConectado = false;
-        if ($actividad->tipoActividad->modo_entrega === 'drive') {
-            $driveConectado = $this->drive->isConnected();
-        }
-
-        return view('alumno.entregas.create', compact('actividad', 'driveConectado'));
+        return view('alumno.entregas.create', compact('actividad'));
     }
 
     /**
@@ -78,41 +67,15 @@ class EntregaController extends Controller
         $modoEntrega = $actividad->tipoActividad->modo_entrega;
         $ruta = null;
 
-        // Validar según el modo de entrega
-        if ($modoEntrega === 'pdf') {
-            // Guardar el archivo
-            $archivo = $request->file('archivo');
-            $nombreArchivo = time().'_'.$alumno->id.'_'.$actividad->id.'.'.$archivo->getClientOriginalExtension();
-            $ruta = $archivo->storeAs('entregas', $nombreArchivo, 'public');
-
-        } elseif ($modoEntrega === 'drive') {
-            // Verificar que el archivo existe y es accesible
-            try {
-                $driveInfo = $this->drive->fileMetadata(
-                    $request->string('drive_file_id')->value(),
-                    $request->string('drive_file_name')->value(),
-                );
-
-                if (! $driveInfo['web_view_link']) {
-                    return redirect()->back()
-                        ->with('error', 'El archivo de Google Drive no tiene un enlace público accesible.')
-                        ->withInput();
-                }
-
-                $ruta = json_encode($driveInfo, JSON_THROW_ON_ERROR);
-
-            } catch (\Exception $e) {
-                return redirect()->back()
-                    ->with('error', 'No se pudo verificar el archivo de Google Drive. Verifica que el archivo existe y tienes permisos.')
-                    ->withInput();
-            }
-        }
+        $ruta = $request->file('archivo')->store('entregas', 'local');
 
         // Crear la entrega
         $entrega = Entrega::create([
             'actividad_id' => $actividad->id,
             'alumno_id' => $alumno->id,
             'ruta' => $ruta,
+            'disco' => 'local',
+            'resumen' => $request->input('resumen'),
             'estado' => 'entregado',
             'observaciones' => null,
             'fecha_entrega' => now(),
@@ -173,15 +136,8 @@ class EntregaController extends Controller
             'actividad.semana',
         ]);
 
-        // Si es modo drive, verificar conexión
-        $driveConectado = false;
-        $driveInfo = null;
-        if ($entrega->actividad->tipoActividad->modo_entrega === 'drive') {
-            $driveConectado = $this->drive->isConnected();
-            $driveInfo = json_decode($entrega->ruta, true);
-        }
-
-        return view('alumno.entregas.edit', compact('entrega', 'driveConectado', 'driveInfo'));
+        $actividad = $entrega->actividad;
+        return view('alumno.entregas.create', compact('entrega', 'actividad'));
     }
 
     /**
@@ -202,46 +158,25 @@ class EntregaController extends Controller
         $modoEntrega = $entrega->actividad->tipoActividad->modo_entrega;
         $ruta = null;
 
-        // Validar según el modo de entrega
-        if ($modoEntrega === 'pdf') {
-            // Eliminar archivo anterior si existe
-            $oldInfo = json_decode($entrega->ruta, true);
-            if (! isset($oldInfo['type']) || $oldInfo['type'] !== 'drive') {
-                if ($entrega->ruta && Storage::disk('public')->exists($entrega->ruta)) {
-                    Storage::disk('public')->delete($entrega->ruta);
-                }
-            }
+        $ruta = $request->file('archivo')->store('entregas', 'local');
 
-            // Guardar nuevo archivo
-            $archivo = $request->file('archivo');
-            $nombreArchivo = time().'_'.$alumno->id.'_'.$entrega->actividad_id.'.'.$archivo->getClientOriginalExtension();
-            $ruta = $archivo->storeAs('entregas', $nombreArchivo, 'public');
-
-        } elseif ($modoEntrega === 'drive') {
-            try {
-                $ruta = json_encode(
-                    $this->drive->fileMetadata(
-                        $request->string('drive_file_id')->value(),
-                        $request->string('drive_file_name')->value(),
-                    ),
-                    JSON_THROW_ON_ERROR,
-                );
-
-            } catch (\Exception $e) {
-                return redirect()->back()
-                    ->with('error', 'No se pudo verificar el archivo de Google Drive.')
-                    ->withInput();
-            }
-        }
+        $rutaAnterior = $entrega->ruta;
+        $discoAnterior = $entrega->disco ?? 'public';
 
         // Actualizar la entrega
         $entrega->update([
             'ruta' => $ruta,
+            'disco' => 'local',
+            'resumen' => $request->input('resumen'),
             'estado' => 'entregado',
             'observaciones' => $request->observaciones,
             'fecha_entrega' => now(),
             'nota' => null,
         ]);
+
+        if ($rutaAnterior && ! str_starts_with($rutaAnterior, '{')) {
+            Storage::disk($discoAnterior)->delete($rutaAnterior);
+        }
 
         return redirect()->route('alumno.entregas.show', $entrega)
             ->with('success', '¡Entrega actualizada exitosamente!');
@@ -267,14 +202,14 @@ class EntregaController extends Controller
         }
 
         // Es un archivo normal, descargarlo
-        if (! $entrega->ruta || ! Storage::disk('public')->exists($entrega->ruta)) {
+        if (! $entrega->ruta || ! Storage::disk($entrega->disco ?? 'public')->exists($entrega->ruta)) {
             return redirect()->back()->with('error', 'El archivo no existe.');
         }
 
         $extension = pathinfo($entrega->ruta, PATHINFO_EXTENSION);
         $nombreDescarga = 'Entrega_'.$entrega->actividad->titulo.'_'.$alumno->codigo_matricula.'.'.$extension;
 
-        return Storage::disk('public')->download($entrega->ruta, $nombreDescarga);
+        return Storage::disk($entrega->disco ?? 'public')->download($entrega->ruta, $nombreDescarga);
     }
 
     /**
@@ -299,8 +234,8 @@ class EntregaController extends Controller
         // Eliminar archivo solo si no es de Drive
         $driveInfo = json_decode($entrega->ruta, true);
         if (! isset($driveInfo['type']) || $driveInfo['type'] !== 'drive') {
-            if ($entrega->ruta && Storage::disk('public')->exists($entrega->ruta)) {
-                Storage::disk('public')->delete($entrega->ruta);
+            if ($entrega->ruta && Storage::disk($entrega->disco ?? 'public')->exists($entrega->ruta)) {
+                Storage::disk($entrega->disco ?? 'public')->delete($entrega->ruta);
             }
         }
 

@@ -12,6 +12,7 @@ Route::middleware(['auth', 'role:administrador'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function (): void {
+        Route::patch('semestres/{semestre}/fechas', [\App\Http\Controllers\Admin\SemestreController::class, 'fechas'])->name('semestres.fechas');
         Route::post('semestre/cerrar', [SemestreController::class, 'cerrar'])->name('semestre.cerrar');
         Route::post('semestre/nuevo', [SemestreController::class, 'store'])->name('semestre.nuevo');
 

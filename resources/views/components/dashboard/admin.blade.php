@@ -66,7 +66,7 @@
                         <input type="number" name="anio" id="anio" value="{{ date('Y') }}" min="2020" max="2100" required class="ui-field">
                     </div>
                     <div>
-                        <label for="periodo" class="ui-label">Periodo</label>
+                        <label class="ui-label">Inicio del semestre<input type="date" name="fecha_inicio" class="ui-field" required value="{{ old('fecha_inicio') }}"></label><label class="ui-label">Fin del semestre<input type="date" name="fecha_fin" class="ui-field" required value="{{ old('fecha_fin') }}"></label><label for="periodo" class="ui-label">Periodo</label>
                         <select name="periodo" id="periodo" required class="ui-field">
                             <option value="I">I</option>
                             <option value="II">II</option>
@@ -107,3 +107,12 @@
         </div>
     </section>
 </div>
+
+<div class="ui-card p-6"><h2>Calendario de semestres</h2>
+@foreach($calendarios as $calendario)
+<form method="POST" action="{{ route('admin.semestres.fechas', $calendario) }}" class="space-y-2 py-4">@csrf @method('PATCH')
+<strong>{{ $calendario->nombre }}</strong>
+<label>Inicio<input type="date" name="fecha_inicio" required value="{{ $calendario->fecha_inicio?->format('Y-m-d') }}"></label>
+<label>Fin<input type="date" name="fecha_fin" required value="{{ $calendario->fecha_fin?->format('Y-m-d') }}"></label>
+<button class="ui-btn-secondary">Guardar calendario</button></form>
+@endforeach</div>

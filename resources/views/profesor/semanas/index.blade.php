@@ -37,4 +37,4 @@
             @endif
         </section>
     </div>
-</x-app-layout>
+<div class="p-6"><a class="ui-btn-secondary" href="{{ route('profesor.informes-finales.index') }}">Consultar informes finales históricos</a></div></x-app-layout>

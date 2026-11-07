@@ -116,7 +116,6 @@
         @foreach([
             ['route' => 'alumno.practicas.index', 'icon' => 'heroicon-o-briefcase', 'label' => 'Prácticas disponibles', 'description' => 'Consulta ofertas y postula'],
             ['route' => 'alumno.ficha.index', 'icon' => 'heroicon-o-document-text', 'label' => 'Ficha de registro', 'description' => 'Completa tu documentación'],
-            ['route' => 'alumno.informe-final.index', 'icon' => 'heroicon-o-document-arrow-up', 'label' => 'Informe final', 'description' => 'Revisa el estado del informe'],
         ] as $action)
             <a href="{{ route($action['route']) }}" class="group flex items-center gap-4 p-5 transition hover:bg-blue-50/60 sm:p-6">
                 <span class="ui-icon-box">@svg($action['icon'], 'h-5 w-5')</span>

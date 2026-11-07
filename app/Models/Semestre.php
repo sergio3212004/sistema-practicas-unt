@@ -12,6 +12,8 @@ class Semestre extends Model
 
     protected $fillable = [
         'nombre',
+        'fecha_inicio',
+        'fecha_fin',
         'activo',
     ];
 
@@ -27,6 +29,14 @@ class Semestre extends Model
                     ->update(['activo' => false]);
             }
         });
+    }
+
+    protected $casts = ['fecha_inicio' => 'date', 'fecha_fin' => 'date'];
+
+    public function totalSemanas(): int
+    {
+        return $this->fecha_inicio && $this->fecha_fin
+            ? (int) floor($this->fecha_inicio->diffInDays($this->fecha_fin) / 7) + 1 : 0;
     }
 
     public function aulas(): HasMany

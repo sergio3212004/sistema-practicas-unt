@@ -66,3 +66,25 @@ Se mantiene el archivo `public/logo-informatica.png` sin modificar su forma ni s
 ## Accesibilidad
 
 El objetivo institucional es WCAG 2.2 nivel AA. Las decisiones, correcciones realizadas y validaciones manuales pendientes se mantienen en [la auditoría de accesibilidad](accessibility-audit.md).
+
+## Intención de la interfaz docente
+
+El espacio docente debe ayudar a **planificar, acompañar y evaluar** sin perder el contexto del aula y del semestre. Su apariencia mantiene la identidad institucional moderna: superficies sobrias, jerarquía tipográfica clara, espaciado regular y acciones breves; no añade una paleta ni un sistema de tarjetas independiente.
+
+### Jerarquía y navegación
+
+- Resumen ofrece la entrada general; el árbol organiza Mis aulas, Semanas de trabajo y Formatos PPP.
+- Cada aula se identifica por número y semestre. Sus accesos distinguen estudiantes y seguimiento, planificación y entregas, y documentación.
+- Los grupos son desplegables mediante teclado. La ubicación actual se marca con `aria-current` y su rama se abre al cargar la página.
+- Los enlaces deben apuntar a operaciones existentes y mostrar únicamente aulas del docente. Los informes históricos permanecen subordinados a Semanas de trabajo.
+- El informe final actual forma parte de la planificación de la última semana; no se presenta como otro flujo de entrega.
+
+### Composición de pantallas
+
+1. `x-ui.page-header` comunica propósito, aula/semestre y la siguiente acción.
+2. `.ui-page` contiene indicadores, contenido y formularios con las mismas separaciones del resto del sistema.
+3. Las tarjetas separan responsabilidades, no cada campo. Las advertencias y acciones destructivas se mantienen fuera de la acción principal.
+4. Crear y editar una semana comparten `x-profesor.semanas.fields`; cambian los valores, el destino y el texto del botón, no el lenguaje visual.
+5. `x-ui.markdown-field` presenta texto editable con ayuda de sintaxis; `x-ui.markdown-content` renderiza el contenido sin HTML introducido por el usuario ni enlaces inseguros.
+
+Una nueva pantalla debe reutilizar primero las piezas `ui`; un componente docente se justifica cuando expresa una estructura académica repetida. Evitar componentes que solo escondan una clase o formularios universales con numerosos modos condicionales. Revisar siempre foco, etiquetas, desbordamiento móvil y contraste en ambos temas.

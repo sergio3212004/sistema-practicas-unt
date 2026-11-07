@@ -26,11 +26,13 @@ class UpdateSemanaRequest extends FormRequest
                 'required',
                 'integer',
                 'min:1',
+                'max:'.($semana->aula->semestre->totalSemanas() ?: 1),
                 Rule::unique('semanas', 'numero')
                     ->where('aula_id', $semana->aula_id)
                     ->ignore($semana),
             ],
             'nombre' => ['nullable', 'string', 'max:255'],
+            'planificacion' => ['nullable', 'string', 'max:50000'],
         ];
     }
 

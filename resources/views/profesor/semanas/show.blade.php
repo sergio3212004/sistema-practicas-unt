@@ -59,4 +59,6 @@
             </div>
         </section>
     </div>
-</x-app-layout>
+<div class="ui-page"><section class="ui-card"><div class="ui-card-header"><x-ui.section-heading title="Planificación del sílabo" icon="heroicon-o-document-text" /></div><div class="ui-card-body"><x-ui.markdown-content :content="$semana->planificacion" />
+@if($semana->numero === $semana->aula->semestre->totalSemanas())<p>Semana final: programa aquí la actividad de entrega del informe final.</p>@endif
+</div></section></div></x-app-layout>

@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Redirect;
 class SemestreController extends Controller
 {
     //
+    public function fechas(Request $request, Semestre $semestre)
+    {
+        $data = $request->validate(['fecha_inicio' => 'required|date', 'fecha_fin' => 'required|date|after_or_equal:fecha_inicio']);
+        if ($semestre->fecha_inicio && $semestre->aulas()->whereHas('actividades')->exists()) {
+            return back()->withErrors(['fecha_inicio' => 'No se puede cambiar el calendario de un semestre con actividades planificadas.']);
+        }
+        $semestre->update($data);
+        return back()->with('status', 'Calendario del semestre actualizado.');
+    }
+
     public function cerrar(Request $request)
     {
         $request->validate([
@@ -39,6 +49,8 @@ class SemestreController extends Controller
         $request->validate([
             'anio' => 'required|integer|min:' . (date('Y') - 5), // Por ejemplo, un rango de años razonable
             'periodo' => 'required|in:I,II,EXT',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
         ]);
 
         // Concatena para obtener el formato "2025-II"
@@ -55,6 +67,8 @@ class SemestreController extends Controller
         Semestre::create([
             'nombre' => $nombreSemestre,
             'activo' => true,
+            'fecha_inicio' => $request->fecha_inicio,
+            'fecha_fin' => $request->fecha_fin,
         ]);
 
         return Redirect::route('dashboard')->with('status', 'Nuevo semestre "' . $nombreSemestre . '" creado y activado exitosamente.');

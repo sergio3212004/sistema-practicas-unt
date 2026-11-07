@@ -87,7 +87,7 @@ routes/
 - Las escrituras relacionadas se ejecutan dentro de `DB::transaction`.
 - Los eventos o llamadas externas se realizan después de confirmar la transacción siempre que sea posible.
 - Credenciales y tokens no se guardan en controladores ni vistas.
-- Cada integración externa tiene un servicio propio, como `GoogleDriveService`.
+- Cada integración externa tiene un servicio propio. Las entregas nuevas utilizan almacenamiento privado local; la API de Google Drive ya no forma parte de ese flujo.
 
 ### Vistas y datos de presentación
 
@@ -121,3 +121,15 @@ vendor/bin/pint --test
 ```
 
 `route:cache` debe completarse correctamente; por eso las rutas no deben usar closures como acciones.
+
+## Presentación docente
+
+La presentación docente separa tres responsabilidades:
+
+- `ProfesorNavigationFactory` consulta exclusivamente las aulas del docente y prepara nodos de navegación con `label`, `active` y `url` o `children`. El compositor autenticado delega la construcción del árbol y entrega `treeNavigation` al layout. Blade no determina el rol ni consulta aulas.
+- `ProfesorAulaViewModelFactory` carga las relaciones y construye métricas y progresos del aula. El controlador conserva la autorización mediante `Gate` y coordina la respuesta; la fábrica devuelve el contrato de datos existente para evitar cambios en las vistas consumidoras.
+- Los componentes `profesor.semanas.fields`, `ui.markdown-field` y `ui.markdown-content` reciben valores explícitos. Los formularios propietarios conservan CSRF, método, destino, acciones y contexto. La conversión Markdown segura vive en un único componente.
+
+El árbol se renderiza recursivamente en `layouts/partials/navigation-tree.blade.php` mediante `details` y `summary` nativos. No requiere otro estado JavaScript para abrir y cerrar grupos. Los formatos globales siguen declarados en `config/navigation.php`; los enlaces con aula se construyen en la fábrica.
+
+Para ampliar el módulo: mantener autorización en HTTP/políticas, preparar datos fuera de Blade y extraer estructuras repetidas sin crear abstracciones globales para un solo caso. Las pruebas de presentación y experiencia docente verifican el contrato de vistas; las pruebas de arquitectura comprueban la ausencia de consultas en Blade y la estructura visual institucional. Este refactor cubre navegación, presentación del aula y formularios semanales; otros controladores conservan su organización actual.
